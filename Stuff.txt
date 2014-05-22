@@ -4,14 +4,15 @@ Classes: (Header + cxx)
 					Hashmap de .obj -- ModelArrays --> Chave = Caminho
 					Hashmap de Texturas --> Chave = Caminho
 
-	Model -- Organizar modelos, texturas, etc. Inclui a textura
-			 Ponteiro para ModelArrays e para a Textura
+	Model [Joca] -- Organizar modelos, texturas, etc. Inclui a textura
+			 		Ponteiro para ModelArrays e para a Textura
+    
     Textura --
 
-	ObjLoader -- Carregar os dados do ficheiro; Cria uma instância da classe Model. Ao carregar os .obj's devolve os Array de Faces, Vertices, Normais e Pontos da Textura - Meter numa classe
+	ObjLoader [Braz] -- Carregar os dados do ficheiro; Cria uma instância da classe Model. Ao carregar os .obj's devolve os Array de Faces, Vertices, Normais e Pontos da Textura - Meter numa classe
 	
-	ModelArrays -- Array de Faces, Vertices, Normais e Pontos da Textura
+	ModelArrays [Braz] -- Array de Faces, Vertices, Normais e Pontos da Textura
 
 	Box -- Deriva do Object
 	
-	Object -- Aponta para um Model
+	Object [Joca] -- Aponta para um Model
