@@ -1,1 +1,0 @@
-g++ tutorial01.cpp -I /usr/local/include/GLFW/ -L /usr/local/lib/ -lglfw3 -lGL -lGLU -lX11 -lXxf86vm -lpthread -lXi -lXrandr -lGLEW
