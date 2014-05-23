@@ -1,12 +1,6 @@
 #include "Model.h"
 
-Model::Model()
-{
-    this->objectInfo = NULL;
-    this->texture = NULL;
-}
-
-Model::Model(ModelArrays* info, Texture* text)
+Model::Model(ModelArrays* info=NULL, Texture* text=NULL)
 {
     this->objectInfo = info;
     this->texture = text;
@@ -14,6 +8,6 @@ Model::Model(ModelArrays* info, Texture* text)
 
 Model::~Model()
 {
-    free(this->objectInfo);
-    free(this->texture);
+    delete this->objectInfo;
+    delete this->texture;
 }
