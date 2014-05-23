@@ -13,6 +13,6 @@ Classes: (Header + cxx)
 	
 	ModelArrays [Braz] -- Array de Faces, Vertices, Normais e Pontos da Textura
 
-	Box -- Deriva do Object
+	Box [Joca] -- Deriva do Object
 	
 	Object [Joca] -- Aponta para um Model
