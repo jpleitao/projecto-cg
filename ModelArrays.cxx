@@ -4,6 +4,18 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
+ModelArrays::ModelArrays(){
+    //DUMMY CONSTRUCTOR -- IN THE FUTURE DELETE THIS
+    this->objectVertex = NULL;
+    this->objectTexture = NULL;
+    this->objectNormals = NULL;
+
+    this->vertexIndex = NULL;
+    this->normalIndex = NULL;
+    this->textureIndex = NULL;
+
+}
+
 ModelArrays::ModelArrays(glm::vec3 *vertex, glm::vec2 *texture, glm::vec3 *normals, int* vertexInd, int* normalInd, int* textureInd)
     :objectVertex(vertex), objectTexture(texture), objectNormals(normals), vertexIndex(vertexInd), normalIndex(normalInd), textureIndex(textureInd) {}
 

@@ -25,6 +25,7 @@ class ModelArrays {
     int *textureIndex;
 
 	public:
+        ModelArrays();
         ModelArrays(glm::vec3 *vertex, glm::vec2 *texture, glm::vec3 *normals, int* vertexInd, int* normalInd, int* textureInd);
 		~ModelArrays();
 

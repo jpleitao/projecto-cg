@@ -1,6 +1,8 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
+#include "Model.h"
+
 class Object
 {
     Model* model;
