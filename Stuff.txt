@@ -1,5 +1,6 @@
 Classes: (Header + cxx)
 	ModelManager -- Gerir os objectos e assim. Internamente utiliza o ObjLoader, e só ai
+					Metodo getModel/ loadModel...., que recebe o nome do model, que e um ficheiro que esta no data/models (extensao .model)				
 					Hashmap de Models
 					Hashmap de .obj -- ModelArrays --> Chave = Caminho
 					Hashmap de Texturas --> Chave = Caminho
