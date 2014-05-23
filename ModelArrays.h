@@ -5,7 +5,15 @@
 #include <iostream>
 #include <fstream>
 
-#include <GL/gl.h>
+// Include GLEW
+#include <GL/glew.h>
+
+// Include GLFW
+#include <GLFW/glfw3.h>
+GLFWwindow* window;
+
+// Include GLM
+#include <glm/glm.hpp>
 
 class ModelArrays {
 
