@@ -29,4 +29,4 @@ clean:
 	rm -rf *.o $(PROGRAM) 2>&1 > /dev/null
 
 $(PROGRAM):
-	$(CPP) $(INCLUDES) $(LIBS) $(SOURCES_CXX) $(SOURCES_CPP) -o $(PROGRAM)
+	$(CPP) $(SOURCES_CXX) $(SOURCES_CPP) $(INCLUDES) $(LIBS) -o $(PROGRAM)
