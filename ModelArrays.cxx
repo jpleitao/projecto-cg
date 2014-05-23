@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-ModelArrays::ModelArrays(GLfloat* vertex, GLfloat* faces, GLfloat* texture, GLfloat* normals, int* vertexInd, int* normalInd, int* textureInd)
+ModelArrays::ModelArrays(glm::vec3 *vertex, glm::vec2 *texture, glm::vec3 *normals, int* vertexInd, int* normalInd, int* textureInd)
     :objectVertex(vertex), objectTexture(texture), objectNormals(normals), vertexIndex(vertexInd), normalIndex(normalInd), textureIndex(textureInd) {}
 
 ModelArrays::~ModelArrays() {

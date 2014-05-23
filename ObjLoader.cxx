@@ -2,20 +2,20 @@
 
 ObjLoader::ObjLoader(const char* name) {
 
-    file = fopen(name, 'r');
+    this->file = fopen(name, "r");
     if(file == NULL) {
         printf("Can't open file!");
-        return NULL;
     }
 }
 
-ObjLoader::ModelArrays load() {
+ModelArrays* ObjLoader::load() {
 
     int nVertex = 0, nTexture = 0, nFaces = 0, nNormals = 0;
 
-    GLfloat* vertex, faces, texture, normals;
+    glm::vec3 *vertex, *normals;
+    glm::vec2 *texture;
 
-    int* vertexInd, normalInd, textureInd;
+    int *vertexInd, *normalInd, *textureInd;
 
     //First parsing to count number positions
     while(1) {
@@ -91,6 +91,10 @@ ObjLoader::ModelArrays load() {
             normalInd[cFace++] = normalInd[2];
         }
     }
+
+    ModelArrays* result = new ModelArrays(vertex, texture, normals, vertexInd, normalInd, textureInd);
+
+    return result;
 }
 
 

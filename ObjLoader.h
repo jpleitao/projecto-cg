@@ -5,13 +5,14 @@
 #include <iostream>
 #include <fstream>
 #include <cstdio>
+#include <cstdlib>
+
 
 // Include GLEW
 #include <GL/glew.h>
 
 // Include GLFW
 #include <GLFW/glfw3.h>
-GLFWwindow* window;
 
 // Include GLM
 #include <glm/glm.hpp>
@@ -21,12 +22,13 @@ GLFWwindow* window;
 
 class ObjLoader {
 
+
     FILE* file;
 
-	public:
-		ObjLoader(const char* name);
-		~ObjLoader();
-		ModelArrays load();
+public:
+    ObjLoader(const char* name);
+    ~ObjLoader();
+    ModelArrays* load();
 };
 
 #endif
