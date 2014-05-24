@@ -13,6 +13,9 @@ class Model
     public:
         Model(ModelArrays* info=NULL, Texture* text=NULL);
         ~Model();
+
+        ModelArrays* getObjectInfo() { return this->objectInfo; }
+        Texture*     getTexture()    { return this->texture; }
 };
 
 #endif // MODEL_H
