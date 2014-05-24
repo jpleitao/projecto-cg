@@ -20,8 +20,7 @@ endif
 
 PROGRAM=projecto
 
-SOURCES_CPP=*.cpp shaders/shader.cpp
-SOURCES_CXX=*.cxx
+SOURCES=*.{cpp,cxx} shaders/*.cxx
 
 all: clean $(PROGRAM)
 
@@ -29,4 +28,4 @@ clean:
 	rm -rf *.o $(PROGRAM) 2>&1 > /dev/null
 
 $(PROGRAM):
-	$(CPP) $(SOURCES_CXX) $(SOURCES_CPP) $(INCLUDES) $(LIBS) -o $(PROGRAM)
+	$(CPP) $(SOURCES) $(INCLUDES) $(LIBS) -o $(PROGRAM)
