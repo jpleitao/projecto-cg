@@ -6,9 +6,9 @@ ModelManager::ModelManager(){
     this->textures.clear();
 }
 
-Model* ModelManager::getModel(char* filename){
+Model* ModelManager::getModel(const char* filename){
     std::string path = filename;
-    path.append(".model");//FIXME: The extension of the file with the model -- CHANGE THIS!
+    path += ".model";//FIXME: The extension of the file with the model -- CHANGE THIS!
 
     std::cout << "FILE: " + path << std::endl;
 
@@ -42,25 +42,26 @@ Model* ModelManager::getModel(char* filename){
     /// Dummy code that reads the model file -- End
     ///
 
-    Model* model = new Model();//Create dummy Model class
+    Texture* texture;
+    ModelArrays* objectInfo;
 
     //Check if texture is already loaded
     if (this->textures.find(path) != this->textures.end()){//FIXME: CHANGE THE KEY TO THE ONE IN THE MODEL FILE
-        model->setTexture(this->textures[path]);//FIXME: CHANGE THE KEY TO THE ONE IN THE MODEL FILE
+        texture = this->textures[path]; //FIXME: CHANGE THE KEY TO THE ONE IN THE MODEL FILE
     }
     else{
-        model->setTexture(new Texture());//Create dummy Texture class
-        this->textures[path] = model->getTexture();//FIXME: CHANGE THE KEY TO THE ONE IN THE MODEL FILE
+        texture = new Texture();
+        this->textures[path] = texture; //FIXME: CHANGE THE KEY TO THE ONE IN THE MODEL FILE
     }
 
     //Check if modelArrays is already loaded
     if (this->modelArrays.find(path) != this->modelArrays.end()){//FIXME: CHANGE THE KEY TO THE ONE IN THE MODEL FILE
-        model->setObjectInfo(this->modelArrays[path]);//FIXME: CHANGE THE KEY TO THE ONE IN THE MODEL FILE
+        objectInfo = this->modelArrays[path]; //FIXME: CHANGE THE KEY TO THE ONE IN THE MODEL FILE
     }
     else{
-        model->setObjectInfo(new ModelArrays());//Create dummy ModelArrays class
-        this->modelArrays[path] = model->getObjectInfo();//FIXME: CHANGE THE KEY TO THE ONE IN THE MODEL FILE
+        objectInfo = new ModelArrays();
+        this->modelArrays[path] = objectInfo; //FIXME: CHANGE THE KEY TO THE ONE IN THE MODEL FILE
     }
 
-    return model;
+    return new Model(objectInfo, texture);
 }

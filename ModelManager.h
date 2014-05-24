@@ -19,7 +19,7 @@ class ModelManager
 
     public:
         ModelManager();
-        Model* getModel(char* filename);
+        Model* getModel(const char* filename);
 };
 
 #endif // MODELMANAGER_H

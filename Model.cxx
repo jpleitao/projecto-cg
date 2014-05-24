@@ -8,22 +8,7 @@ Model::Model(ModelArrays* info, Texture* text)
 
 Model::~Model()
 {
-    delete this->objectInfo;
-    delete this->texture;
-}
+    if ( this->objectInfo ) delete this->objectInfo;
 
-Texture* Model::getTexture(){
-    return this->texture;
-}
-
-ModelArrays* Model::getObjectInfo(){
-    return this->objectInfo;
-}
-
-void Model::setTexture(Texture* text){
-    this->texture = text;
-}
-
-void Model::setObjectInfo(ModelArrays* model){
-    this->objectInfo = model;
+    if ( this->texture) delete this->texture;
 }
