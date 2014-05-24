@@ -8,7 +8,7 @@ class Box: public Object
 	int id;//FIXME: FILL WITH CLASS ATTRIBUTES
 
     public:
-        Box(int id);
+        Box(int id=-1);
         //~Box();
 
 };
