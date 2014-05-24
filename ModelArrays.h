@@ -5,14 +5,7 @@
 #include <iostream>
 #include <fstream>
 
-// Include GLEW
-#include <GL/glew.h>
-
-// Include GLFW
-#include <GLFW/glfw3.h>
-
-// Include GLM
-#include <glm/glm.hpp>
+#include "common.h"
 
 class ModelArrays {
 
@@ -20,18 +13,31 @@ class ModelArrays {
     glm::vec2 *objectTexture;
     glm::vec3 *objectNormals;
 
+    // Number of elements of each of the above arrays
+    int nVertexes, nTexels, nNormals;
+
     int *vertexIndex;
     int *normalIndex;
     int *textureIndex;
 
+    // Handles to the vertex buffer and UV/texture buffer we create
+    GLuint vertexBufferHandle;
+    GLuint texelsBufferHandle;
+    //FIXME: Samething for normals, probably later on
+
 	public:
         ModelArrays();
-        ModelArrays(glm::vec3 *vertex, glm::vec2 *texture, glm::vec3 *normals, int* vertexInd, int* normalInd, int* textureInd);
+        ModelArrays(glm::vec3 *vertex, glm::vec2 *texture, glm::vec3 *normals, int* vertexInd, int* normalInd, int* textureInd, int nVertexes, int nTexels, int nNormals);
 		~ModelArrays();
+
+        GLuint getVertexBufferHandle() { return this->vertexBufferHandle; }
+        GLuint       getTexelsHandle() { return this->texelsBufferHandle; }
 
 	private:
 		ModelArrays(const ModelArrays& other);
 		ModelArrays& operator=(ModelArrays other);
+
+        void createHandles();
 };
 
 #endif

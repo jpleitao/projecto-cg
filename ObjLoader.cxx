@@ -92,7 +92,7 @@ ModelArrays* ObjLoader::load() {
         }
     }
 
-    ModelArrays* result = new ModelArrays(vertex, texture, normals, vertexInd, normalInd, textureInd);
+    ModelArrays* result = new ModelArrays(vertex, texture, normals, vertexInd, normalInd, textureInd, nVertex, nTexture, nNormals);
 
     return result;
 }
