@@ -32,6 +32,9 @@ class ModelArrays {
 
         GLuint getVertexBufferHandle() { return this->vertexBufferHandle; }
         GLuint       getTexelsHandle() { return this->texelsBufferHandle; }
+        int          getNumVertexes()  { return nVertexes; }
+        int          getNumTexels()    { return nTexels; }
+        int          getNumNormals()   { return nNormals; }
 
 	private:
 		ModelArrays(const ModelArrays& other);
