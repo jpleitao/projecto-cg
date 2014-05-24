@@ -2,6 +2,7 @@
 #define MODELMANAGER_H
 
 #include <map>
+#include <string>
 #include "Model.h"
 #include "Texture.h"
 #include "ModelArrays.h"
@@ -10,9 +11,9 @@
 class ModelManager
 {
     private:
-        std::map<char*,ModelArrays*> modelArrays;
-        std::map<char*,Model*> models;
-        std::map<char*,Texture*> textures;
+        std::map<std::string,ModelArrays*> modelArrays;
+        std::map<std::string,Model*> models;
+        std::map<std::string,Texture*> textures;
 
     public:
         ModelManager();

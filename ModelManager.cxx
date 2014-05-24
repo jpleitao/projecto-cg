@@ -7,33 +7,42 @@ ModelManager::ModelManager(){
 }
 
 Model* ModelManager::getModel(char* filename){
-    char extension[] = ".model"; //FIXME: The extension of the file with the model -- CHANGE THIS!
+    std::string path = filename + ".model";//FIXME: The extension of the file with the model -- CHANGE THIS!
 
     //Insert the code to create the model, texture and modelArrays from the file HERE
 
-    //Change the next lines of code to go to the file and create the needed objects of Model, ModelArrays and Texture. From this
-    //point on we assume that this objects are already created
+    if (this->models.find(path) != this->models.end())//Model exists
+        return this->models[path];
+
+    //Model does not exist
+
+    ////
+    /// Dummy code that reads the model file -- Start
+    ///
+
+
+    ///////
+    /// Dummy code that reads the model file -- End
+    ///
 
     Model* model = new Model();//Create dummy Model class
-    Texture* texture = new Texture();//Create dummy Texture class
-    ModelArrays* modelArrays = new ModelArrays();//Create dummy ModelArrays class
 
-    //Store the objects in the correspondent maps -- Check if the model, texture and modelArrays are already stored in the maps.
-    //If the objects are not in the map, store them
-
-    if (this->models.find(filename) == this->models.end()){//FIXME: IS THIS THE KEY???
-        //Element not in map, so let's add it
-        this->models[filename] = model;
+    //Check if texture is already loaded
+    if (this->textures.find(path) != this->textures.end()){//FIXME: CHANGE THE KEY TO THE ONE IN THE MODEL FILE
+        model->texture = this->textures[path];//FIXME: CHANGE THE KEY TO THE ONE IN THE MODEL FILE
+    }
+    else{
+        model->texture = new Texture();//Create dummy Texture class
+        this->textures[path] = model->texture;//FIXME: CHANGE THE KEY TO THE ONE IN THE MODEL FILE
     }
 
-    if (this->textures.find(filename) == this->textures.end()){//FIXME: IS THIS THE KEY???
-        //Element not in map, so let's add it
-        this->textures[filename] = texture;
+    //Check if modelArrays is already loaded
+    if (this->modelArrays.find(path) != this->modelArrays.end()){//FIXME: CHANGE THE KEY TO THE ONE IN THE MODEL FILE
+        model->objectInfo = this->modelArrays[path];//FIXME: CHANGE THE KEY TO THE ONE IN THE MODEL FILE
     }
-
-    if (this->modelArrays.find(filename) == this->modelArrays.end()){//FIXME: IS THIS THE KEY???
-        //Element not in map, so let's add it
-        this->modelArrays[filename] = modelArrays;
+    else{
+        model->objectInfo = new modelArrays();//Create dummy ModelArrays class
+        this->modelArrays[path] = model->objectInfo;//FIXME: CHANGE THE KEY TO THE ONE IN THE MODEL FILE
     }
 
     return model;
