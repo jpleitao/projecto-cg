@@ -24,9 +24,11 @@ ModelArrays::ModelArrays(glm::vec3 *vertex, glm::vec2 *texture, glm::vec3 *norma
 
 ModelArrays::~ModelArrays() {
 	if(this->objectVertex != NULL) {
+        glDeleteBuffers(1, &this->vertexBufferHandle);
         delete[] this->objectVertex;
 	} 
 	if(this->objectTexture != NULL) {
+        glDeleteBuffers(1, &this->texelsBufferHandle);
         delete[] this->objectTexture;
 	} 
     if(this->objectNormals != NULL) {
@@ -40,7 +42,7 @@ ModelArrays::~ModelArrays() {
     }
     if(this->textureIndex != NULL) {
         delete[] this->textureIndex;
-    }
+    }    
 }
 
 void ModelArrays::createHandles() {
