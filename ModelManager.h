@@ -1,11 +1,13 @@
 #ifndef MODELMANAGER_H
 #define MODELMANAGER_H
 
-#include <map>
-#include <string>
 #include "Model.h"
 #include "Texture.h"
 #include "ModelArrays.h"
+#include <map>
+#include <string>
+#include <fstream>
+#include <iostream>
 
 
 class ModelManager
