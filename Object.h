@@ -3,7 +3,7 @@
 
 #include "common.h"
 #include "Model.h"
-#include "shaders/ProgramShader.h"
+#include "shaders/ShaderProgram.h"
 
 class Object
 {
@@ -21,7 +21,7 @@ class Object
         void resetTransforms();
         
         //Render this object using this program shader
-        virtual void render(ProgramShader program);
+        virtual void render(ShaderProgram program);
 };
 
 #endif // OBJECT_H

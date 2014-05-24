@@ -19,6 +19,6 @@ void Object::resetTransforms() {
     this->modelMatrix = mat4(1.0f); 
 }
 
-void Object::render() {
-
+void Object::render(ShaderProgram program) {
+    
 }
