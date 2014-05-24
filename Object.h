@@ -5,6 +5,8 @@
 #include "Model.h"
 #include "shaders/ShaderProgram.h"
 
+class Renderer; //Forward declare Renderer
+
 class Object
 {
     Model* model;
@@ -19,9 +21,8 @@ class Object
         void scale(vec3 scaleVec);
         void translate(vec3 vec);
         void resetTransforms();
-        
-        //Render this object using this program shader
-        virtual void render(ShaderProgram program);
+                
+        void render(Renderer* renderer);
 };
 
 #endif // OBJECT_H

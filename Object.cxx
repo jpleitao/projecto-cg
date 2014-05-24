@@ -1,4 +1,5 @@
 #include "Object.h"
+#include "Renderer.h"
 
 Object::Object(Model* model) : model(model), modelMatrix(mat4(1.0f))
 {
@@ -19,6 +20,28 @@ void Object::resetTransforms() {
     this->modelMatrix = mat4(1.0f); 
 }
 
-void Object::render(ShaderProgram program) {
-    
+
+void Object::render(Renderer* renderer) {
+
+    ModelArrays* modelArrays = model->getObjectInfo();
+
+    renderer->setCurrentModelMatrix(this->modelMatrix);    
+
+    // TODO: Handle textures!!!!! See tutorial 7
+
+    // 1rst attribute buffer : vertices
+    glEnableVertexAttribArray(renderer->getModelVertexHandle());
+    glBindBuffer(GL_ARRAY_BUFFER, modelArrays->getVertexBufferHandle());
+    glVertexAttribPointer(
+        renderer->getModelVertexHandle(),  // The attribute we want to configure
+        modelArrays->getNumVertexes(),    // size
+        GL_FLOAT,                     // type
+        GL_FALSE,                     // normalized?
+        0,                            // stride
+        (void*)0                      // array buffer offset
+    );
+
+    // TODO: Handle textures!!!!!!! See tutorial 7
+    glDrawArrays(GL_TRIANGLES, 0, modelArrays->getNumVertexes() );
+
 }
