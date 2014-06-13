@@ -4,8 +4,7 @@
 class Texture{
 
     private:
-       int id;//FIXME
-       int text;
+       int textureId;
        RgbImage imag;
 
       public:

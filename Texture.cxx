@@ -2,15 +2,16 @@
 
 Texture::Texture(){
     //FIXME
-    this->id = -1;
     this->imag = new RgbImage();
-    this->text = -1;
+    this->textureId= -1;
 }
 
+
+/*Loads the texture stored in "filename". The */
 void Texture::loadTexture(const char* filename)
 {
-    glGenTextures(1, &text);
-    glBindTexture(GL_TEXTURE_2D, text);
+    glGenTextures(1, &textureId);
+    glBindTexture(GL_TEXTURE_2D, textureId);
 
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
