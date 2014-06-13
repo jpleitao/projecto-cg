@@ -7,6 +7,10 @@ ObjLoader::ObjLoader(const char* name) {
         printf("Can't open file!");
     }
 }
+ObjLoader::~ObjLoader() {
+    if ( this->file )
+        fclose(this->file);
+}
 
 ModelArrays* ObjLoader::load() {
 
