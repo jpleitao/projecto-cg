@@ -15,10 +15,10 @@ class Texture{
 
        void loadImage(const char* filename);
        void genAndBindBuffers();
-
-      public:
-       Texture();
        void loadTexture(const char* filename);
+      public:
+       Texture(const char* filename = NULL);
+       GLuint getTextureId() { return textureId; }
        void renderTexture();
 
 };
