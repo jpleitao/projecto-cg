@@ -34,7 +34,7 @@ void Object::render(Renderer* renderer) {
     glBindBuffer(GL_ARRAY_BUFFER, modelArrays->getVertexBufferHandle());
     glVertexAttribPointer(
         renderer->getModelVertexHandle(),  // The attribute we want to configure
-        modelArrays->getNumVertexes(),    // size
+        3,    // size
         GL_FLOAT,                     // type
         GL_FALSE,                     // normalized?
         0,                            // stride
