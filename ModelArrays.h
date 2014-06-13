@@ -4,21 +4,16 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 #include "common.h"
 
 class ModelArrays {
 
-    glm::vec3 *objectVertex;
-    glm::vec2 *objectTexture;
-    glm::vec3 *objectNormals;
-
-    // Number of elements of each of the above arrays
-    int nVertexes, nTexels, nNormals;
-
-    int *vertexIndex;
-    int *normalIndex;
-    int *textureIndex;
+public:
+    std::vector<glm::vec3> objectVertex;
+    std::vector<glm::vec2> objectTexture;
+    std::vector<glm::vec3> objectNormals;
 
     // Handles to the vertex buffer and UV/texture buffer we create
     GLuint vertexBufferHandle;
@@ -27,14 +22,11 @@ class ModelArrays {
 
 	public:
         ModelArrays();
-        ModelArrays(glm::vec3 *vertex, glm::vec2 *texture, glm::vec3 *normals, int* vertexInd, int* normalInd, int* textureInd, int nVertexes, int nTexels, int nNormals);
+        ModelArrays(std::vector<glm::vec3> vertex, std::vector<glm::vec2> texture, std::vector<glm::vec3> normals);
 		~ModelArrays();
 
         GLuint getVertexBufferHandle() { return this->vertexBufferHandle; }
         GLuint       getTexelsHandle() { return this->texelsBufferHandle; }
-        int          getNumVertexes()  { return nVertexes; }
-        int          getNumTexels()    { return nTexels; }
-        int          getNumNormals()   { return nNormals; }
 
 	private:
 		ModelArrays(const ModelArrays& other);

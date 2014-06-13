@@ -34,7 +34,7 @@ void Object::render(Renderer* renderer) {
     glBindBuffer(GL_ARRAY_BUFFER, modelArrays->getVertexBufferHandle());
     glVertexAttribPointer(
         renderer->getModelVertexHandle(),  // The attribute we want to configure
-        modelArrays->getNumVertexes(),    // size
+        (modelArrays->objectVertex).size(),    // size
         GL_FLOAT,                     // type
         GL_FALSE,                     // normalized?
         0,                            // stride
@@ -42,6 +42,6 @@ void Object::render(Renderer* renderer) {
     );
 
     // TODO: Handle textures!!!!!!! See tutorial 7
-    glDrawArrays(GL_TRIANGLES, 0, modelArrays->getNumVertexes() );
+    glDrawArrays(GL_TRIANGLES, 0, (modelArrays->objectVertex).size());
 
 }

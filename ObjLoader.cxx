@@ -10,89 +10,80 @@ ObjLoader::ObjLoader(const char* name) {
 
 ModelArrays* ObjLoader::load() {
 
-    int nVertex = 0, nTexture = 0, nFaces = 0, nNormals = 0;
+    std::vector<unsigned int> vertexInd, normalsInd, textureInd;
 
-    glm::vec3 *vertex, *normals;
-    glm::vec2 *texture;
+    std::vector <glm::vec3> vertex, normals;
+    std::vector <glm::vec2> texture;
 
-    int *vertexInd, *normalInd, *textureInd;
+    std::vector <glm::vec3> outVertex, outNormals;
+    std::vector <glm::vec2> outTexture;
 
     //First parsing to count number positions
     while(1) {
         char lineHeader[128];
-
         int res = fscanf(file, "%s", lineHeader);
 
-        if (res == EOF)
+        if(res == EOF)
             break;
 
-        if (strcmp(lineHeader, "v" ) == 0) {
-            ++nVertex;
+        if(strcmp(lineHeader, "v") == 0){
+            glm::vec3 v;
+            fscanf(file, "%f %f %f\n", &v.x, &v.y, &v.z );
+            vertex.push_back(v);
         }
-        else if(strcmp(lineHeader, "vt" ) == 0) {
-            ++nTexture;
+        else if (strcmp( lineHeader, "vt") == 0){
+            glm::vec2 uv;
+            fscanf(file, "%f %f\n", &uv.x, &uv.y );
+            texture.push_back(uv);
         }
-        else if(strcmp(lineHeader, "vn" ) == 0) {
-            ++nNormals;
+        else if ( strcmp( lineHeader, "vn" ) == 0 ){
+            glm::vec3 normal;
+            fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z );
+            normals.push_back(normal);
         }
-        else if(strcmp(lineHeader, "f") == 0) {
-            ++nFaces;
+        else if (strcmp( lineHeader, "f") == 0 ){
+            unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
+            int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2] );
+            if (matches != 9){
+                printf("File can't be read by our simple parser : ( Try exporting with other options\n");
+
+            }
+            vertexInd.push_back(vertexIndex[0]);
+            vertexInd.push_back(vertexIndex[1]);
+            vertexInd.push_back(vertexIndex[2]);
+            textureInd.push_back(uvIndex[0]);
+            textureInd.push_back(uvIndex[1]);
+            textureInd.push_back(uvIndex[2]);
+            normalsInd.push_back(normalIndex[0]);
+            normalsInd.push_back(normalIndex[1]);
+            normalsInd.push_back(normalIndex[2]);
         }
     }
 
-    //Initializate vectors with number of positions defined above
-    vertex = new glm::vec3[nVertex];
-    texture = new glm::vec2[nTexture];
-    normals = new glm::vec3[nNormals];
+    unsigned int i, index;
 
-    vertexInd = new int[3*nFaces];
-    normalInd = new int[3*nFaces];
-    textureInd = new int[3*nFaces];
+    glm::vec3 v3;
+    glm::vec2 v2;
 
-    //Reset file pointer
-    rewind(file);
-
-    int cVertex = 0, cTexture = 0, cNormal = 0, cFace = 0;
-
-    //Load all information from .obj file
-    while(1) {
-        char lineHeader[128];
-
-        int res = fscanf(file, "%s", lineHeader);
-        if (res == EOF)
-            break;
-
-        if (strcmp(lineHeader, "v" ) == 0) {
-            glm::vec3 vert;
-            fscanf(file, "%f %f %f\n", &vert.x, &vert.y, &vert.z);
-            vertex[cVertex++] = vert;
-        }
-        else if(strcmp(lineHeader, "vt" ) == 0) {
-            glm::vec2 vTexture;
-            fscanf(file, "%f %f\n", &vTexture.x, &vTexture.y);
-            texture[cTexture++] = vTexture;
-        }
-        else if(strcmp(lineHeader, "vn" ) == 0) {
-            glm::vec3 norm;
-            fscanf(file, "%f %f %f\n", &norm.x, &norm.y, &norm.z);
-            normals[cNormal++] = norm;
-        }
-        else if(strcmp(lineHeader, "f") == 0) {
-            int vertexIndex[3], normalIndex[3], textureIndex[3];
-            fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &textureIndex[0], &normalIndex[0], &vertexIndex[1], &textureIndex[1], &normalIndex[1], &vertexIndex[2], &textureIndex[2], &normalIndex[2]);
-            vertexInd[cFace] = vertexIndex[0];
-            textureInd[cFace] = textureIndex[0];
-            normalInd[cFace++] = normalInd[0];
-            vertexInd[cFace] = vertexIndex[1];
-            textureInd[cFace] = textureIndex[1];
-            normalInd[cFace++] = normalInd[1];
-            vertexInd[cFace] = vertexIndex[2];
-            textureInd[cFace] = textureIndex[2];
-            normalInd[cFace++] = normalInd[2];
-        }
+    for(i=0; i<vertexInd.size(); i++) {
+        index = vertexInd[i];
+        v3 = vertex[index-1];
+        outVertex.push_back(v3);
     }
 
-    ModelArrays* result = new ModelArrays(vertex, texture, normals, vertexInd, normalInd, textureInd, nVertex, nTexture, nNormals);
+    for(i=0; i<textureInd.size(); i++) {
+        index = textureInd[i];
+        v2 = texture[index-1];
+        outTexture.push_back(v2);
+    }
+
+    for(i=0; i<normalsInd.size(); i++) {
+        index = normalsInd[i];
+        v3 = normals[index-1];
+        outNormals.push_back(v3);
+    }
+
+    ModelArrays* result = new ModelArrays(outVertex, outTexture, outNormals);
 
     return result;
 }
