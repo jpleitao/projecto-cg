@@ -23,6 +23,7 @@
 
 #include <stdio.h>
 #include <assert.h>
+#include "common.h"
 
 // Include the next line to turn off the routines that use OpenGL
 // #define RGBIMAGE_DONT_USE_OPENGL

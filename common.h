@@ -12,4 +12,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 using namespace glm;
 
+// Stuff for the textures
+#include <GL/glut.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+
 #endif

@@ -18,9 +18,6 @@
  *
  */
 
-#include <GL/glut.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
 #include "RgbImage.h"
 
 RgbImage::RgbImage( int numRows, int numCols )
