@@ -4,7 +4,7 @@
 Model::Model(ModelArrays* info, Texture* text)
 {
     if ( info == NULL && text == NULL ) {
-        this->objectInfo = ObjLoader("data/models/dummy.obj").load();
+        this->objectInfo = ObjLoader("data/models/obj/dummy.obj").load();
         printf("New MODEL: %p\n", this->objectInfo);
     }  else {
         this->objectInfo = info;
