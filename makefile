@@ -10,17 +10,17 @@ FLAGS=-g
 ifeq ($(UNAME_S),Linux)
     INCLUDES = -I/usr/local/include/GLFW/
     LIBS = -L/usr/local/lib/ -lglfw3 -lGL -lGLU -lX11 -lXxf86vm -lpthread -lXi -lXrandr -lGLEW
-    CPP=g++
+    CPP=clang++
+    SOURCES=*.cpp *.cxx shaders/*.cxx
 endif
 ifeq ($(UNAME_S),Darwin)
     INCLUDES = -I/usr/local/include -I/usr/local/include/GLFW
     LIBS = -lglew -lglfw3 -framework opengl  
     CPP=clang++
+    SOURCES=*.{cpp,cxx} shaders/*.cxx
 endif
 
 PROGRAM=projecto
-
-SOURCES=*.{cpp,cxx} shaders/*.cxx
 
 all: clean $(PROGRAM)
 

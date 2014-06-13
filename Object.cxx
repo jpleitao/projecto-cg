@@ -42,6 +42,6 @@ void Object::render(Renderer* renderer) {
     );
 
     // TODO: Handle textures!!!!!!! See tutorial 7
-    glDrawArrays(GL_TRIANGLES, 0, modelArrays->getNumVertexes() );
+    glDrawArrays(GL_TRIANGLES, 0, (modelArrays->objectVertex).size());
 
 }

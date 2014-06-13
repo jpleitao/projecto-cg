@@ -7,7 +7,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-
+#include <vector>
 
 // Include GLEW
 #include <GL/glew.h>
