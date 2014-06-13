@@ -17,7 +17,7 @@ class Renderer
     mat4 P, V;
     
     // The only shader we currently use
-    ShaderProgram program;
+    //ShaderProgram program;
 
     // Handle to where we should store the array of vertexes
     GLint modelVertexHandle;
