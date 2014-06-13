@@ -6,7 +6,7 @@
 ##
 UNAME_S := $(shell uname -s)
 
-
+FLAGS=-g
 ifeq ($(UNAME_S),Linux)
     INCLUDES = -I/usr/local/include/GLFW/
     LIBS = -L/usr/local/lib/ -lglfw3 -lGL -lGLU -lX11 -lXxf86vm -lpthread -lXi -lXrandr -lGLEW
@@ -28,4 +28,4 @@ clean:
 	rm -rf *.o $(PROGRAM) 2>&1 > /dev/null
 
 $(PROGRAM):
-	$(CPP) $(SOURCES) $(INCLUDES) $(LIBS) -o $(PROGRAM)
+	$(CPP) $(SOURCES) $(INCLUDES) $(LIBS) $(FLAGS) -o $(PROGRAM)
