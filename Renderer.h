@@ -25,6 +25,11 @@ class Renderer
     // Handle to where we should store the array of vertex colors (FIXME: Might be gone soon)
     GLint vertexColorHandle;
 
+    
+    GLint textureSamplerHandle;
+
+    GLint vertexUVHandle;
+
     //FIXME: Might add other handles    
 
     public:
@@ -39,8 +44,10 @@ class Renderer
         void setView(mat4 V) { this->V = V; calculatePV();}
         void setCurrentModelMatrix(mat4 M);
         
-        GLint getModelVertexHandle() { return modelVertexHandle; }
-        GLint getVertexColorHandle() { return vertexColorHandle; }
+        GLint getModelVertexHandle()    { return modelVertexHandle; }
+        GLint getVertexColorHandle()    { return vertexColorHandle; }
+        GLint getTextureSamplerHandle() { return textureSamplerHandle; }
+        GLint getVertexUVHandle()       { return vertexUVHandle; }
 
         void render(std::vector<Object*> objects);
 

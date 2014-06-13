@@ -51,15 +51,18 @@ int main( void )
 	Renderer renderer;
 
 	std::vector<Object*> objects;
-	Object* obj = new Object(new Model());
-	Object* obj2 = new Object(new Model());
-	objects.push_back(obj); objects.push_back(obj2);
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState (GL_TEXTURE_COORD_ARRAY_EXT);
+	
+	Object* obj = new Object(new Model(), new Texture());
+	Object* obj2 = new Object(new Model(), new Texture());
+	Object* obj3 = new Object(new Model(), new Texture());
+	Object* obj4 = new Object(new Model(), new Texture());
+	//new Texture();
+	objects.push_back(obj2); objects.push_back(obj); objects.push_back(obj3);  objects.push_back(obj4);
 	//obj->scale(vec3(0.25f,0.20f,0.20f));
 	obj->rotate(33,vec3(0,1,0));
-	obj2->translate(vec3(1.0f,0.0f,0.0f));
-	obj2->rotate(45,vec3(0,0,1));
+	obj2->translate(vec3(3.0f,0.0f,0.0f));
+	obj4->translate(vec3(-3.0f,0.0f,0.0f));
+
 	do{
 
 		// Clear the screen
