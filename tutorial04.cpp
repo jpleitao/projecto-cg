@@ -246,6 +246,14 @@ int main( void )
 		glDisableVertexAttribArray(vertexPosition_modelspaceID);
 		glDisableVertexAttribArray(vertexColorID);
 
+/*
+			RENDER TEXTURE - Start
+*/
+
+/*
+			RENDER TEXTURE - FInish
+*/
+
 		// Model matrix : an identity matrix (model will be at the origin)
 		glm::mat4 Model2      = glm::translate(glm::mat4(1.0f),glm::vec3(-3.0f, 0.0f ,0.0f));
 	// Our ModelViewProjection : multiplication of our 3 matrices
@@ -282,6 +290,7 @@ int main( void )
 
 		// Draw the triangleS !
 		glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
+
 
 		glDisableVertexAttribArray(vertexPosition_modelspaceID);
 		glDisableVertexAttribArray(vertexColorID);

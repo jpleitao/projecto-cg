@@ -9,8 +9,12 @@ class Texture{
 
     private:
        GLuint textureId;
-       RgbImage imag;
        GLuint depthRenderBuffer;
+       GLuint frameBuffer;
+       RgbImage imag;
+
+       void loadImage(const char* filename);
+       void genAndBindBuffers();
 
       public:
        Texture();
