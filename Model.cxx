@@ -1,9 +1,15 @@
 #include "Model.h"
+#include "ObjLoader.h"
 
 Model::Model(ModelArrays* info, Texture* text)
 {
-    this->objectInfo = info;
-    this->texture = text;
+    if ( info == NULL && text == NULL ) {
+        this->objectInfo = ObjLoader("data/models/dummy.obj").load();
+        printf("New MODEL: %p\n", this->objectInfo);
+    }  else {
+        this->objectInfo = info;
+        this->texture = text;
+    }
 }
 
 Model::~Model()
