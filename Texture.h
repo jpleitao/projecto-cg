@@ -5,6 +5,8 @@ class Texture{
 
     private:
        int id;//FIXME
+       int text;
+       RgbImage imag;
 
       public:
        Texture();
