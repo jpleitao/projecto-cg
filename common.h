@@ -12,9 +12,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 using namespace glm;
 
-// Stuff for the textures
-// #include <GL/glut.h>
-//#include <GL/gl.h>
-//#include <GL/glu.h>
+#ifndef M_PI
+ #define M_PI 3.1415926535897932384626433832795
+#endif
 
 #endif

@@ -1,15 +1,28 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "Object.h"
+#include "common.h"
+#include "Renderer.h"
 
-class Player : public Object
+class Player
 {
+    Renderer* renderer;
+    vec3 position;
+    float horizAngle;
+    float vertAngle;
+    float fov;
 
+    // FIXME: Maybe only temporarily constant
+    const float speed;
+    const float mouseSpeed;
+
+    private:
+        void updateViewMatrix(void);
+        void updateProjectionMatrix(void);
     public:
-        Player();
-                
-        virtual void render(Renderer* renderer);
+
+        Player(Renderer* renderer, vec3 position = vec3(0,0,0), float horizAngle = M_PI, float vertAngle = 0.0f, float fov = 45.0f, float speed = 3.0f, float mouseSpeed = 0.005f);
+        void updateAngles(float screendx, float screendy);
 };
 
 #endif // PLAYER_H
