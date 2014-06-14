@@ -40,8 +40,8 @@ ShaderProgram::ShaderProgram(const char* vertexFilePath, const char* fragmentFil
 
     
 
-    if (!compileShader(VertexShaderID, VertexShaderCode.c_str())) return ;
-    if (!compileShader(FragmentShaderID, FragmentShaderCode.c_str())) return ;
+    compileShader(VertexShaderID, VertexShaderCode.c_str());
+    compileShader(FragmentShaderID, FragmentShaderCode.c_str());
 
 
 
@@ -93,7 +93,7 @@ bool ShaderProgram::compileShader(GLuint id, const char* code) {
     if ( InfoLogLength > 0 ){
         std::vector<char> msg(InfoLogLength+1);
         glGetShaderInfoLog(id, InfoLogLength, NULL, &msg[0]);
-        printf("%s\n", &msg[0]);
+        printf("Compiler message: '%s'\n", &msg[0]);
         return false;
     }
 
