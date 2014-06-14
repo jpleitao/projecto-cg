@@ -17,12 +17,13 @@ class Player
     const float mouseSpeed;
 
     private:
-        void updateViewMatrix(void);
+        void updateViewMatrix(double xoff=0, double yoff=0);
         void updateProjectionMatrix(void);
     public:
 
-        Player(Renderer* renderer, vec3 position = vec3(0,0,0), float horizAngle = M_PI, float vertAngle = 0.0f, float fov = 45.0f, float speed = 3.0f, float mouseSpeed = 0.005f);
+        Player(Renderer* renderer, vec3 position = vec3(0,0,0), float horizAngle = M_PI, float vertAngle = 0.0f, float fov = 45.0f, float speed = 3.0f, float mouseSpeed = 0.0015f);
         void updateAngles(float screendx, float screendy);
+        void updatePosition(double xoff, double yoff);
 };
 
 #endif // PLAYER_H

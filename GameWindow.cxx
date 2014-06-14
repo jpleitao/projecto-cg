@@ -7,8 +7,7 @@ GameWindow::GameWindow(int width, int height, const char* title) :
             width(width), height(height) {
 
     // Initialise GLFW
-    if( !glfwInit() )
-    {
+    if( !glfwInit() ) {
         fprintf( stderr, "Failed to initialize GLFW\n" );
         exit(0);
     }
@@ -28,8 +27,10 @@ GameWindow::GameWindow(int width, int height, const char* title) :
 
     
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetCursorPos(window, width/2, height/2);
     lastFrameTime = glfwGetTime();
+
 }
 
 GameWindow::~GameWindow() {
@@ -41,24 +42,54 @@ bool GameWindow::shouldStayOpen() {
            glfwWindowShouldClose(window) == 0;
 }
 
-void GameWindow::beginFrame(){
-    // Compute time difference between current and last frame
-    currFrameTime = glfwGetTime();
-
-    float deltaTime = float(currFrameTime - lastFrameTime);
-
+void GameWindow::handleMouse() {
     // Get mouse position
     double dx, dy;
     glfwGetCursorPos(window, &dx, &dy);
 
 
-    screenMouseXOffset = width/2 - dx;
-    screenMouseYOffset = height/2 - dy;
+    screenMouseXOffset = width/2.0 - dx;
+    screenMouseYOffset = height/2.0 - dy;
 
-    printf("dx: %f, dy: %f, pDx: %f, pDy: %f\n", dx, dy, screenMouseXOffset, screenMouseYOffset);
+    //printf("dx: %f, dy: %f, pDx: %f, pDy: %f\n", dx, dy, screenMouseXOffset, screenMouseYOffset);
 
     // Reset mouse position for next frame
     glfwSetCursorPos(window, width/2, height/2);
+}
+
+void GameWindow::handleWASD() {
+    float deltaTime = float(currFrameTime - lastFrameTime);
+    // Move forward
+    if (glfwGetKey( window, GLFW_KEY_W ) == GLFW_PRESS)
+        keyPressOffsetW =  deltaTime;
+    else
+        keyPressOffsetW = 0;
+
+    // Move backward
+    if (glfwGetKey( window, GLFW_KEY_S ) == GLFW_PRESS)
+        keyPressOffsetS =  deltaTime;
+    else
+        keyPressOffsetS = 0;
+
+    // Strafe right
+    if (glfwGetKey( window, GLFW_KEY_D ) == GLFW_PRESS)
+        keyPressOffsetD =  deltaTime;
+    else
+        keyPressOffsetD = 0;
+
+    // Strafe left
+    if (glfwGetKey( window, GLFW_KEY_A ) == GLFW_PRESS)
+        keyPressOffsetA =  deltaTime;
+    else
+        keyPressOffsetA = 0;
+}
+
+void GameWindow::beginFrame(){
+    // Compute time difference between current and last frame
+    currFrameTime = glfwGetTime();
+
+    handleMouse();
+    handleWASD();
 }
 
 void GameWindow::endFrame() {

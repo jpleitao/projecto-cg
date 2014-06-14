@@ -45,6 +45,7 @@ int main (void) {
 	while( gameWindow.shouldStayOpen() ) {
 		gameWindow.beginFrame();
 		player.updateAngles(gameWindow.getFrameScreenXOffset(), gameWindow.getFrameScreenYOffset());
+		player.updatePosition(gameWindow.getStrafeOffset(), gameWindow.getFrontMoveOffset());
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		renderer.render(objects);
