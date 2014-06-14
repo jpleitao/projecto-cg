@@ -30,6 +30,7 @@ GameWindow::GameWindow(int width, int height, const char* title) :
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPos(window, width/2, height/2);
     lastFrameTime = glfwGetTime();
+    this->screenMouseXOffset = this->screenMouseYOffset = this->keyPressOffsetW = this->keyPressOffsetA = this->keyPressOffsetS = this->keyPressOffsetD = 0;
 
 }
 
