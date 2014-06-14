@@ -23,6 +23,7 @@ int main (void) {
 	// Enable depth test / Accept fragment if it closer to the camera than the former one
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS); 
+	glEnable(GL_CULL_FACE);
 
 	Renderer renderer;
 	
@@ -38,14 +39,20 @@ int main (void) {
 	
 
 	obj->rotate(33,vec3(0,1,0));
+	obj->translate(vec3(0,2,0));
 	obj2->translate(vec3(3.0f,0.0f,0.0f));
-	obj4->translate(vec3(-3.0f,0.0f,0.0f));
+	obj4->translate(vec3(6.0f,0.0f,0.0f));
 
-	
+	int frameNo = 0;
 	while( gameWindow.shouldStayOpen() ) {
 		gameWindow.beginFrame();
-		player.updateAngles(gameWindow.getFrameScreenXOffset(), gameWindow.getFrameScreenYOffset());
-		player.updatePosition(gameWindow.getStrafeOffset(), gameWindow.getFrontMoveOffset());
+		obj->rotate(1,vec3(0,1,0));
+
+		if ( frameNo++ > 0 ) {
+			printf("Updating: %f, %f\n", gameWindow.getFrameScreenXOffset(), gameWindow.getFrameScreenYOffset());
+			player.updateAngles(gameWindow.getFrameScreenXOffset(), gameWindow.getFrameScreenYOffset());
+			player.updatePosition(gameWindow.getStrafeOffset(), gameWindow.getFrontMoveOffset());
+		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		renderer.render(objects);
