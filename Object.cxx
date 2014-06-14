@@ -22,46 +22,15 @@ void Object::resetTransforms() {
 
 void Object::render(Renderer* renderer) {
 
-    int TextureID = renderer->getTextureSamplerHandle();
-    ModelArrays* modelArrays = model->getObjectInfo();
+    //Update MVC
+    renderer->setCurrentModelMatrix(modelMatrix);    
 
-    renderer->setCurrentModelMatrix(this->modelMatrix);    
+    //Draw the model with the texture mapped
+    texture->beginRender(renderer, model);
+    model->beginRender(renderer);
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture->getTextureId());
-    // Set our "myTextureSampler" sampler to user Texture Unit 0
-    glUniform1i(TextureID, 0);
-
-
-    // TODO: Handle textures!!!!! See tutorial 7
-
-    // 1rst attribute buffer : vertices
-    glEnableVertexAttribArray(renderer->getModelVertexHandle());
-    glBindBuffer(GL_ARRAY_BUFFER, modelArrays->getVertexBufferHandle());
-    glVertexAttribPointer(
-        renderer->getModelVertexHandle(),  // The attribute we want to configure
-        3,    // size
-        GL_FLOAT,                     // type
-        GL_FALSE,                     // normalized?
-        0,                            // stride
-        (void*)0                      // array buffer offset
-    );
-
-    // 2nd attribute buffer : UVs
-        glEnableVertexAttribArray(renderer->getVertexUVHandle());
-        glBindBuffer(GL_ARRAY_BUFFER, modelArrays->getTexelsHandle());
-        glVertexAttribPointer(
-            renderer->getVertexUVHandle(),                   // The attribute we want to configure
-            2,                            // size : U+V => 2
-            GL_FLOAT,                     // type
-            GL_FALSE,                     // normalized?
-            0,                            // stride
-            (void*)0                      // array buffer offset
-        );
-
-    glDrawArrays(GL_TRIANGLES, 0, (modelArrays->objectVertex).size());
-
-    glDisableVertexAttribArray(renderer->getVertexUVHandle());
-    glDisableVertexAttribArray(renderer->getModelVertexHandle());
-
+    model->draw(renderer);
+    
+    model->finishRender(renderer);
+    texture->finishRender(renderer, model);
 }

@@ -5,6 +5,9 @@
 #include "common.h"
 #include "RgbImage.h"
 
+class Model;
+class Renderer;
+
 class Texture{
 
     private:
@@ -18,9 +21,9 @@ class Texture{
        void loadTexture(const char* filename);
       public:
        Texture(const char* filename = NULL);
+       void beginRender(Renderer* renderer, Model* destModel);
+       void finishRender(Renderer* renderer, Model* destModel);
        GLuint getTextureId() { return textureId; }
-       void renderTexture();
-
 };
 
 

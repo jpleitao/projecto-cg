@@ -1,4 +1,6 @@
 #include "Texture.h"
+#include "Renderer.h"
+#include "Model.h"
 
 Texture::Texture(const char* filename) {
     if ( filename == NULL ) {
@@ -49,6 +51,29 @@ void Texture::genAndBindBuffers()
     */
 }
 
+void Texture::beginRender(Renderer* renderer, Model* destModel) {
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureId);
+    // Set our "myTextureSampler" sampler to user Texture Unit 0
+    glUniform1i( renderer->getTextureSamplerHandle(), 0);
+
+    // 2nd attribute buffer : UVs
+    glEnableVertexAttribArray(renderer->getVertexUVHandle());
+    glBindBuffer(GL_ARRAY_BUFFER, destModel->getObjectInfo()->getTexelsHandle());
+    glVertexAttribPointer(
+        renderer->getVertexUVHandle(),                   // The attribute we want to configure
+        2,                            // size : U+V => 2
+        GL_FLOAT,                     // type
+        GL_FALSE,                     // normalized?
+        0,                            // stride
+        (void*)0                      // array buffer offset
+    );
+}
+
+void Texture::finishRender(Renderer* renderer, Model* destModel) {
+    glDisableVertexAttribArray(renderer->getVertexUVHandle());
+}
+
 
 void Texture::loadImage(const char* filename)
 {
@@ -74,29 +99,4 @@ void Texture::loadImage(const char* filename)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
-}
-
-//Renders the texture. FIXME: WHEN DO WE CALL THIS AND HOW DO WE DETERMINE TO WHAT OBJECTS MUST WE APPLY THE TEXTURE?
-void Texture::renderTexture()
-{
-    //Render the texture to the screen
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    //Render on the whole framebuffer, complete from the lower left corner to the upper right
-    glViewport(0,0,1024,768);//FIXME: 1024 and 768 are hard-coded values -- CHANGE THIS!
-
-    //Clear the screen
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
- /* CODE FOR RENDERING THE TEXTURE FROM THE TUTORIAL
-  * NOTE THAT THEY USE A SHADER FOR THAT (see Tutorial 14 WobblyTexture.fragmentshader)
-
-    //Use our shader
-    glUseProgram(quad_programID);
-
-    //Bind our texture in Texture Unit 0
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, renderedTexture);
-    //Set our "renderedTexture" sampler to user Texture Unit 0
-    glUniform1i(texID, 0);
-*/
 }
