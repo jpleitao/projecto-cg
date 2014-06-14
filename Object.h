@@ -23,7 +23,7 @@ class Object
         void translate(vec3 vec);
         void resetTransforms();
                 
-        void render(Renderer* renderer);
+        virtual void render(Renderer* renderer);
 };
 
 #endif // OBJECT_H

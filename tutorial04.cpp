@@ -6,6 +6,7 @@
 GLFWwindow* window;
 
 #include "Renderer.h"
+#include "Player.h"
 
 int main( void )
 {
@@ -52,12 +53,13 @@ int main( void )
 
 	std::vector<Object*> objects;
 	
+	Player* player = new Player();
 	Object* obj = new Object(new Model(), new Texture());
 	Object* obj2 = new Object(new Model(), new Texture());
 	Object* obj3 = new Object(new Model(), new Texture());
 	Object* obj4 = new Object(new Model(), new Texture());
 	//new Texture();
-	objects.push_back(obj2); objects.push_back(obj); objects.push_back(obj3);  objects.push_back(obj4);
+	objects.push_back(obj2); objects.push_back(obj); objects.push_back(obj3);  objects.push_back(obj4); objects.push_back(player);
 	//obj->scale(vec3(0.25f,0.20f,0.20f));
 	obj->rotate(33,vec3(0,1,0));
 	obj2->translate(vec3(3.0f,0.0f,0.0f));
