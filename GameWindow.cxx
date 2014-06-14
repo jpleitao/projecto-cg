@@ -1,6 +1,7 @@
 #include "GameWindow.h"
 #include <cstdio>
 #include <cstdlib>
+#include <cmath>
 
 
 GameWindow::GameWindow(int width, int height, const char* title) :
@@ -29,6 +30,7 @@ GameWindow::GameWindow(int width, int height, const char* title) :
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPos(window, width/2, height/2);
+    glfwSetTime( 0.0 );
     lastFrameTime = glfwGetTime();
     this->screenMouseXOffset = this->screenMouseYOffset = this->keyPressOffsetW = this->keyPressOffsetA = this->keyPressOffsetS = this->keyPressOffsetD = 0;
 
@@ -49,8 +51,12 @@ void GameWindow::handleMouse() {
     glfwGetCursorPos(window, &dx, &dy);
 
 
-    screenMouseXOffset = width/2.0 - dx;
-    screenMouseYOffset = height/2.0 - dy;
+    if ( ! (fabs(dx) <= 0.1 || fabs(dy) <= 0.1) ) {
+        screenMouseXOffset = width/2.0 - dx;
+        screenMouseYOffset = height/2.0 - dy;
+    }
+
+
 
     //printf("dx: %f, dy: %f, pDx: %f, pDy: %f\n", dx, dy, screenMouseXOffset, screenMouseYOffset);
 
