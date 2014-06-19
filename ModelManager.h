@@ -2,6 +2,8 @@
 #define MODELMANAGER_H
 
 #include "Model.h"
+#include "Object.h"
+#include "ObjLoader.h"
 #include "Texture.h"
 #include "ModelArrays.h"
 #include <map>
@@ -20,6 +22,7 @@ class ModelManager
     public:
         ModelManager();
         Model* getModel(const char* filename);
+        Object* getObject(const char* filename);
 };
 
 #endif // MODELMANAGER_H
