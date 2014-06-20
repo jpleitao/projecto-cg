@@ -23,10 +23,6 @@ Model* ModelManager::getModel(const char* filename){
     std::string texture_path, model_path;
 
     if (ifs){
-        /*I'm just assuming that the first 2 lines of the .model file are the name of the .obj file and the name of the .bmp file.
-         *The next lines have the length, width and height, one per line in this order.
-         */
-
         //Read first line, which contains the name of the .obj file
         if (ifs.good()){
             std::getline(ifs, model_path);
