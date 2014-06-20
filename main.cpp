@@ -38,9 +38,7 @@ int main (void) {
     //objects.push_back(obj2); objects.push_back(obj); objects.push_back(obj3);  objects.push_back(obj4);
 
     Object* test1 = new Object(new Model(), new Texture());
-    Object* test2 = new Object(new Model(), new Texture());
-    objects.push_back(test1); objects.push_back(test2);
-    test1->translate(vec3(0.0f,0.0f,-5.0f));
+    objects.push_back(test1);
 	
     /*
 	obj->rotate(33,vec3(0,1,0));
@@ -54,7 +52,6 @@ int main (void) {
 		gameWindow.beginFrame();
 		obj->rotate(1,vec3(0,1,0));
 
-
         //For debug on the collisions only! - Remove this
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_L ) == GLFW_PRESS)
             test1->translate(vec3(0.0f, 0.0f, 0.1f));
@@ -67,6 +64,7 @@ int main (void) {
 
         //Check for collisions!
 
+
 		if ( frameNo++ > 0 ) {
 			printf("Updating: %f, %f\n", gameWindow.getFrameScreenXOffset(), gameWindow.getFrameScreenYOffset());
 			player.updateAngles(gameWindow.getFrameScreenXOffset(), gameWindow.getFrameScreenYOffset());
@@ -77,7 +75,7 @@ int main (void) {
 		renderer.render(objects);
 
 		gameWindow.endFrame();
-	} 
+    }
 
 	return 0;
 }
