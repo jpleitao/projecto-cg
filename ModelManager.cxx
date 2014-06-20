@@ -120,6 +120,8 @@ Object* ModelManager::getObject(const char* filename)
         assert(0);
     }
 
+    ifs.close();
+
     //Now that we have the side of the cube create the array with the positions of its top face
     std::vector<glm::vec3> vert;
     vert.push_back(glm::vec3(cube_size/2,cube_size,-cube_size/2));
