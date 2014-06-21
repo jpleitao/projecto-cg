@@ -55,6 +55,8 @@ int main (void) {
     obj4->translate(vec3(6.0f,0.0f,0.0f));
     */
 
+    //test2->translate(vec3(0.0f,3.0f,0.0f));
+    test2->rotate(30,vec3(0,1,0));
     test1->translate(vec3(0.0f,0.0f,-5.0f));
 
 	int frameNo = 0;
@@ -71,8 +73,12 @@ int main (void) {
             test1->translate(vec3(0.0f, 0.0f, -0.1f));
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_I ) == GLFW_PRESS)
             test1->translate(vec3(0.1f, 0.0f, 0.0f));
+        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_M ) == GLFW_PRESS)
+            test1->translate(vec3(0.0f, -0.1f, 0.0f));
+        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_N ) == GLFW_PRESS)
+            test1->translate(vec3(0.0f, 0.1f, 0.0f));
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_R ) == GLFW_PRESS)
-            test1->rotate(1,vec3(0.0f, 1, 0));
+            test1->rotate(1, vec3(0.0f, 1, 0.0f));
 
         //Check for collisions! -- For each object test it with the ones after him
         for (int i=0;i<objects.size();i++){
@@ -80,10 +86,12 @@ int main (void) {
 
             for (int j=i+1;j<objects.size();j++){
                 if (current->collision(objects[j])){
-                    std::cout << frameNo << " COLLISION!\n";
+                    std::cout << "COLLISION!\n";
+                    //assert(0);
                 }
             }
         }
+
         //test1->printStuff();
 
 
