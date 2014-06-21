@@ -37,8 +37,16 @@ int main (void) {
 	Object* obj4 = new Object(new Model(), new Texture());
     //objects.push_back(obj2); objects.push_back(obj); objects.push_back(obj3);  objects.push_back(obj4);
 
-    Object* test1 = new Object(new Model(), new Texture());
-    objects.push_back(test1);
+    std::vector<glm::vec3> vert;
+    GLfloat cube_size = 2;
+
+    vert.push_back(glm::vec3(cube_size/2,cube_size,-cube_size/2));
+    vert.push_back(glm::vec3(-cube_size/2,cube_size,-cube_size/2));
+    vert.push_back(glm::vec3(-cube_size/2,cube_size,cube_size/2));
+    vert.push_back(glm::vec3(cube_size/2,cube_size,cube_size/2));
+    Object* test1 = new Object(new Model(), new Texture(), cube_size, vert);
+    Object* test2 = new Object(new Model(), new Texture(), cube_size, vert);
+    objects.push_back(test1); objects.push_back(test2);
 	
     /*
 	obj->rotate(33,vec3(0,1,0));
@@ -46,6 +54,8 @@ int main (void) {
 	obj2->translate(vec3(3.0f,0.0f,0.0f));
     obj4->translate(vec3(6.0f,0.0f,0.0f));
     */
+
+    test1->translate(vec3(0.0f,0.0f,-5.0f));
 
 	int frameNo = 0;
 	while( gameWindow.shouldStayOpen() ) {
@@ -62,11 +72,22 @@ int main (void) {
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_I ) == GLFW_PRESS)
             test1->translate(vec3(0.1f, 0.0f, 0.0f));
 
-        //Check for collisions!
+        //Check for collisions! -- For each object test it with the ones after him
+        for (int i=0;i<objects.size();i++){
+            Object* current = objects[i];
+
+            for (int j=i+1;j<objects.size();j++){
+                if (current->collision(objects[j])){
+                    std::cout << "COLLISION!\n";
+                    assert(0);
+                }
+            }
+        }
+        test1->printStuff();
 
 
 		if ( frameNo++ > 0 ) {
-			printf("Updating: %f, %f\n", gameWindow.getFrameScreenXOffset(), gameWindow.getFrameScreenYOffset());
+            //printf("Updating: %f, %f\n", gameWindow.getFrameScreenXOffset(), gameWindow.getFrameScreenYOffset());
 			player.updateAngles(gameWindow.getFrameScreenXOffset(), gameWindow.getFrameScreenYOffset());
 			player.updatePosition(gameWindow.getStrafeOffset(), gameWindow.getFrontMoveOffset());
 		}

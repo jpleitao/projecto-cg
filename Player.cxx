@@ -29,7 +29,7 @@ void Player::updateViewMatrix(double xoff, double yoff) {
 
     if ( xoff)
         position += right * (float)xoff;
-    printf("player at (%f,%f,%f), horiz=%f, vert=%f\n", position.x, position.y, position.z, horizAngle, vertAngle);
+    //printf("player at (%f,%f,%f), horiz=%f, vert=%f\n", position.x, position.y, position.z, horizAngle, vertAngle);
 
     renderer->setView(glm::lookAt(  position,            // He's here
                                     position+direction, // and looks here : at the same position, plus "direction"

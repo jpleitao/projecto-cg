@@ -86,7 +86,7 @@ Model* ModelManager::getModel(const char* filename){
 //Method that, based on a name of a model, returns an object, containing the given model and the texture attached to it
 Object* ModelManager::getObject(const char* filename)
 {
-    float cube_size;
+    GLfloat cube_size;
     Model* model;
     Object* object;
     std::string path = filename;
