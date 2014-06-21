@@ -18,7 +18,7 @@ public:
     // Handles to the vertex buffer and UV/texture buffer we create
     GLuint vertexBufferHandle;
     GLuint texelsBufferHandle;
-    //FIXME: Samething for normals, probably later on
+    GLuint normalsBufferHandle;
 
 	public:
         ModelArrays();
@@ -27,6 +27,7 @@ public:
 
         GLuint getVertexBufferHandle() { return this->vertexBufferHandle; }
         GLuint       getTexelsHandle() { return this->texelsBufferHandle; }
+        GLuint      getNormalsHandle() { return this->normalsBufferHandle; }
 
 	private:
 		ModelArrays(const ModelArrays& other);
