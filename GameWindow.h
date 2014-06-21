@@ -35,6 +35,11 @@ class GameWindow
 
         double getStrafeOffset() { return this->keyPressOffsetD-this->keyPressOffsetA; }
         double getFrontMoveOffset() { return this->keyPressOffsetW-this->keyPressOffsetS; }
+
+        /*FIXME! This is just here for testing the collisions, this will later be removed!
+         *This is just a hack, because I don't want to spend too much time dealing with the inputs for now
+         */
+        GLFWwindow* getWindow(){ return this->window;}
 };
 
 #endif // GAMEWINDOW_H

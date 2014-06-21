@@ -11,6 +11,9 @@
 #include <fstream>
 #include <iostream>
 
+//For the atoi function
+#include <stdlib.h>
+
 
 class ModelManager
 {
