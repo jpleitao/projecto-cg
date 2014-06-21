@@ -16,11 +16,11 @@ void Object::rotate(GLfloat angle, vec3 axis) {
     glm::mat4 rotation_matrix = glm::rotate(mat4(1.0f), angle, axis);
 
     //Update the center's position
-    this->center = glm::vec3(rotation_matrix * glm::vec4(this->center, 0.0f));
+    this->center = glm::vec3(rotation_matrix * glm::vec4(this->center, 1.0f));
 
     //Update the object's vertexes' position
     for (int i=0;i<this->vertexes.size();i++)
-        this->vertexes[i] = glm::vec3(rotation_matrix * glm::vec4(this->vertexes[i], 0.0f));
+        this->vertexes[i] = glm::vec3(rotation_matrix * glm::vec4(this->vertexes[i], 1.0f));
 }
 
 //CCW -- Taken from DNP@LPA
