@@ -39,12 +39,18 @@ int Object::segmentIntersection(glm::vec3 a, glm::vec3 c, glm::vec3 b, glm::vec3
 bool Object::collision(Object* obj)
 {
     //If the current object is under the first one then we have no collision
-    if ( (this->center[1] + this->obj_side) < (obj->center[1] - obj->obj_side) )
+    std::cout << (this->center[1] + (this->obj_side/2)) << " < " << (obj->center[1] - (obj->obj_side/2)) << std::endl;
+    if ( (this->center[1] + (this->obj_side/2)) < (obj->center[1] - (obj->obj_side/2)) ){
+        std::cout << "AQUI\n";
         return false;
+    }
 
     //If the current object is above the first one then we have no collision
-    if ( (this->center[1] - this->obj_side) > (obj->center[1] + obj->obj_side) )
+    std::cout << (this->center[1] - (this->obj_side/2)) << " > " << (obj->center[1] + (obj->obj_side/2)) << std::endl;
+    if ( (this->center[1] - (this->obj_side/2)) > (obj->center[1] + (obj->obj_side/2)) ){
+        std::cout << "AQUI2\n";
         return false;
+    }
 
     /*If their heights "interset each other" then we have to solve the collision in 2D
      *This is how I am planning on doing this:
@@ -67,15 +73,36 @@ bool Object::collision(Object* obj)
         a = this->vertexes[i];
         b = this->vertexes[(i+1)%current_size];
 
+        /*This is my hack. Now, why did I did this here? Suppose that we have one box on top of the other (The down face of one box
+         *is perfectly on top of the upper face of the other). In this situation, if we consider only our 2D approach here (X and
+         *Z coordinates) we have two overlaping squares. This shouldn't be a problem, since we are obtaining the intersections and
+         *all. However, I am 90% sure this is a problem caused because of our limited precision with floats. So, we add a small
+         *value to one of our squares edges, forcing the intersection in this situation. I see one problem with this "solution":
+         *We are adding a positive increment to the X and Z coordinates of the two edges of the "this" instance of the Object
+         *class (my english here was terrible, sorry about that but it's 0am on a June Sunday xD), and as a consequence of that
+         *we may be making some situations where we should have a collision no longer be a collision. I think that the problem of
+         *not detecting the collision of 2 boxes, one on top of the other, is more important than not detecting two boxes colliding
+         *only on 1 milimeter or centimiter, but I am open to a discussion on this matter ;)*/
+        a[0] = a[0] + 0.001;
+        a[2] = a[2] + 0.001;
+        b[0] = b[0] + 0.001;
+        b[2] = b[2] + 0.001;
+
         for (int j=0;j<obj_size;j++){
             //j and (j+1)%4
             c = obj->vertexes[j];
             d = obj->vertexes[(j+1)%obj_size];
 
-            if (this->segmentIntersection(a,c,b,d))
+            if (this->segmentIntersection(a,c,b,d)){
+                std::cout << "Found collision! Going to return true" << std::endl;
+                if (this->center[1] > obj->center[1])
+                    std::cout << "I am the one on top of the other!" << std::endl;
                 return true;
+            }
         }
     }
+
+    std::cout << "NOPE\n";
 
     return false;
 }
