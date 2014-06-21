@@ -22,7 +22,7 @@ void Object::resetTransforms() {
 
 void Object::render(Renderer* renderer) {
 
-    //Update MVC
+    //Update MVP
     renderer->setCurrentModelMatrix(modelMatrix);    
 
     //Draw the model with the texture mapped
