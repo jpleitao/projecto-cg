@@ -16,13 +16,14 @@ class Object
     glm::mat4 modelMatrix;
 
     //Hit box's stuff
-    glm::vec3 center;
+    glm::vec4 center;
+    glm::vec4 origin_center;
     GLfloat obj_side;
-    std::vector<glm::vec3> vertexes;
-    std::vector<glm::vec3> start_vertexes;
+    std::vector<glm::vec4> vertexes;
+    std::vector<glm::vec4> start_vertexes;
 
     public:
-        Object(Model* model=NULL, Texture* texture=NULL, float side=2, std::vector<glm::vec3> vert = std::vector<glm::vec3>());
+        Object(Model* model=NULL, Texture* texture=NULL, float side=2, std::vector<glm::vec4> vert = std::vector<glm::vec4>());
 
         void rotate(GLfloat angle, vec3 axis);
         void scale(vec3 scaleVec);
@@ -33,12 +34,9 @@ class Object
 
         bool collision(Object* obj);
 
-        //REMOVE THIS
-        void printStuff();
-
     private:
         void createHitBoxes();
-        int ccw(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3);
-        int segmentIntersection(glm::vec3 a, glm::vec3 c, glm::vec3 b, glm::vec3 d);
+        int ccw(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3);
+        int segmentIntersection(glm::vec4 a, glm::vec4 c, glm::vec4 b, glm::vec4 d);
 };
 #endif // OBJECT_H

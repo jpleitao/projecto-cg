@@ -37,13 +37,13 @@ int main (void) {
 	Object* obj4 = new Object(new Model(), new Texture());
     //objects.push_back(obj2); objects.push_back(obj); objects.push_back(obj3);  objects.push_back(obj4);
 
-    std::vector<glm::vec3> vert;
+    std::vector<glm::vec4> vert;
     GLfloat cube_size = 2;
 
-    vert.push_back(glm::vec3(cube_size/2,cube_size,-cube_size/2));
-    vert.push_back(glm::vec3(-cube_size/2,cube_size,-cube_size/2));
-    vert.push_back(glm::vec3(-cube_size/2,cube_size,cube_size/2));
-    vert.push_back(glm::vec3(cube_size/2,cube_size,cube_size/2));
+    vert.push_back(glm::vec4(cube_size/2,cube_size,-cube_size/2,1));
+    vert.push_back(glm::vec4(-cube_size/2,cube_size,-cube_size/2,1));
+    vert.push_back(glm::vec4(-cube_size/2,cube_size,cube_size/2,1));
+    vert.push_back(glm::vec4(cube_size/2,cube_size,cube_size/2,1));
     Object* test1 = new Object(new Model(), new Texture(), cube_size, vert);
     Object* test2 = new Object(new Model(), new Texture(), cube_size, vert);
     objects.push_back(test1); objects.push_back(test2);
@@ -91,8 +91,6 @@ int main (void) {
                 }
             }
         }
-
-        //test1->printStuff();
 
 
 		if ( frameNo++ > 0 ) {

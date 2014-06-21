@@ -1,30 +1,17 @@
 #include "Object.h"
 #include "Renderer.h"
 
-Object::Object(Model* model, Texture* texture, float side, std::vector<glm::vec3> vert) : model(model), texture(texture), modelMatrix(mat4(1.0f))
+Object::Object(Model* model, Texture* texture, float side, std::vector<glm::vec4> vert) : model(model), texture(texture), modelMatrix(mat4(1.0f))
 {
     this->obj_side = side;
-    this->center = glm::vec3(0,0,0);//The cube is centered in the origin
+    this->origin_center = glm::vec4(0,0,0,1);//The cube is centered in the origin
+    this->center = this->origin_center;
     this->vertexes = vert;
     this->start_vertexes = vert;
 }
 
-void Object::rotate(GLfloat angle, vec3 axis) {
-    this->modelMatrix = glm::rotate(modelMatrix, angle, axis);
-
-    //Get the rotation matrix
-    glm::mat4 rotation_matrix = glm::rotate(mat4(1.0f), angle, axis);
-
-    //Update the center's position
-    this->center = glm::vec3(rotation_matrix * glm::vec4(this->center, 1.0f));
-
-    //Update the object's vertexes' position
-    for (int i=0;i<this->vertexes.size();i++)
-        this->vertexes[i] = glm::vec3(rotation_matrix * glm::vec4(this->vertexes[i], 1.0f));
-}
-
 //CCW -- Taken from DNP@LPA
-int Object::ccw(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3) {
+int Object::ccw(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3) {
     /*p2->x * p3->y + p1->x * p2->y + p1->y * p3->x - p1->y * p2->x - p1->x * p3->y - p2->y * p3->x
      *Remeber that here we only have x and z!
      */
@@ -32,7 +19,7 @@ int Object::ccw(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3) {
 }
 
 //Segment intersection -- Taken from DNP@LPA -- Checks if |AB| intersects |CD|
-int Object::segmentIntersection(glm::vec3 a, glm::vec3 c, glm::vec3 b, glm::vec3 d) {
+int Object::segmentIntersection(glm::vec4 a, glm::vec4 c, glm::vec4 b, glm::vec4 d) {
     return ccw(a,c,d) != ccw(b,c,d) && ccw(a,b,c) != ccw(a,b,d);
 }
 
@@ -59,7 +46,7 @@ bool Object::collision(Object* obj)
      *the edges of the other square. If there is at least one intersection then we have a collision!
      */
 
-    glm::vec3 a, b, c, d;
+    glm::vec4 a, b, c, d;
     int current_size, obj_size;
 
     current_size = this->vertexes.size();
@@ -107,32 +94,33 @@ bool Object::collision(Object* obj)
     return false;
 }
 
-//Remove this
-void Object::printStuff()
-{
-    std::cout << "Center = ("<< this->center[0] << "," << this->center[1] << "," << this->center[2] << ")\n";
+void Object::rotate(GLfloat angle, vec3 axis) {
+    this->modelMatrix = glm::rotate(modelMatrix, angle, axis);
 
+    //Update the object's vertexes' position
     for (int i=0;i<this->vertexes.size();i++)
-        std::cout << "Vertex " << i << " = (" << this->vertexes[i][0] << "," << this->vertexes[i][1] << "," << this->vertexes[i][2] <<")\n";
+        this->vertexes[i] = this->modelMatrix * this->start_vertexes[i];
 }
 
 void Object::scale(vec3 scaleVec) {
     this->modelMatrix = glm::scale(modelMatrix, scaleVec);
 
     //Update the object's center position
-    this->center *= scaleVec;
+    this->center = this->modelMatrix * this->origin_center;
+
     //Update the vertexes' position
     for (int i=0;i<this->vertexes.size();i++)
-        this->vertexes[i] *= scaleVec;
+        this->vertexes[i] = this->modelMatrix * this->start_vertexes[i];;
 }
 
 void Object::translate(vec3 vec) {
     this->modelMatrix = glm::translate(modelMatrix, vec);
 
     //Update the object's center position and vertexes' coordinates
-    this->center += vec;
+    this->center = this->modelMatrix * this->origin_center;
+
     for (int i=0;i<this->vertexes.size();i++)
-        this->vertexes[i] += vec;
+        this->vertexes[i] = this->modelMatrix * this->start_vertexes[i];
 }
 
 void Object::resetTransforms() {   
@@ -140,7 +128,7 @@ void Object::resetTransforms() {
     this->modelMatrix = mat4(1.0f);
 
     //Reset center and vertexes' positions
-    this->center = glm::vec3(0,0,0);
+    this->center = this->origin_center;
     this->vertexes = this->start_vertexes;
 }
 
