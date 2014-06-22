@@ -44,8 +44,8 @@ int main (void) {
     vert.push_back(glm::vec4(-cube_size/2,cube_size,-cube_size/2,1));
     vert.push_back(glm::vec4(-cube_size/2,cube_size,cube_size/2,1));
     vert.push_back(glm::vec4(cube_size/2,cube_size,cube_size/2,1));
-    Object* test1 = new Object(new Model(), new Texture(), cube_size, cube_size, cube_size, vert);
-    Object* test2 = new Object(new Model(), new Texture(), cube_size, cube_size, cube_size, vert);
+    Object* test1 = new Object(new Model(), new Texture(), true, cube_size, cube_size, cube_size, vert);
+    Object* test2 = new Object(new Model(), new Texture(), true, cube_size, cube_size, cube_size, vert);
     objects.push_back(test1); objects.push_back(test2);
 	
     /*

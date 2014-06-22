@@ -1,8 +1,10 @@
 #include "Object.h"
 #include "Renderer.h"
 
-Object::Object(Model* model, Texture* texture, GLfloat len, GLfloat w, GLfloat h, std::vector<glm::vec4> vert) : model(model), texture(texture), modelMatrix(mat4(1.0f))
+Object::Object(Model* model, Texture* texture, bool bound, GLfloat len, GLfloat w, GLfloat h, std::vector<glm::vec4> vert) : model(model), texture(texture), modelMatrix(mat4(1.0f))
 {
+    this->hasBoundingBox = bound;
+
     this->lenght = len;
     this->width = w;
     this->height = h;
@@ -28,6 +30,9 @@ int Object::segmentIntersection(glm::vec4 a, glm::vec4 c, glm::vec4 b, glm::vec4
 
 bool Object::collision(Object* obj)
 {
+    if (!this->hasBoundingBox || !obj->hasBoundingBox)
+        return false;
+
     //If the current object is under the first one then we have no collision
     std::cout << (this->center[1] + (this->lenght/2)) << " < " << (obj->center[1] - (obj->lenght/2)) << std::endl;
     if ( (this->center[1] + (this->lenght/2)) < (obj->center[1] - (obj->lenght/2)) ){

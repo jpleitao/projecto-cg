@@ -12,6 +12,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 using namespace glm;
 
+#include <math.h>
+
 //Just for testing...
 #include <assert.h>
 

@@ -96,19 +96,26 @@ Object* ModelManager::getObject(const char* filename)
 
     //Read the .model file to get the side of the object
     std::ifstream ifs (path.c_str(), std::ifstream::in);
-    std::string side;
+    std::string line;
+    std::vector<glm::vec4> vert;
+    GLfloat lenght, width, height;
+    GLfloat x1, x2, x3, x4, y1, y2, y3, y4, z1, z2, z3, z4;
 
     std::cout << "[Model.getObject]Reading File: " + path << std::endl;
 
+    bool bound = false;
+
     if (ifs){
         //Skip first two lines
-        std::getline(ifs, side);
-        std::getline(ifs, side);
+        std::getline(ifs, line);
+        std::getline(ifs, line);
 
-        //Read the side of the object
+        //Read the object's bounding box and height
         if (ifs.good()){
-            std::getline(ifs,side);
-            cube_size = (float)atoi(side.c_str());
+            std::getline(ifs,line);
+            sscanf(line.c_str(), "%f,%f,%f %f,%f,%f %f,%f,%f %f,%f,%f %f",
+                                  &x1, &y1, &z1, &x2, &y2, &z2, &x3, &y3, &z3, &x4, &y4, &z4, &height);
+            bound = true;
         }
     }
     else{
@@ -118,15 +125,17 @@ Object* ModelManager::getObject(const char* filename)
 
     ifs.close();
 
-    //Now that we have the side of the cube create the array with the positions of its top face
-    std::vector<glm::vec4> vert;
-    vert.push_back(glm::vec4(cube_size/2,cube_size,-cube_size/2,1));
-    vert.push_back(glm::vec4(-cube_size/2,cube_size,-cube_size/2,1));
-    vert.push_back(glm::vec4(-cube_size/2,cube_size,cube_size/2,1));
-    vert.push_back(glm::vec4(cube_size/2,cube_size,cube_size/2,1));
+    //Create the array with the positions of the object's top face
+    vert.push_back(glm::vec4(x1,y1,z1,1));
+    vert.push_back(glm::vec4(x2,y2,z2,1));
+    vert.push_back(glm::vec4(x3,y3,z3,1));
+    vert.push_back(glm::vec4(x4,y4,z4,1));
 
-    //Create the object class and then return it -- FIXME: ASSUME THAT THE OBJECT IS A CUBE
-    object = new Object(model,model->getTexture(),cube_size,cube_size,cube_size,vert);
+    width = sqrt( (x1-x2) * (x1-x2) + (y1-y2) * (y1-y2) + (z1-z2) * (z1-z2) );
+    lenght = width;
+
+    //Create the object class and then return it
+    object = new Object(model,model->getTexture(),bound,lenght,width,height,vert);
 
     return object;
 }

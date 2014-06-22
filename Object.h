@@ -19,6 +19,8 @@ class Object
     GLfloat width;
     GLfloat height;
 
+    bool hasBoundingBox;
+
     //Hit box's stuff
     glm::vec4 center;
     glm::vec4 origin_center;
@@ -26,7 +28,7 @@ class Object
     std::vector<glm::vec4> start_vertexes;
 
     public:
-        Object(Model* model=NULL, Texture* texture=NULL, GLfloat len=2, GLfloat w=2, GLfloat h=2, std::vector<glm::vec4> vert = std::vector<glm::vec4>());
+        Object(Model* model=NULL, Texture* texture=NULL, bool bound=false, GLfloat len=2, GLfloat w=2, GLfloat h=2, std::vector<glm::vec4> vert = std::vector<glm::vec4>());
 
         void rotate(GLfloat angle, vec3 axis);
         void scale(vec3 scaleVec);
