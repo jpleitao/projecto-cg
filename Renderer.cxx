@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "Renderer.h"
 #include "Light.h"
 
