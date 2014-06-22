@@ -27,6 +27,7 @@ Model* ModelManager::getModel(const char* filename){
         //Read first line, which contains the name of the .obj file
         if (ifs.good()){
             std::getline(ifs, model_path);
+            model_path = "data/models/" + model_path;
             std::cout << "Model in file: " << model_path << std::endl;
         }
         else{
@@ -37,6 +38,7 @@ Model* ModelManager::getModel(const char* filename){
         //Read second line, which contains the name of the texture (.bmp) file
         if (ifs.good()){
             std::getline(ifs, texture_path);
+            texture_path = "data/models/" + texture_path;
             std::cout << "Texture in file: " << texture_path << std::endl;
         }
         else{

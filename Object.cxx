@@ -143,6 +143,9 @@ bool Object::vertexInsideSquare(glm::vec4 point)
 }
 
 void Object::rotate(GLfloat angle, vec3 axis) {
+    if (angle == 0)
+        return ;
+
     this->modelMatrix = glm::rotate(modelMatrix, angle, axis);
 
     //Update the object's vertexes' position
