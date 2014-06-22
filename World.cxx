@@ -25,12 +25,16 @@ World::World(ModelManager* modelManager, Renderer* renderer, const char* filenam
                 printf("[World Object Info] %s %f %f %f %f %f %f %f\n", modelPath, position[0], position[1], position[2], rotation[0], rotation[1], rotation[2], angle);
                 tempObj = modelManager->getObject(modelPath);
                 std::cout << "[Object Loaded]\n";
-                //tempObj->translate(position);
-                //tempObj->rotate(angle ,rotation);
+                tempObj->translate(position);
+                tempObj->rotate(angle ,rotation);
                 worldObjects.push_back(tempObj);
             }
         }
     }
+    this->renderer = renderer;
     std::cout << "[Rendering]\n";
+}
+
+void World::render() {
     (this->renderer)->render(worldObjects);
 }

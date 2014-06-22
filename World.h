@@ -15,7 +15,7 @@ class World
 
 public:
     World(ModelManager* modelManager, Renderer* renderer, const char* filename);
-
+    void render();
 };
 
 #endif

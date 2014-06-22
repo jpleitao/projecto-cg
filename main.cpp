@@ -35,10 +35,10 @@ int main (void) {
 
 	Player player(&renderer);
 
-	Object* obj = new Object(new Model(), new Texture());
+    /*Object* obj = new Object(new Model(), new Texture());
 	Object* obj2 = new Object(new Model(), new Texture());
 	Object* obj3 = new Object(new Model(), new Texture());
-	Object* obj4 = new Object(new Model(), new Texture());
+    Object* obj4 = new Object(new Model(), new Texture());*/
     //objects.push_back(obj2); objects.push_back(obj); objects.push_back(obj3);  objects.push_back(obj4);
 
     World* world = new World(&modelManager ,&renderer, "data/models/world");
@@ -46,11 +46,11 @@ int main (void) {
     std::vector<glm::vec4> vert;
     GLfloat cube_size = 2;
 
-    vert.push_back(glm::vec4(cube_size/2,cube_size,-cube_size/2,1));
+    /*vert.push_back(glm::vec4(cube_size/2,cube_size,-cube_size/2,1));
     vert.push_back(glm::vec4(-cube_size/2,cube_size,-cube_size/2,1));
     vert.push_back(glm::vec4(-cube_size/2,cube_size,cube_size/2,1));
     vert.push_back(glm::vec4(cube_size/2,cube_size,cube_size/2,1));
-    Object* test1 = new Object(new Model(), new Texture(), true, cube_size, cube_size, cube_size, vert);
+    Object* test1 = new Object(new Model(), new Texture(), true, cube_size, cube_size, cube_size, vert);*/
     Object* test2 = new Object(new Model(), new Texture(), true, cube_size, cube_size, cube_size, vert);
     //objects.push_back(test1); objects.push_back(test2);
 	
@@ -62,16 +62,16 @@ int main (void) {
     */
 
     //test2->translate(vec3(0.0f,3.0f,0.0f));
-    test2->rotate(30,vec3(0,1,0));
-    test1->translate(vec3(0.0f,0.0f,-5.0f));
+    /*test2->rotate(30,vec3(0,1,0));
+    test1->translate(vec3(0.0f,0.0f,-5.0f));*/
 
 	int frameNo = 0;
 	while( gameWindow.shouldStayOpen() ) {
 		gameWindow.beginFrame();
-		obj->rotate(1,vec3(0,1,0));
+        /*obj->rotate(1,vec3(0,1,0));*/
 
         //For debug on the collisions only! - Remove this
-        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_L ) == GLFW_PRESS)
+        /*if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_L ) == GLFW_PRESS)
             test1->translate(vec3(0.0f, 0.0f, 0.1f));
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_K ) == GLFW_PRESS)
             test1->translate(vec3(-0.1f, 0.0f, 0.0f));
@@ -84,7 +84,7 @@ int main (void) {
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_N ) == GLFW_PRESS)
             test1->translate(vec3(0.0f, 0.1f, 0.0f));
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_R ) == GLFW_PRESS)
-            test1->rotate(1, vec3(0.0f, 1, 0.0f));
+            test1->rotate(1, vec3(0.0f, 1, 0.0f));*/
 
         //Check for collisions! -- For each object test it with the ones after him
         for (int i=0;i<objects.size();i++){
@@ -106,6 +106,7 @@ int main (void) {
 		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        world->render();
 		renderer.render(objects);
 
 		gameWindow.endFrame();
