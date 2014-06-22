@@ -23,10 +23,9 @@ Model* ModelManager::getModel(const char* filename){
     std::ifstream ifs (path.c_str(), std::ifstream::in);
     std::string texture_path, model_path;
 
-    if (ifs){
+    if (ifs && ifs.good()){
         //Read first line, which contains the name of the .obj file
-        if (ifs.good()){
-            std::getline(ifs, model_path);
+        if (std::getline(ifs, model_path)){
             model_path = "data/models/" + model_path;
             std::cout << "Model in file: " << model_path << std::endl;
         }
@@ -36,8 +35,7 @@ Model* ModelManager::getModel(const char* filename){
         }
 
         //Read second line, which contains the name of the texture (.bmp) file
-        if (ifs.good()){
-            std::getline(ifs, texture_path);
+        if (std::getline(ifs, texture_path)){
             texture_path = "data/models/" + texture_path;
             std::cout << "Texture in file: " << texture_path << std::endl;
         }
@@ -89,7 +87,6 @@ Model* ModelManager::getModel(const char* filename){
 //Method that, based on a name of a model, returns an object, containing the given model and the texture attached to it
 Object* ModelManager::getObject(const char* filename)
 {
-    GLfloat cube_size;
     Model* model;
     Object* object;
 
