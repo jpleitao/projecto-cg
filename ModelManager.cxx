@@ -111,16 +111,17 @@ Object* ModelManager::getObject(const char* filename)
     bool bound = false;
 
     if (ifs){
-        //Skip first two lines
-        std::getline(ifs, line);
-        std::getline(ifs, line);
-
-        //Read the object's bounding box and height
         if (ifs.good()){
-            std::getline(ifs,line);
-            sscanf(line.c_str(), "%f,%f,%f %f,%f,%f %f,%f,%f %f,%f,%f %f",
-                                  &x1, &y1, &z1, &x2, &y2, &z2, &x3, &y3, &z3, &x4, &y4, &z4, &height);
-            bound = true;
+            //Skip first two lines
+            std::getline(ifs, line);
+            std::getline(ifs, line);
+
+            //Read the object's bounding box and height
+            if (std::getline(ifs,line)){
+                sscanf(line.c_str(), "%f,%f,%f %f,%f,%f %f,%f,%f %f,%f,%f %f",
+                                      &x1, &y1, &z1, &x2, &y2, &z2, &x3, &y3, &z3, &x4, &y4, &z4, &height);
+                bound = true;
+            }
         }
     }
     else{
