@@ -34,15 +34,15 @@ bool Object::collision(Object* obj)
         return false;
 
     //If the current object is under the first one then we have no collision
-    std::cout << (this->center[1] + (this->lenght/2)) << " < " << (obj->center[1] - (obj->lenght/2)) << std::endl;
-    if ( (this->center[1] + (this->lenght/2)) < (obj->center[1] - (obj->lenght/2)) ){
+    std::cout << (this->center[1] + (this->height/2)) << " < " << (obj->center[1] - (obj->height/2)) << std::endl;
+    if ( (this->center[1] + (this->height/2)) < (obj->center[1] - (obj->height/2)) ){
         std::cout << "AQUI\n";
         return false;
     }
 
     //If the current object is above the first one then we have no collision
-    std::cout << (this->center[1] - (this->lenght/2)) << " > " << (obj->center[1] + (obj->lenght/2)) << std::endl;
-    if ( (this->center[1] - (this->lenght/2)) > (obj->center[1] + (obj->lenght/2)) ){
+    std::cout << (this->center[1] - (this->height/2)) << " > " << (obj->center[1] + (obj->height/2)) << std::endl;
+    if ( (this->center[1] - (this->height/2)) > (obj->center[1] + (obj->height/2)) ){
         std::cout << "AQUI2\n";
         return false;
     }
@@ -105,11 +105,11 @@ bool Object::collision(Object* obj)
 
     //Different Dimensions -- One can be inside the other (The one with smaller area inside the one with higher area)
     if ( current_area < obj_area){
-        //FIXME
+        //current inside obj
     }
 
     else if (obj_area < current_area){
-        //FIXME
+        //obj inside current
     }
 
     std::cout << "NOPE\n";
