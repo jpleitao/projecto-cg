@@ -7,6 +7,7 @@
 #include "Renderer.h"
 #include "Player.h"
 #include "GameWindow.h"
+#include "Light.h"
 
 int main (void) {	
 	GameWindow gameWindow;
@@ -60,6 +61,11 @@ int main (void) {
     test1->translate(vec3(0.0f,0.0f,-5.0f));
 
 	int frameNo = 0;
+
+    Light blueLight(vec3(0,0,0), vec3(0,0,1), vec3(1,1,1));
+    renderer.addLight(&blueLight);
+    Light redLightFromAbove(vec3(0,2,0), vec3(1,0,0), vec3(1,1,1));
+    renderer.addLight(&redLightFromAbove);
 	while( gameWindow.shouldStayOpen() ) {
 		gameWindow.beginFrame();
 		obj->rotate(1,vec3(0,1,0));
@@ -79,6 +85,8 @@ int main (void) {
             test1->translate(vec3(0.0f, 0.1f, 0.0f));
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_R ) == GLFW_PRESS)
             test1->rotate(1, vec3(0.0f, 1, 0.0f));
+
+        blueLight.setPosition(player.getPosition());        
 
         //Check for collisions! -- For each object test it with the ones after him
         for (int i=0;i<objects.size();i++){

@@ -10,6 +10,8 @@ Texture::Texture(const char* filename) {
     this->textureId= -1;
     this->depthRenderBuffer = -1;
     this->frameBuffer = -1;
+    this->shininess = 80;
+    this->specularColour = vec3(1,1,1);
     loadTexture(filename);
 }
 
@@ -68,6 +70,9 @@ void Texture::beginRender(Renderer* renderer, Model* destModel) {
         0,                            // stride
         (void*)0                      // array buffer offset
     );
+
+    renderer->getCurrentProgram()->setUniform("activeMaterialSpecularColor", specularColour);
+    renderer->getCurrentProgram()->setUniform("activeMaterialShininess", shininess);
 }
 
 void Texture::finishRender(Renderer* renderer, Model* destModel) {

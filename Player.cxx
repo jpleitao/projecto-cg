@@ -35,6 +35,8 @@ void Player::updateViewMatrix(double xoff, double yoff) {
                                     position+direction, // and looks here : at the same position, plus "direction"
                                     up                  // Head is up (set to 0,-1,0 to look upside-down)
                            ));
+    
+    renderer->setCameraPosition(position);
 }
 void Player::updatePosition(double xoff, double yoff) {
     return updateViewMatrix(speed*xoff, speed*yoff);

@@ -15,6 +15,8 @@ class Texture{
        GLuint depthRenderBuffer;
        GLuint frameBuffer;
        RgbImage imag;
+       float shininess;
+       vec3  specularColour;
 
        void loadImage(const char* filename);
        void genAndBindBuffers();

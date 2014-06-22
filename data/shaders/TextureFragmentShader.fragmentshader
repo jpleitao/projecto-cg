@@ -2,12 +2,68 @@
 
 // Interpolated values from the vertex shaders
 varying vec2 UV;
+varying vec3 varyingNormalDirection;  // surface normal vector in world space
+varying vec3 fragVert;
 
 // Values that stay constant for the whole mesh.
 uniform sampler2D myTextureSampler;
 
+uniform mat3 m_3x3_inv_transp;
+uniform mat4 M;
+uniform mat4 MV;
+
+struct Light {
+   vec3 position;
+   vec3 intensities; //a.k.a the color of the light
+   float constantAttenuation, linearAttenuation, quadraticAttenuation;
+   vec3 diffuse;
+};
+
+const int numberOfLights = 32; //FIXME: hardcoded
+
+uniform Light lights[numberOfLights];
+uniform int numUsedLights;
+uniform vec3 cameraPos;
+
+uniform vec3 activeMaterialSpecularColor;
+uniform float activeMaterialShininess;
+
 void main(){
 
-	// Output color = color of the texture at the specified UV
-	gl_FragColor = texture2D( myTextureSampler, UV );
+    vec3 normal = normalize(varyingNormalDirection);
+    gl_FragColor = vec4(0,0,0,0);
+    for (int i = 0; i < numUsedLights; i++) {
+        Light light = lights[i];
+         //calculate the location of this fragment (pixel) in world coordinates
+        
+    vec3 surfacePos = vec3(M * vec4(fragVert, 1));
+    vec4 surfaceColor = texture2D(myTextureSampler, UV);
+    vec3 surfaceToLight = normalize(light.position - surfacePos);
+    float dist = length(surfaceToLight);
+
+    float diffuseCoefficient = max(0.0, dot(normal, surfaceToLight));
+    vec3 diffuse = diffuseCoefficient * surfaceColor.rgb * light.intensities;
+
+
+
+    vec3 incidenceVector = -surfaceToLight; //a unit vector
+    vec3 reflectionVector = reflect(incidenceVector, normal); //also a unit vector
+    vec3 surfaceToCamera = normalize(cameraPos - surfacePos); //also a unit vector
+    float cosAngle = max(0.0, dot(surfaceToCamera, reflectionVector));
+    float specularCoefficient = 0;
+
+    if ( diffuseCoefficient > 0.0 )
+        specularCoefficient = pow(max(0.0, dot(surfaceToCamera, reflect(-surfaceToLight, normal))), activeMaterialShininess);
+    vec3 specular = specularCoefficient * activeMaterialSpecularColor * light.intensities;
+
+    float attenuation = 1.0 / (light.constantAttenuation
+                   + light.linearAttenuation * dist
+                   + light.quadraticAttenuation * dist * dist);
+
+        //calculate final color of the pixel, based on:
+        // 1. The angle of incidence: brightness
+        // 2. The color/intensities of the light: light.intensities
+        // 3. The texture and texture coord: texture(tex, fragTexCoord)
+        gl_FragColor += vec4(attenuation*(diffuse+specular), 1);
+    }
 }

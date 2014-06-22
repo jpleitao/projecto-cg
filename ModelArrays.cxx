@@ -41,8 +41,11 @@ void ModelArrays::createHandles() {
     glBindBuffer(GL_ARRAY_BUFFER, this->vertexBufferHandle);
     glBufferData(GL_ARRAY_BUFFER, this->objectVertex.size() * sizeof(glm::vec3), &objectVertex[0], GL_STATIC_DRAW);
 
-    GLuint uvbuffer;
     glGenBuffers(1, &this->texelsBufferHandle);
     glBindBuffer(GL_ARRAY_BUFFER, this->texelsBufferHandle);
     glBufferData(GL_ARRAY_BUFFER, this->objectTexture.size() * sizeof(glm::vec2), &objectTexture[0], GL_STATIC_DRAW);
+
+    glGenBuffers(1, &this->normalsBufferHandle);
+    glBindBuffer(GL_ARRAY_BUFFER, this->normalsBufferHandle);
+    glBufferData(GL_ARRAY_BUFFER, this->objectNormals.size() * sizeof(glm::vec3), &objectNormals[0], GL_STATIC_DRAW);
 }
