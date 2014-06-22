@@ -66,8 +66,6 @@ void Renderer::renderLights() {
         program.setUniform(buf, lights.at(i)->getLinearAttenuation());
         sprintf(buf, "lights[%d].quadraticAttenuation", i);
         program.setUniform(buf, lights.at(i)->getQuadraticAttenuation());
-        sprintf(buf, "lights[%d].specular", i);
-        program.setUniform(buf, lights.at(i)->getSpecular());
     }
 
 }

@@ -67,9 +67,9 @@ int main (void) {
 
 	int frameNo = 0;
 
-    Light blueLight(vec3(0,0,0), vec3(0,0,1), vec3(1,1,1));
+    Light blueLight(vec3(0,0,0), vec3(0,0,1));
     renderer.addLight(&blueLight);
-    Light redLightFromAbove(vec3(0,2,0), vec3(1,0,0), vec3(1,1,1));
+    Light redLightFromAbove(vec3(0,2,0), vec3(1,0,0));
     renderer.addLight(&redLightFromAbove);
 	while( gameWindow.shouldStayOpen() ) {
 		gameWindow.beginFrame();

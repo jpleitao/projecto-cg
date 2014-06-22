@@ -8,11 +8,10 @@ class Light {
 private:
     vec3 position;
     vec3 intensities;
-    vec3 specular;
     Renderer* renderer;
     float constantAttenuation, linearAttenuation, quadraticAttenuation;
 public:
-    Light(vec3 pos=vec3(0,0,0), vec3 intensities=vec3(0,0,0), vec3 specular=vec3(1,1,1), float constantAttenuation=1, float linearAttenuation=0, float quadraticAttenuation=0.2);
+    Light(vec3 pos=vec3(0,0,0), vec3 intensities=vec3(0,0,0), float constantAttenuation=1, float linearAttenuation=0, float quadraticAttenuation=0.2);
     ~Light();
 
     void setPosition(vec3 pos)    { this->position = pos; }
@@ -20,7 +19,6 @@ public:
 
     vec3 getPosition() { return this->position; }
     vec3 getIntensities() { return this->intensities; }
-    vec3 getSpecular() { return this->specular; }
     float getConstantAttenuation() { return this->constantAttenuation; }
     float getLinearAttenuation() { return this->linearAttenuation; }
     float getQuadraticAttenuation() { return this->quadraticAttenuation; }
