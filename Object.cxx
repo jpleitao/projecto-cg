@@ -130,6 +130,9 @@ GLfloat Object::area(glm::vec4 A, glm::vec4 B, glm::vec4 C)
     return (C[0]*B[2]-B[0]*C[2])-(C[0]*A[2]-A[0]*C[2])+(B[0]*A[2]-A[0]*B[2]);
 }
 
+/*We are going to see if "point" is higher (or lower) than the square. Imagine a pyramid, and then calculate the areas of its
+*vertical faces, not the base. If at least one of the vertical faces has a positive area, then there is no intersection
+*/
 bool Object::vertexInsideSquare(glm::vec4 point)
 {
     if (this->area(this->vertexes[0],this->vertexes[1],point)>0 || this->area(this->vertexes[1],this->vertexes[2],point)>0 ||
