@@ -114,6 +114,13 @@ int main (void) {
             //printf("Updating: %f, %f\n", gameWindow.getFrameScreenXOffset(), gameWindow.getFrameScreenYOffset());
 			player.updateAngles(gameWindow.getFrameScreenXOffset(), gameWindow.getFrameScreenYOffset());
 			player.updatePosition(gameWindow.getStrafeOffset(), gameWindow.getFrontMoveOffset());
+
+            //Check if the player is under the floor
+            vec3 player_position = player.getPosition();
+
+            if (player_position[1] < OBSERVER_HEIGHT)//FIXME: We are considering 1 to be our observer's height. We can change it later
+                player.setPosition(vec3(player_position[0], 1, player_position[2]));
+
 		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
