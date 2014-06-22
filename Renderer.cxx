@@ -25,8 +25,10 @@ ShaderProgram* Renderer::getCurrentProgram() {
 }
 
 void Renderer::render(std::vector<Object*> objects) {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     program.use();
-
+    
     program.setUniform("cameraPos", cameraPos);
     renderLights();
     for (int i = 0; i < objects.size(); i++) {
