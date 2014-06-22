@@ -18,6 +18,9 @@ class Object
     GLfloat lenght;
     GLfloat width;
     GLfloat height;
+    GLfloat origin_lenght;
+    GLfloat origin_width;
+    GLfloat origin_height;
 
     GLfloat aceleration_y;
     GLfloat velocity_y;
@@ -42,9 +45,11 @@ class Object
 
         bool collision(Object* obj);
         void fall();
+        void undoFall();
 
         GLfloat getCenterY(){return this->center[1];}
         GLfloat getHeight(){return this->height;}
+        void setVelocity_y(GLfloat vel){this->velocity_y = vel;}
 
     private:
         void createHitBoxes();

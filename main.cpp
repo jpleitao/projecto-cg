@@ -61,8 +61,8 @@ int main (void) {
 	obj2->translate(vec3(3.0f,0.0f,0.0f));
     obj4->translate(vec3(6.0f,0.0f,0.0f));
     */
-
-    test1->translate(vec3(0.0f,10.0f,0.0f));
+    test1->scale(vec3(1.0f,1.0f,1.0f));
+    test1->translate(vec3(0.0f,3.0f,-5.0f));
     test2->translate(vec3(0.0f,1.0f,-5.0f));
 
 	int frameNo = 0;
@@ -114,6 +114,16 @@ int main (void) {
             if (!colide){
                 //Object is not coliding with anything, so we can make it go down
                 current->fall();
+                for (int j=i+1;j<objects.size();j++){
+                    if (current->collision(objects[j])){
+                        //Move the object in the opposite direction
+                        current->undoFall();
+
+                        //Stop the falling of the object
+                        current->setVelocity_y(0);
+                        break;
+                    }
+                }
             }
         }
 
