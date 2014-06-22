@@ -1,13 +1,36 @@
 #include "Object.h"
 #include "Renderer.h"
 
-Object::Object(Model* model, Texture* texture, float side, std::vector<glm::vec4> vert) : model(model), texture(texture), modelMatrix(mat4(1.0f))
+Object::Object(Model* model, Texture* texture, bool bound, GLfloat len, GLfloat w, GLfloat h, std::vector<glm::vec4> vert) : model(model), texture(texture), modelMatrix(mat4(1.0f))
 {
-    this->obj_side = side;
+    this->hasBoundingBox = bound;
+
+    this->lenght = len;
+    this->width = w;
+    this->height = h;
+
+    this->aceleration_y = -0.01;//FIXME: HARD-CODED VALUE
+    this->velocity_y = 0;
+    
     this->origin_center = glm::vec4(0,0,0,1);//The cube is centered in the origin
     this->center = this->origin_center;
     this->vertexes = vert;
     this->start_vertexes = vert;
+}
+
+void Object::fall()
+{
+    //Update object's velocity, based on its aceleration
+    this->velocity_y += this->aceleration_y;
+
+    //Move the object according to its velocity
+    this->translate(vec3(0.0f, this->velocity_y, 0.0f));
+
+    //Check if on the floor
+    if (this->center[1] < (this->height/2) ){
+        this->translate(vec3(0.0f, -this->velocity_y , 0.0f));
+        this->velocity_y = 0;
+    }
 }
 
 //CCW -- Taken from DNP@LPA
@@ -25,25 +48,28 @@ int Object::segmentIntersection(glm::vec4 a, glm::vec4 c, glm::vec4 b, glm::vec4
 
 bool Object::collision(Object* obj)
 {
+    if (!this->hasBoundingBox || !obj->hasBoundingBox)
+        return false;
+
     //If the current object is under the first one then we have no collision
-    std::cout << (this->center[1] + (this->obj_side/2)) << " < " << (obj->center[1] - (obj->obj_side/2)) << std::endl;
-    if ( (this->center[1] + (this->obj_side/2)) < (obj->center[1] - (obj->obj_side/2)) ){
-        std::cout << "AQUI\n";
+    //std::cout << (this->center[1] + (this->height/2)) << " < " << (obj->center[1] - (obj->height/2)) << std::endl;
+    if ( (this->center[1] + (this->height/2)) < (obj->center[1] - (obj->height/2)) ){
+        //std::cout << "AQUI\n";
         return false;
     }
 
     //If the current object is above the first one then we have no collision
-    std::cout << (this->center[1] - (this->obj_side/2)) << " > " << (obj->center[1] + (obj->obj_side/2)) << std::endl;
-    if ( (this->center[1] - (this->obj_side/2)) > (obj->center[1] + (obj->obj_side/2)) ){
-        std::cout << "AQUI2\n";
+    //std::cout << (this->center[1] - (this->height/2)) << " > " << (obj->center[1] + (obj->height/2)) << std::endl;
+    if ( (this->center[1] - (this->height/2)) > (obj->center[1] + (obj->height/2)) ){
+        //std::cout << "AQUI2\n";
         return false;
     }
 
     /*If their heights "interset each other" then we have to solve the collision in 2D
      *This is how I am planning on doing this:
-     *We have 2 squares and we want to know if they collide with each other. Since they have the same dimensions we cannot have
-     *one square inside the other, so what we are going to do is, for each edge of one square we are going to se if it intersects
-     *the edges of the other square. If there is at least one intersection then we have a collision!
+     *We have 2 squares and we want to know if they collide with each other. If they have the same dimensions, for each edge of
+     *one square we are going to se if it intersects the edges of the other square. If there is at least one intersection then
+     *we have a collision!
      */
 
     glm::vec4 a, b, c, d;
@@ -53,8 +79,9 @@ bool Object::collision(Object* obj)
     obj_size = obj->vertexes.size();
 
     if ( (current_size != 4) || (obj_size != 4) )
-        assert(0);//FIXME?? We can only have squares right?
+        assert(0);//FIXME?? We can only have squares/rectangles!
 
+    //Same dimensions
     for (int i=0;i<current_size;i++){
         //i and (i+1)%4
         a = this->vertexes[i];
@@ -81,20 +108,62 @@ bool Object::collision(Object* obj)
             d = obj->vertexes[(j+1)%obj_size];
 
             if (this->segmentIntersection(a,c,b,d)){
-                std::cout << "Found collision! Going to return true" << std::endl;
+                //std::cout << "Found collision! Going to return true" << std::endl;
                 if (this->center[1] > obj->center[1])
-                    std::cout << "I am the one on top of the other!" << std::endl;
+                    //std::cout << "I am the one on top of the other!" << std::endl;
                 return true;
             }
         }
     }
 
-    std::cout << "NOPE\n";
+    float current_area, obj_area;
+
+    current_area = this->lenght * this->width;
+    obj_area = obj->lenght * obj->width;
+
+    //Different Dimensions -- One can be inside the other (The one with smaller area inside the one with higher area)
+    if ( current_area < obj_area){
+        //current inside obj
+        for (int i=0;i<this->vertexes.size();i++){
+            if (obj->vertexInsideSquare(this->vertexes[i]))
+                return true;
+        }
+    }
+
+    else if (obj_area < current_area){
+        //obj inside current
+        for (int i=0;i<obj->vertexes.size();i++){
+            if (this->vertexInsideSquare(obj->vertexes[i]))
+                return true;
+        }
+    }
+
+    //std::cout << "NOPE\n";
 
     return false;
 }
 
+GLfloat Object::area(glm::vec4 A, glm::vec4 B, glm::vec4 C)
+{
+    return (C[0]*B[2]-B[0]*C[2])-(C[0]*A[2]-A[0]*C[2])+(B[0]*A[2]-A[0]*B[2]);
+}
+
+/*We are going to see if "point" is higher (or lower) than the square. Imagine a pyramid, and then calculate the areas of its
+*vertical faces, not the base. If at least one of the vertical faces has a positive area, then there is no intersection
+*/
+bool Object::vertexInsideSquare(glm::vec4 point)
+{
+    if (this->area(this->vertexes[0],this->vertexes[1],point)>0 || this->area(this->vertexes[1],this->vertexes[2],point)>0 ||
+        this->area(this->vertexes[2],this->vertexes[3],point)>0 || this->area(this->vertexes[3],this->vertexes[0],point)>0)
+        return false;
+
+    return true;
+}
+
 void Object::rotate(GLfloat angle, vec3 axis) {
+    if (angle == 0)
+        return ;
+
     this->modelMatrix = glm::rotate(modelMatrix, angle, axis);
 
     //Update the object's vertexes' position

@@ -25,7 +25,8 @@ class Player
         void updateAngles(float screendx, float screendy);
         void updatePosition(double xoff, double yoff);
 
-        vec3 getPosition() { return position; }
+        vec3 getPosition(){return this->position;}
+        void setPosition(vec3 pos){ this->position = pos;}
 };
 
 #endif // PLAYER_H

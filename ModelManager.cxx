@@ -13,7 +13,8 @@ Model* ModelManager::getModel(const char* filename){
     ModelArrays* model_arrays;
     ObjLoader* loader;
 
-    std::string path = filename;
+    std::string path = "data/models/";
+    path += filename;
     path += ".model";
 
     std::cout << "[Model.getModel]Reading File: " + path << std::endl;
@@ -22,10 +23,10 @@ Model* ModelManager::getModel(const char* filename){
     std::ifstream ifs (path.c_str(), std::ifstream::in);
     std::string texture_path, model_path;
 
-    if (ifs){
+    if (ifs && ifs.good()){
         //Read first line, which contains the name of the .obj file
-        if (ifs.good()){
-            std::getline(ifs, model_path);
+        if (std::getline(ifs, model_path)){
+            model_path = "data/models/" + model_path;
             std::cout << "Model in file: " << model_path << std::endl;
         }
         else{
@@ -34,8 +35,8 @@ Model* ModelManager::getModel(const char* filename){
         }
 
         //Read second line, which contains the name of the texture (.bmp) file
-        if (ifs.good()){
-            std::getline(ifs, texture_path);
+        if (std::getline(ifs, texture_path)){
+            texture_path = "data/models/" + texture_path;
             std::cout << "Texture in file: " << texture_path << std::endl;
         }
         else{
@@ -86,33 +87,38 @@ Model* ModelManager::getModel(const char* filename){
 //Method that, based on a name of a model, returns an object, containing the given model and the texture attached to it
 Object* ModelManager::getObject(const char* filename)
 {
-    GLfloat cube_size;
     Model* model;
     Object* object;
-    std::string path = filename;
+
+    std::string path = "data/models/";
+    path += filename;
     path += ".model";
 
     model = this->getModel(filename);
 
     //Read the .model file to get the side of the object
     std::ifstream ifs (path.c_str(), std::ifstream::in);
-    std::string side;
+    std::string line;
+    std::vector<glm::vec4> vert;
+    GLfloat lenght, width, height;
+    GLfloat x1, x2, x3, x4, y1, y2, y3, y4, z1, z2, z3, z4;
 
     std::cout << "[Model.getObject]Reading File: " + path << std::endl;
 
-    if (ifs){
-        //Skip first two lines
-        std::getline(ifs, side);
-        std::getline(ifs, side);
+    bool bound = false;
 
-        //Read the side of the object
+    if (ifs){
         if (ifs.good()){
-            std::getline(ifs,side);
-            cube_size = (float)atoi(side.c_str());
-        }
-        else{
-            std::cout << "Could not read the object file!" << std::endl;
-            assert(0);
+            //Skip first two lines
+            std::getline(ifs, line);
+            std::getline(ifs, line);
+
+            //Read the object's bounding box and height
+            if (std::getline(ifs,line)){
+                sscanf(line.c_str(), "%f,%f,%f %f,%f,%f %f,%f,%f %f,%f,%f %f",
+                                      &x1, &y1, &z1, &x2, &y2, &z2, &x3, &y3, &z3, &x4, &y4, &z4, &height);
+                bound = true;
+            }
         }
     }
     else{
@@ -122,15 +128,17 @@ Object* ModelManager::getObject(const char* filename)
 
     ifs.close();
 
-    //Now that we have the side of the cube create the array with the positions of its top face
-    std::vector<glm::vec4> vert;
-    vert.push_back(glm::vec4(cube_size/2,cube_size,-cube_size/2,1));
-    vert.push_back(glm::vec4(-cube_size/2,cube_size,-cube_size/2,1));
-    vert.push_back(glm::vec4(-cube_size/2,cube_size,cube_size/2,1));
-    vert.push_back(glm::vec4(cube_size/2,cube_size,cube_size/2,1));
+    //Create the array with the positions of the object's top face
+    vert.push_back(glm::vec4(x1,y1,z1,1));
+    vert.push_back(glm::vec4(x2,y2,z2,1));
+    vert.push_back(glm::vec4(x3,y3,z3,1));
+    vert.push_back(glm::vec4(x4,y4,z4,1));
+
+    width = sqrt( (x1-x2) * (x1-x2) + (y1-y2) * (y1-y2) + (z1-z2) * (z1-z2) );
+    lenght = width;
 
     //Create the object class and then return it
-    object = new Object(model,model->getTexture(),cube_size,vert);
+    object = new Object(model,model->getTexture(),bound,lenght,width,height,vert);
 
     return object;
 }

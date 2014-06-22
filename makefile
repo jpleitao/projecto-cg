@@ -9,13 +9,13 @@ UNAME_S := $(shell uname -s)
 FLAGS=-g
 ifeq ($(UNAME_S),Linux)
     INCLUDES = -I/usr/local/include/GLFW/
-    LIBS = -L/usr/local/lib/ -lglfw3 -lGL -lGLU -lX11 -lXxf86vm -lpthread -lXi -lXrandr -lGLEW
+    LIBS = -L/usr/local/lib/ -lglfw3 -lGL -lGLU -lX11 -lXxf86vm -lpthread -lXi -lXrandr -lGLEW -lm
     CPP=clang++
     SOURCES=*.cpp *.cxx shaders/*.cxx
 endif
 ifeq ($(UNAME_S),Darwin)
     INCLUDES = -I/usr/local/include -I/usr/local/include/GLFW
-    LIBS = -lglew -lglfw3 -framework opengl  
+    LIBS = -lglew -lglfw3 -framework opengl -lm  
     CPP=clang++
     SOURCES=*.{cpp,cxx} shaders/*.cxx
 endif

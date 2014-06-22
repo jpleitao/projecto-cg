@@ -7,6 +7,8 @@
 #include "Renderer.h"
 #include "Player.h"
 #include "GameWindow.h"
+#include "ModelManager.h"
+#include "World.h"
 #include "Light.h"
 
 int main (void) {	
@@ -27,16 +29,20 @@ int main (void) {
 	glEnable(GL_CULL_FACE);
 
 	Renderer renderer;
+
+    ModelManager modelManager;
 	
 	std::vector<Object*> objects;	
 
 	Player player(&renderer);
 
-	Object* obj = new Object(new Model(), new Texture());
+    /*Object* obj = new Object(new Model(), new Texture());
 	Object* obj2 = new Object(new Model(), new Texture());
 	Object* obj3 = new Object(new Model(), new Texture());
-	Object* obj4 = new Object(new Model(), new Texture());
+    Object* obj4 = new Object(new Model(), new Texture());*/
     //objects.push_back(obj2); objects.push_back(obj); objects.push_back(obj3);  objects.push_back(obj4);
+
+    World* world = new World(&modelManager ,&renderer, "data/models/world");
 
     std::vector<glm::vec4> vert;
     GLfloat cube_size = 2;
@@ -45,8 +51,8 @@ int main (void) {
     vert.push_back(glm::vec4(-cube_size/2,cube_size,-cube_size/2,1));
     vert.push_back(glm::vec4(-cube_size/2,cube_size,cube_size/2,1));
     vert.push_back(glm::vec4(cube_size/2,cube_size,cube_size/2,1));
-    Object* test1 = new Object(new Model(), new Texture(), cube_size, vert);
-    Object* test2 = new Object(new Model(), new Texture(), cube_size, vert);
+    Object* test1 = new Object(new Model(), new Texture(), true, cube_size, cube_size, cube_size, vert);
+    Object* test2 = new Object(new Model(), new Texture(), true, cube_size, cube_size, cube_size, vert);
     objects.push_back(test1); objects.push_back(test2);
 	
     /*
@@ -56,9 +62,8 @@ int main (void) {
     obj4->translate(vec3(6.0f,0.0f,0.0f));
     */
 
-    //test2->translate(vec3(0.0f,3.0f,0.0f));
-    test2->rotate(30,vec3(0,1,0));
-    test1->translate(vec3(0.0f,0.0f,-5.0f));
+    test1->translate(vec3(0.0f,10.0f,0.0f));
+    test2->translate(vec3(0.0f,1.0f,-5.0f));
 
 	int frameNo = 0;
 
@@ -68,7 +73,7 @@ int main (void) {
     renderer.addLight(&redLightFromAbove);
 	while( gameWindow.shouldStayOpen() ) {
 		gameWindow.beginFrame();
-		obj->rotate(1,vec3(0,1,0));
+        /*obj->rotate(1,vec3(0,1,0));*/
 
         //For debug on the collisions only! - Remove this
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_L ) == GLFW_PRESS)
@@ -79,10 +84,15 @@ int main (void) {
             test1->translate(vec3(0.0f, 0.0f, -0.1f));
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_I ) == GLFW_PRESS)
             test1->translate(vec3(0.1f, 0.0f, 0.0f));
-        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_M ) == GLFW_PRESS)
+        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_M ) == GLFW_PRESS){
             test1->translate(vec3(0.0f, -0.1f, 0.0f));
-        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_N ) == GLFW_PRESS)
-            test1->translate(vec3(0.0f, 0.1f, 0.0f));
+            if (test1->getCenterY() < (test1->getHeight()/2) )
+                test1->translate(vec3(0.0f, 0.1f , 0.0f));
+        }
+        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_N ) == GLFW_PRESS){
+            test1->translate(vec3(0.0f, 0.5f, 0.0f));
+            //FIXME: Verify the height, like in the previous one, but in the other direction
+        }
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_R ) == GLFW_PRESS)
             test1->rotate(1, vec3(0.0f, 1, 0.0f));
 
@@ -91,12 +101,19 @@ int main (void) {
         //Check for collisions! -- For each object test it with the ones after him
         for (int i=0;i<objects.size();i++){
             Object* current = objects[i];
+            bool colide = false;
 
             for (int j=i+1;j<objects.size();j++){
                 if (current->collision(objects[j])){
                     std::cout << "COLLISION!\n";
+                    colide = true;
                     //assert(0);
                 }
+            }
+
+            if (!colide){
+                //Object is not coliding with anything, so we can make it go down
+                current->fall();
             }
         }
 
@@ -105,9 +122,17 @@ int main (void) {
             //printf("Updating: %f, %f\n", gameWindow.getFrameScreenXOffset(), gameWindow.getFrameScreenYOffset());
 			player.updateAngles(gameWindow.getFrameScreenXOffset(), gameWindow.getFrameScreenYOffset());
 			player.updatePosition(gameWindow.getStrafeOffset(), gameWindow.getFrontMoveOffset());
+
+            //Check if the player is under the floor
+            vec3 player_position = player.getPosition();
+
+            if (player_position[1] < OBSERVER_HEIGHT)//FIXME: We are considering 1 to be our observer's height. We can change it later
+                player.setPosition(vec3(player_position[0], 1, player_position[2]));
+
 		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        world->render();
 		renderer.render(objects);
 
 		gameWindow.endFrame();
