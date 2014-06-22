@@ -52,7 +52,7 @@ int main (void) {
     vert.push_back(glm::vec4(cube_size/2,cube_size,cube_size/2,1));
     Object* test1 = new Object(new Model(), new Texture(), true, cube_size, cube_size, cube_size, vert);
     Object* test2 = new Object(new Model(), new Texture(), true, cube_size, cube_size, cube_size, vert);
-    objects.push_back(test1); objects.push_back(test2);
+    //objects.push_back(test1); objects.push_back(test2);
 	
     /*
 	obj->rotate(33,vec3(0,1,0));

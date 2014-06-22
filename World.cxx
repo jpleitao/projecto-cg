@@ -22,14 +22,15 @@ World::World(ModelManager* modelManager, Renderer* renderer, const char* filenam
         if(ifs.good()) {
             while(ifs.getline(buffer, 125)) {
                 sscanf(buffer, "%s %f %f %f %f %f %f %f", modelPath, &position[0], &position[1], &position[2], &rotation[0], &rotation[1], &rotation[2], &angle);
+                printf("[World Object Info] %s %f %f %f %f %f %f %f\n", modelPath, position[0], position[1], position[2], rotation[0], rotation[1], rotation[2], angle);
                 tempObj = modelManager->getObject(modelPath);
-                std::cout << "[Object Loaded]";
-                tempObj->translate(position);
-                tempObj->rotate(angle ,rotation);
+                std::cout << "[Object Loaded]\n";
+                //tempObj->translate(position);
+                //tempObj->rotate(angle ,rotation);
                 worldObjects.push_back(tempObj);
             }
         }
     }
-
+    std::cout << "[Rendering]\n";
     (this->renderer)->render(worldObjects);
 }
