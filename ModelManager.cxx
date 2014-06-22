@@ -110,10 +110,6 @@ Object* ModelManager::getObject(const char* filename)
             std::getline(ifs,side);
             cube_size = (float)atoi(side.c_str());
         }
-        else{
-            std::cout << "Could not read the object file!" << std::endl;
-            assert(0);
-        }
     }
     else{
         std::cout<< "Unable to open file" << std::endl;
@@ -129,8 +125,8 @@ Object* ModelManager::getObject(const char* filename)
     vert.push_back(glm::vec4(-cube_size/2,cube_size,cube_size/2,1));
     vert.push_back(glm::vec4(cube_size/2,cube_size,cube_size/2,1));
 
-    //Create the object class and then return it
-    object = new Object(model,model->getTexture(),cube_size,vert);
+    //Create the object class and then return it -- FIXME: ASSUME THAT THE OBJECT IS A CUBE
+    object = new Object(model,model->getTexture(),cube_size,cube_size,cube_size,vert);
 
     return object;
 }

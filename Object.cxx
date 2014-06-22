@@ -1,9 +1,12 @@
 #include "Object.h"
 #include "Renderer.h"
 
-Object::Object(Model* model, Texture* texture, float side, std::vector<glm::vec4> vert) : model(model), texture(texture), modelMatrix(mat4(1.0f))
+Object::Object(Model* model, Texture* texture, GLfloat len, GLfloat w, GLfloat h, std::vector<glm::vec4> vert) : model(model), texture(texture), modelMatrix(mat4(1.0f))
 {
-    this->obj_side = side;
+    this->lenght = len;
+    this->width = w;
+    this->height = h;
+    
     this->origin_center = glm::vec4(0,0,0,1);//The cube is centered in the origin
     this->center = this->origin_center;
     this->vertexes = vert;
@@ -26,24 +29,24 @@ int Object::segmentIntersection(glm::vec4 a, glm::vec4 c, glm::vec4 b, glm::vec4
 bool Object::collision(Object* obj)
 {
     //If the current object is under the first one then we have no collision
-    std::cout << (this->center[1] + (this->obj_side/2)) << " < " << (obj->center[1] - (obj->obj_side/2)) << std::endl;
-    if ( (this->center[1] + (this->obj_side/2)) < (obj->center[1] - (obj->obj_side/2)) ){
+    std::cout << (this->center[1] + (this->lenght/2)) << " < " << (obj->center[1] - (obj->lenght/2)) << std::endl;
+    if ( (this->center[1] + (this->lenght/2)) < (obj->center[1] - (obj->lenght/2)) ){
         std::cout << "AQUI\n";
         return false;
     }
 
     //If the current object is above the first one then we have no collision
-    std::cout << (this->center[1] - (this->obj_side/2)) << " > " << (obj->center[1] + (obj->obj_side/2)) << std::endl;
-    if ( (this->center[1] - (this->obj_side/2)) > (obj->center[1] + (obj->obj_side/2)) ){
+    std::cout << (this->center[1] - (this->lenght/2)) << " > " << (obj->center[1] + (obj->lenght/2)) << std::endl;
+    if ( (this->center[1] - (this->lenght/2)) > (obj->center[1] + (obj->lenght/2)) ){
         std::cout << "AQUI2\n";
         return false;
     }
 
     /*If their heights "interset each other" then we have to solve the collision in 2D
      *This is how I am planning on doing this:
-     *We have 2 squares and we want to know if they collide with each other. Since they have the same dimensions we cannot have
-     *one square inside the other, so what we are going to do is, for each edge of one square we are going to se if it intersects
-     *the edges of the other square. If there is at least one intersection then we have a collision!
+     *We have 2 squares and we want to know if they collide with each other. If they have the same dimensions, for each edge of
+     *one square we are going to se if it intersects the edges of the other square. If there is at least one intersection then
+     *we have a collision!
      */
 
     glm::vec4 a, b, c, d;
@@ -53,8 +56,9 @@ bool Object::collision(Object* obj)
     obj_size = obj->vertexes.size();
 
     if ( (current_size != 4) || (obj_size != 4) )
-        assert(0);//FIXME?? We can only have squares right?
+        assert(0);//FIXME?? We can only have squares/rectangles!
 
+    //Same dimensions
     for (int i=0;i<current_size;i++){
         //i and (i+1)%4
         a = this->vertexes[i];
@@ -87,6 +91,20 @@ bool Object::collision(Object* obj)
                 return true;
             }
         }
+    }
+
+    float current_area, obj_area;
+
+    current_area = this->lenght * this->width;
+    obj_area = obj->lenght * obj->width;
+
+    //Different Dimensions -- One can be inside the other (The one with smaller area inside the one with higher area)
+    if ( current_area < obj_area){
+        //FIXME
+    }
+
+    else if (obj_area < current_area){
+        //FIXME
     }
 
     std::cout << "NOPE\n";
