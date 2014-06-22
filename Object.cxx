@@ -119,8 +119,9 @@ bool Object::collision(Object* obj)
 
             if (this->segmentIntersection(a,c,b,d)){
                 //std::cout << "Found collision! Going to return true" << std::endl;
-                if (this->center[1] > obj->center[1])
+                if (this->center[1] > obj->center[1]){
                     //std::cout << "I am the one on top of the other!" << std::endl;
+                }
                 return true;
             }
         }
@@ -133,7 +134,7 @@ bool Object::collision(Object* obj)
 
     //Different Dimensions -- One can be inside the other (The one with smaller area inside the one with higher area)
 
-    //This is not working properly!!!!!
+    //This is not working!!!!!
     if ( current_area < obj_area){
         //current inside obj
         for (int i=0;i<this->vertexes.size();i++){
