@@ -5,6 +5,10 @@ Object::Object(Model* model, Texture* texture, bool bound, GLfloat len, GLfloat 
 {
     this->hasBoundingBox = bound;
 
+    this->origin_lenght = len;
+    this->origin_width = w;
+    this->origin_height = h;
+
     this->lenght = len;
     this->width = w;
     this->height = h;
@@ -33,6 +37,12 @@ void Object::fall()
     }
 }
 
+void Object::undoFall()
+{
+    //Move the object up, in the opposite direction of the last "fall" (due to gravity)
+    this->translate(vec3(0.0f, -this->velocity_y, 0.0f));
+}
+
 //CCW -- Taken from DNP@LPA
 int Object::ccw(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3) {
     /*p2->x * p3->y + p1->x * p2->y + p1->y * p3->x - p1->y * p2->x - p1->x * p3->y - p2->y * p3->x
@@ -54,14 +64,14 @@ bool Object::collision(Object* obj)
     //If the current object is under the first one then we have no collision
     //std::cout << (this->center[1] + (this->height/2)) << " < " << (obj->center[1] - (obj->height/2)) << std::endl;
     if ( (this->center[1] + (this->height/2)) < (obj->center[1] - (obj->height/2)) ){
-        //std::cout << "AQUI\n";
+        std::cout << "AQUI\n";
         return false;
     }
 
     //If the current object is above the first one then we have no collision
     //std::cout << (this->center[1] - (this->height/2)) << " > " << (obj->center[1] + (obj->height/2)) << std::endl;
     if ( (this->center[1] - (this->height/2)) > (obj->center[1] + (obj->height/2)) ){
-        //std::cout << "AQUI2\n";
+        std::cout << "AQUI2\n";
         return false;
     }
 
@@ -122,6 +132,8 @@ bool Object::collision(Object* obj)
     obj_area = obj->lenght * obj->width;
 
     //Different Dimensions -- One can be inside the other (The one with smaller area inside the one with higher area)
+
+    //This is not working properly!!!!!
     if ( current_area < obj_area){
         //current inside obj
         for (int i=0;i<this->vertexes.size();i++){
@@ -138,7 +150,7 @@ bool Object::collision(Object* obj)
         }
     }
 
-    //std::cout << "NOPE\n";
+    std::cout << "NOPE\n";
 
     return false;
 }
@@ -179,7 +191,14 @@ void Object::scale(vec3 scaleVec) {
 
     //Update the vertexes' position
     for (int i=0;i<this->vertexes.size();i++)
-        this->vertexes[i] = this->modelMatrix * this->start_vertexes[i];;
+        this->vertexes[i] = this->modelMatrix * this->start_vertexes[i];
+
+    //Update the object's lenght, width and height
+    this->width = sqrt( (this->vertexes[0][0]-this->vertexes[1][0]) * (this->vertexes[0][0]-this->vertexes[1][0]) +
+                        (this->vertexes[0][1]-this->vertexes[1][1]) * (this->vertexes[0][1]-this->vertexes[1][1]) +
+                        (this->vertexes[0][2]-this->vertexes[1][2]) * (this->vertexes[0][2]-this->vertexes[1][2]) );
+    this->lenght = this->width;
+    this->height *= scaleVec[1];
 }
 
 void Object::translate(vec3 vec) {
@@ -199,6 +218,11 @@ void Object::resetTransforms() {
     //Reset center and vertexes' positions
     this->center = this->origin_center;
     this->vertexes = this->start_vertexes;
+
+    //Reset lenght, width and height
+    this->lenght = this->origin_lenght;
+    this->width = this->origin_width;
+    this->height = this->origin_height;
 }
 
 void Object::render(Renderer* renderer) {
