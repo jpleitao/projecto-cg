@@ -13,7 +13,8 @@ Model* ModelManager::getModel(const char* filename){
     ModelArrays* model_arrays;
     ObjLoader* loader;
 
-    std::string path = filename;
+    std::string path = "data/models/";
+    path += filename;
     path += ".model";
 
     std::cout << "[Model.getModel]Reading File: " + path << std::endl;
@@ -89,7 +90,9 @@ Object* ModelManager::getObject(const char* filename)
     GLfloat cube_size;
     Model* model;
     Object* object;
-    std::string path = filename;
+
+    std::string path = "data/models/";
+    path += filename;
     path += ".model";
 
     model = this->getModel(filename);

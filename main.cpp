@@ -7,6 +7,8 @@
 #include "Renderer.h"
 #include "Player.h"
 #include "GameWindow.h"
+#include "ModelManager.h"
+#include "World.h"
 
 int main (void) {	
 	GameWindow gameWindow;
@@ -26,6 +28,8 @@ int main (void) {
 	glEnable(GL_CULL_FACE);
 
 	Renderer renderer;
+
+    ModelManager modelManager;
 	
 	std::vector<Object*> objects;	
 
@@ -36,6 +40,8 @@ int main (void) {
 	Object* obj3 = new Object(new Model(), new Texture());
 	Object* obj4 = new Object(new Model(), new Texture());
     //objects.push_back(obj2); objects.push_back(obj); objects.push_back(obj3);  objects.push_back(obj4);
+
+    World* world = new World(&modelManager ,&renderer, "data/models/world");
 
     std::vector<glm::vec4> vert;
     GLfloat cube_size = 2;
