@@ -8,11 +8,29 @@ Object::Object(Model* model, Texture* texture, bool bound, GLfloat len, GLfloat 
     this->lenght = len;
     this->width = w;
     this->height = h;
+
+    this->aceleration_y = -0.01;//FIXME: HARD-CODED VALUE
+    this->velocity_y = 0;
     
     this->origin_center = glm::vec4(0,0,0,1);//The cube is centered in the origin
     this->center = this->origin_center;
     this->vertexes = vert;
     this->start_vertexes = vert;
+}
+
+void Object::fall()
+{
+    //Update object's velocity, based on its aceleration
+    this->velocity_y += this->aceleration_y;
+
+    //Move the object according to its velocity
+    this->translate(vec3(0.0f, this->velocity_y, 0.0f));
+
+    //Check if on the floor
+    if (this->center[1] < (this->height/2) ){
+        this->translate(vec3(0.0f, -this->velocity_y , 0.0f));
+        this->velocity_y = 0;
+    }
 }
 
 //CCW -- Taken from DNP@LPA
@@ -34,16 +52,16 @@ bool Object::collision(Object* obj)
         return false;
 
     //If the current object is under the first one then we have no collision
-    std::cout << (this->center[1] + (this->height/2)) << " < " << (obj->center[1] - (obj->height/2)) << std::endl;
+    //std::cout << (this->center[1] + (this->height/2)) << " < " << (obj->center[1] - (obj->height/2)) << std::endl;
     if ( (this->center[1] + (this->height/2)) < (obj->center[1] - (obj->height/2)) ){
-        std::cout << "AQUI\n";
+        //std::cout << "AQUI\n";
         return false;
     }
 
     //If the current object is above the first one then we have no collision
-    std::cout << (this->center[1] - (this->height/2)) << " > " << (obj->center[1] + (obj->height/2)) << std::endl;
+    //std::cout << (this->center[1] - (this->height/2)) << " > " << (obj->center[1] + (obj->height/2)) << std::endl;
     if ( (this->center[1] - (this->height/2)) > (obj->center[1] + (obj->height/2)) ){
-        std::cout << "AQUI2\n";
+        //std::cout << "AQUI2\n";
         return false;
     }
 
@@ -90,9 +108,9 @@ bool Object::collision(Object* obj)
             d = obj->vertexes[(j+1)%obj_size];
 
             if (this->segmentIntersection(a,c,b,d)){
-                std::cout << "Found collision! Going to return true" << std::endl;
+                //std::cout << "Found collision! Going to return true" << std::endl;
                 if (this->center[1] > obj->center[1])
-                    std::cout << "I am the one on top of the other!" << std::endl;
+                    //std::cout << "I am the one on top of the other!" << std::endl;
                 return true;
             }
         }
@@ -120,7 +138,7 @@ bool Object::collision(Object* obj)
         }
     }
 
-    std::cout << "NOPE\n";
+    //std::cout << "NOPE\n";
 
     return false;
 }

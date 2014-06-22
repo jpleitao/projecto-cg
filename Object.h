@@ -19,6 +19,9 @@ class Object
     GLfloat width;
     GLfloat height;
 
+    GLfloat aceleration_y;
+    GLfloat velocity_y;
+
     bool hasBoundingBox;
 
     //Hit box's stuff
@@ -38,6 +41,10 @@ class Object
         virtual void render(Renderer* renderer);
 
         bool collision(Object* obj);
+        void fall();
+
+        GLfloat getCenterY(){return this->center[1];}
+        GLfloat getHeight(){return this->height;}
 
     private:
         void createHitBoxes();
