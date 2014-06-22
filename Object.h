@@ -43,5 +43,7 @@ class Object
         void createHitBoxes();
         int ccw(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3);
         int segmentIntersection(glm::vec4 a, glm::vec4 c, glm::vec4 b, glm::vec4 d);
+        GLfloat area(glm::vec4 A, glm::vec4 B, glm::vec4 C);
+        bool vertexInsideSquare(glm::vec4 point);
 };
 #endif // OBJECT_H

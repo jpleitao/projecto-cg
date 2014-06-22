@@ -106,15 +106,37 @@ bool Object::collision(Object* obj)
     //Different Dimensions -- One can be inside the other (The one with smaller area inside the one with higher area)
     if ( current_area < obj_area){
         //current inside obj
+        for (int i=0;i<this->vertexes.size();i++){
+            if (obj->vertexInsideSquare(this->vertexes[i]))
+                return true;
+        }
     }
 
     else if (obj_area < current_area){
         //obj inside current
+        for (int i=0;i<obj->vertexes.size();i++){
+            if (this->vertexInsideSquare(obj->vertexes[i]))
+                return true;
+        }
     }
 
     std::cout << "NOPE\n";
 
     return false;
+}
+
+GLfloat Object::area(glm::vec4 A, glm::vec4 B, glm::vec4 C)
+{
+    return (C[0]*B[2]-B[0]*C[2])-(C[0]*A[2]-A[0]*C[2])+(B[0]*A[2]-A[0]*B[2]);
+}
+
+bool Object::vertexInsideSquare(glm::vec4 point)
+{
+    if (this->area(this->vertexes[0],this->vertexes[1],point)>0 || this->area(this->vertexes[1],this->vertexes[2],point)>0 ||
+        this->area(this->vertexes[2],this->vertexes[3],point)>0 || this->area(this->vertexes[3],this->vertexes[0],point)>0)
+        return false;
+
+    return true;
 }
 
 void Object::rotate(GLfloat angle, vec3 axis) {
