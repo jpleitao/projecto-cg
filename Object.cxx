@@ -44,7 +44,7 @@ void Object::undoFall()
 }
 
 //CCW -- Taken from DNP@LPA
-int Object::ccw(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3) {
+GLfloat Object::ccw(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3) {
     /*p2->x * p3->y + p1->x * p2->y + p1->y * p3->x - p1->y * p2->x - p1->x * p3->y - p2->y * p3->x
      *Remeber that here we only have x and z!
      */
@@ -54,6 +54,39 @@ int Object::ccw(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3) {
 //Segment intersection -- Taken from DNP@LPA -- Checks if |AB| intersects |CD|
 int Object::segmentIntersection(glm::vec4 a, glm::vec4 c, glm::vec4 b, glm::vec4 d) {
     return ccw(a,c,d) != ccw(b,c,d) && ccw(a,b,c) != ccw(a,b,d);
+}
+
+
+//Point in triangle -- Taken from DNP@LPA
+int Object::pointInTriangle(glm::vec4 v1, glm::vec4 v2, glm::vec4 v3, glm::vec4 pt)
+{
+    GLfloat b1, b2, b3;
+
+    b1 = ccw(pt, v1, v2);
+    b2 = ccw(pt, v2, v3);
+    b3 = ccw(pt, v3, v1);
+
+    return ((b1 == b2) && (b2 == b3));
+}
+
+//Returns true if "point" is in the line segment formed by "a" and "b"
+//This function appear to be working well
+bool Object::pointInLine(vec4 a, vec4 b, vec4 point) 
+{
+    GLfloat m = (b[2] - a[2]) / (b[0] - a[0]);
+
+    //We know that a is a point of the segment
+    GLfloat origin = a[2] - (m * a[0]);//y = mx + b <=> b = y - mx
+
+    //Here we know the equation of the line segment: y = m*x + b, so lets see if the point is in the segment
+    GLfloat y_final = m*point[0] + origin;
+
+    //std::cout << y_final << " == " << point[2] << std::endl;
+
+    if (y_final == point[2])
+        return true;
+
+    return false; 
 }
 
 bool Object::collision(Object* obj)
@@ -118,7 +151,7 @@ bool Object::collision(Object* obj)
             d = obj->vertexes[(j+1)%obj_size];
 
             if (this->segmentIntersection(a,c,b,d)){
-                //std::cout << "Found collision! Going to return true" << std::endl;
+                std::cout << "Found collision! Going to return true" << std::endl;
                 if (this->center[1] > obj->center[1]){
                     //std::cout << "I am the one on top of the other!" << std::endl;
                 }
@@ -127,50 +160,67 @@ bool Object::collision(Object* obj)
         }
     }
 
-    float current_area, obj_area;
+    GLfloat current_area, obj_area;
 
     current_area = this->lenght * this->width;
     obj_area = obj->lenght * obj->width;
+
+    std::cout << "Current_area = " << current_area << " Obj_area = " << obj_area << std::endl;
 
     //Different Dimensions -- One can be inside the other (The one with smaller area inside the one with higher area)
 
     //This is not working!!!!!
     if ( current_area < obj_area){
         //current inside obj
-        for (int i=0;i<this->vertexes.size();i++){
-            if (obj->vertexInsideSquare(this->vertexes[i]))
+        std::cout << "MENOR\n";
+
+        for (int i=0;i<obj->vertexes.size();i++){
+            //First triangle: 0, 1 and 2
+            if(this->pointInTriangle(obj->vertexes[0], obj->vertexes[1], obj->vertexes[2], this->vertexes[i])){
+                std::cout << "AQUI3\n";
                 return true;
+            }
+            //Second triangle: 0,3 and 2
+            if(this->pointInTriangle(obj->vertexes[0], obj->vertexes[3], obj->vertexes[2], this->vertexes[i])){
+                std::cout << "AQUI4\n";
+                return true;
+            }
+
+            //Test if the point is in the line of the triangles -- Line that has the points 0 and 2
+            if (this->pointInLine(obj->vertexes[0], obj->vertexes[2], this->vertexes[i])){
+                std::cout << "AQUI5\n";
+                return true;
+            }
         }
     }
 
     else if (obj_area < current_area){
         //obj inside current
-        for (int i=0;i<obj->vertexes.size();i++){
-            if (this->vertexInsideSquare(obj->vertexes[i]))
+
+        std::cout << "MAIOR\n";
+
+        for (int i=0;i<this->vertexes.size();i++){
+            if (this->pointInTriangle(this->vertexes[0], this->vertexes[1], this->vertexes[2], obj->vertexes[i])){
+                std::cout << "AQUI6\n";
                 return true;
+            }
+
+            if(pointInTriangle(this->vertexes[0], this->vertexes[3], this->vertexes[2], obj->vertexes[i])){
+                std::cout << "AQUI7\n";
+                return true;
+            }
+
+            //Test if the point is in the line of the triangles -- Line that has the points 0 and 2
+            if (this->pointInLine(this->vertexes[0], this->vertexes[2], obj->vertexes[i])){
+                std::cout << "AQUI8\n";
+                return true;
+            }
         }
     }
 
-    std::cout << "NOPE\n";
+    //std::cout << "NOPE\n";
 
     return false;
-}
-
-GLfloat Object::area(glm::vec4 A, glm::vec4 B, glm::vec4 C)
-{
-    return (C[0]*B[2]-B[0]*C[2])-(C[0]*A[2]-A[0]*C[2])+(B[0]*A[2]-A[0]*B[2]);
-}
-
-/*We are going to see if "point" is higher (or lower) than the square. Imagine a pyramid, and then calculate the areas of its
-*vertical faces, not the base. If at least one of the vertical faces has a positive area, then there is no intersection
-*/
-bool Object::vertexInsideSquare(glm::vec4 point)
-{
-    if (this->area(this->vertexes[0],this->vertexes[1],point)>0 || this->area(this->vertexes[1],this->vertexes[2],point)>0 ||
-        this->area(this->vertexes[2],this->vertexes[3],point)>0 || this->area(this->vertexes[3],this->vertexes[0],point)>0)
-        return false;
-
-    return true;
 }
 
 void Object::rotate(GLfloat angle, vec3 axis) {

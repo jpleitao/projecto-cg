@@ -51,11 +51,20 @@ class Object
         GLfloat getHeight(){return this->height;}
         void setVelocity_y(GLfloat vel){this->velocity_y = vel;}
 
+        void printStuff()
+        {
+            std::cout << "Length = " << this->lenght << " Width = " << this->width << " Height = " << this->height << std::endl;
+            std::cout << "Center: (" << this->center[0] << "," << this->center[1] << "," << this->center[2] << ")\n";
+
+            for (int i=0;i<this->vertexes.size();i++)
+                std::cout << "Vertex " << i << ": (" << this->vertexes[i][0] << "," << this->vertexes[i][1] << "," << this->vertexes[i][2] << ")\n";
+        }
+
     private:
         void createHitBoxes();
-        int ccw(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3);
+        GLfloat ccw(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3);
         int segmentIntersection(glm::vec4 a, glm::vec4 c, glm::vec4 b, glm::vec4 d);
-        GLfloat area(glm::vec4 A, glm::vec4 B, glm::vec4 C);
-        bool vertexInsideSquare(glm::vec4 point);
+        bool pointInLine(vec4 a, vec4 b, vec4 point);
+        int pointInTriangle(glm::vec4 v1, glm::vec4 v2, glm::vec4 v3, glm::vec4 pt);
 };
 #endif // OBJECT_H
