@@ -56,11 +56,6 @@ int Object::segmentIntersection(glm::vec4 a, glm::vec4 c, glm::vec4 b, glm::vec4
     return ccw(a,c,d) != ccw(b,c,d) && ccw(a,b,c) != ccw(a,b,d);
 }
 
-GLfloat Object::area(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2, GLfloat x3, GLfloat y3)
-{
-   return abs((x1*(y2-y3) + x2*(y3-y1)+ x3*(y1-y2))/2.0);
-}
-
 
 //Point in triangle -- Taken from DNP@LPA
 int Object::pointInTriangle(glm::vec4 v1, glm::vec4 v2, glm::vec4 v3, glm::vec4 pt)
@@ -221,23 +216,6 @@ bool Object::collision(Object* obj)
     //std::cout << "NOPE\n";
 
     return false;
-}
-
-GLfloat Object::area(glm::vec4 A, glm::vec4 B, glm::vec4 C)
-{
-    return (C[0]*B[2]-B[0]*C[2])-(C[0]*A[2]-A[0]*C[2])+(B[0]*A[2]-A[0]*B[2]);
-}
-
-/*We are going to see if "point" is higher (or lower) than the square. Imagine a pyramid, and then calculate the areas of its
-*vertical faces, not the base. If at least one of the vertical faces has a positive area, then there is no intersection
-*/
-bool Object::vertexInsideSquare(glm::vec4 point)
-{
-    if (this->area(this->vertexes[0],this->vertexes[1],point)>0 || this->area(this->vertexes[1],this->vertexes[2],point)>0 ||
-        this->area(this->vertexes[2],this->vertexes[3],point)>0 || this->area(this->vertexes[3],this->vertexes[0],point)>0)
-        return false;
-
-    return true;
 }
 
 void Object::rotate(GLfloat angle, vec3 axis) {
