@@ -61,8 +61,15 @@ int main (void) {
 	obj2->translate(vec3(3.0f,0.0f,0.0f));
     obj4->translate(vec3(6.0f,0.0f,0.0f));
     */
-    test1->translate(vec3(0.0f,1.5f,-5.0f));
-    test1->scale(vec3(0.25f,0.25f,0.25f));
+
+    //test1->printStuff();
+    test1->translate(vec3(0.0f,3.0f,-5.0f));
+    //test1->printStuff();
+    test1->scale(vec3(1.0f,0.5f,1.0f));
+    //test1->printStuff();
+
+    assert(0);
+
     test2->translate(vec3(0.0f,1.0f,-5.0f));
 
 	int frameNo = 0;

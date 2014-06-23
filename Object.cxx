@@ -44,7 +44,7 @@ void Object::undoFall()
 }
 
 //CCW -- Taken from DNP@LPA
-int Object::ccw(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3) {
+GLfloat Object::ccw(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3) {
     /*p2->x * p3->y + p1->x * p2->y + p1->y * p3->x - p1->y * p2->x - p1->x * p3->y - p2->y * p3->x
      *Remeber that here we only have x and z!
      */
@@ -54,6 +54,56 @@ int Object::ccw(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3) {
 //Segment intersection -- Taken from DNP@LPA -- Checks if |AB| intersects |CD|
 int Object::segmentIntersection(glm::vec4 a, glm::vec4 c, glm::vec4 b, glm::vec4 d) {
     return ccw(a,c,d) != ccw(b,c,d) && ccw(a,b,c) != ccw(a,b,d);
+}
+
+GLfloat Object::area(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2, GLfloat x3, GLfloat y3)
+{
+   return abs((x1*(y2-y3) + x2*(y3-y1)+ x3*(y1-y2))/2.0);
+}
+
+
+//Point in triangle -- Taken from DNP@LPA
+int Object::pointInTriangle(glm::vec4 v1, glm::vec4 v2, glm::vec4 v3, glm::vec4 pt)
+{
+    /*GLfloat b1, b2, b3;
+
+    b1 = ccw(pt, v1, v2);
+    b2 = ccw(pt, v2, v3);
+    b3 = ccw(pt, v3, v1);
+
+    return ((b1 == b2) && (b2 == b3));*/
+
+    std::cout << "Point 1: (" << v1[0] << "," << v1[2] << ")" << std::endl << "Point 2: (" << v2[0] << "," << v2[1] << ")" << std::endl << "Point 3: (" << v3[0] << "," << v3[1] << ")" << std::endl << "Point P: (" << pt[0] << "," << pt[1] << ")" << std::endl;
+
+    GLfloat a = this->area(v1[0], v1[2], v2[0], v2[2], v3[0], v3[2]);
+
+    GLfloat A1 = area (pt[0], pt[2], v2[0], v2[2], v3[0], v3[2]);
+
+    GLfloat A2 = area (v1[0], v1[2], pt[0], pt[2], v3[0], v3[2]);
+
+    GLfloat A3 = area (v1[0], v1[2], v2[0], v2[2], pt[0], pt[2]);
+
+    return (A == A1 + A2 + A3);
+}
+
+//Returns true if "point" is in the line segment formed by "a" and "b"
+//This function appear to be working well
+bool Object::pointInLine(vec4 a, vec4 b, vec4 point) 
+{
+    GLfloat m = (b[2] - a[2]) / (b[0] - a[0]);
+
+    //We know that a is a point of the segment
+    GLfloat origin = a[2] - (m * a[0]);//y = mx + b <=> b = y - mx
+
+    //Here we know the equation of the line segment: y = m*x + b, so lets see if the point is in the segment
+    GLfloat y_final = m*point[0] + origin;
+
+    //std::cout << y_final << " == " << point[2] << std::endl;
+
+    if (y_final == point[2])
+        return true;
+
+    return false; 
 }
 
 bool Object::collision(Object* obj)
@@ -118,7 +168,7 @@ bool Object::collision(Object* obj)
             d = obj->vertexes[(j+1)%obj_size];
 
             if (this->segmentIntersection(a,c,b,d)){
-                //std::cout << "Found collision! Going to return true" << std::endl;
+                std::cout << "Found collision! Going to return true" << std::endl;
                 if (this->center[1] > obj->center[1]){
                     //std::cout << "I am the one on top of the other!" << std::endl;
                 }
@@ -137,21 +187,50 @@ bool Object::collision(Object* obj)
     //This is not working!!!!!
     if ( current_area < obj_area){
         //current inside obj
-        for (int i=0;i<this->vertexes.size();i++){
-            if (obj->vertexInsideSquare(this->vertexes[i]))
+
+        for (int i=0;i<obj->vertexes.size();i++){
+            //First triangle: 0, 1 and 2
+            if(this->pointInTriangle(this->vertexes[0], this->vertexes[1], this->vertexes[2], obj->vertexes[i])){
+                std::cout << "AQUI3\n";
                 return true;
+            }
+            //Second triangle: 0,3 and 2
+            if(this->pointInTriangle(this->vertexes[0], this->vertexes[3], this->vertexes[2], obj->vertexes[i])){
+                std::cout << "AQUI4\n";
+                return true;
+            }
+
+            //Test if the point is in the line of the triangles -- Line that has the points 0 and 2
+            if (this->pointInLine(this->vertexes[0], this->vertexes[2], obj->vertexes[i])){
+                std::cout << "AQUI5\n";
+                return true;
+            }
         }
     }
 
     else if (obj_area < current_area){
         //obj inside current
-        for (int i=0;i<obj->vertexes.size();i++){
-            if (this->vertexInsideSquare(obj->vertexes[i]))
+
+        for (int i=0;i<this->vertexes.size();i++){
+            if (this->pointInTriangle(obj->vertexes[0], obj->vertexes[1], obj->vertexes[2], this->vertexes[i])){
+                std::cout << "AQUI6\n";
                 return true;
+            }
+
+            if(pointInTriangle(obj->vertexes[0], obj->vertexes[3], obj->vertexes[2], this->vertexes[i])){
+                std::cout << "AQUI7\n";
+                return true;
+            }
+
+            //Test if the point is in the line of the triangles -- Line that has the points 0 and 2
+            if (this->pointInLine(obj->vertexes[0], obj->vertexes[2], this->vertexes[i])){
+                std::cout << "AQUI8\n";
+                return true;
+            }
         }
     }
 
-    std::cout << "NOPE\n";
+    //std::cout << "NOPE\n";
 
     return false;
 }
