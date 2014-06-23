@@ -65,25 +65,13 @@ GLfloat Object::area(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2, GLfloat x3,
 //Point in triangle -- Taken from DNP@LPA
 int Object::pointInTriangle(glm::vec4 v1, glm::vec4 v2, glm::vec4 v3, glm::vec4 pt)
 {
-    /*GLfloat b1, b2, b3;
+    GLfloat b1, b2, b3;
 
     b1 = ccw(pt, v1, v2);
     b2 = ccw(pt, v2, v3);
     b3 = ccw(pt, v3, v1);
 
-    return ((b1 == b2) && (b2 == b3));*/
-
-    std::cout << "Point 1: (" << v1[0] << "," << v1[2] << ")" << std::endl << "Point 2: (" << v2[0] << "," << v2[1] << ")" << std::endl << "Point 3: (" << v3[0] << "," << v3[1] << ")" << std::endl << "Point P: (" << pt[0] << "," << pt[1] << ")" << std::endl;
-
-    GLfloat a = this->area(v1[0], v1[2], v2[0], v2[2], v3[0], v3[2]);
-
-    GLfloat A1 = area (pt[0], pt[2], v2[0], v2[2], v3[0], v3[2]);
-
-    GLfloat A2 = area (v1[0], v1[2], pt[0], pt[2], v3[0], v3[2]);
-
-    GLfloat A3 = area (v1[0], v1[2], v2[0], v2[2], pt[0], pt[2]);
-
-    return (A == A1 + A2 + A3);
+    return ((b1 == b2) && (b2 == b3));
 }
 
 //Returns true if "point" is in the line segment formed by "a" and "b"
@@ -185,7 +173,7 @@ bool Object::collision(Object* obj)
     //Different Dimensions -- One can be inside the other (The one with smaller area inside the one with higher area)
 
     //This is not working!!!!!
-    if ( current_area < obj_area){
+    //if ( current_area < obj_area){
         //current inside obj
 
         for (int i=0;i<obj->vertexes.size();i++){
@@ -206,9 +194,9 @@ bool Object::collision(Object* obj)
                 return true;
             }
         }
-    }
+    //}
 
-    else if (obj_area < current_area){
+    //else if (obj_area < current_area){
         //obj inside current
 
         for (int i=0;i<this->vertexes.size();i++){
@@ -228,7 +216,7 @@ bool Object::collision(Object* obj)
                 return true;
             }
         }
-    }
+    //}
 
     //std::cout << "NOPE\n";
 
