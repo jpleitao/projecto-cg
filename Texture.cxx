@@ -56,6 +56,8 @@ void Texture::genAndBindBuffers()
 void Texture::beginRender(Renderer* renderer, Model* destModel) {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureId);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     // Set our "myTextureSampler" sampler to user Texture Unit 0
     glUniform1i( renderer->getTextureSamplerHandle(), 0);
 
@@ -90,6 +92,8 @@ void Texture::loadImage(const char* filename)
     glGenTextures(1, &this->textureId);
     // "Bind" the newly created texture : all future texture functions will modify this texture
     glBindTexture(GL_TEXTURE_2D, this->textureId);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 
     glTexImage2D(GL_TEXTURE_2D, 0, 3,
         imag.GetNumCols(),
