@@ -21,7 +21,7 @@ int main (void) {
 	}
 
 	// Dark blue background
-	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	// Enable depth test / Accept fragment if it closer to the camera than the former one
 	glEnable(GL_DEPTH_TEST);
@@ -71,6 +71,12 @@ int main (void) {
     renderer.addLight(&blueLight);
     Light redLightFromAbove(vec3(0,2,0), vec3(1,0,0));
     renderer.addLight(&redLightFromAbove);
+
+    Light changingLight(vec3(0,0,0), vec3(0,1,0));
+    renderer.addLight(&changingLight);
+
+    Light changingLight2(vec3(0,0,0), vec3(0,1,0));
+    renderer.addLight(&changingLight2);
 	while( gameWindow.shouldStayOpen() ) {
 		gameWindow.beginFrame();
         /*obj->rotate(1,vec3(0,1,0));*/
@@ -96,7 +102,11 @@ int main (void) {
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_R ) == GLFW_PRESS)
             test1->rotate(1, vec3(0.0f, 1, 0.0f));
 
-        blueLight.setPosition(player.getPosition());        
+        blueLight.setPosition(player.getPosition());       
+        changingLight.setPosition( vec3(glm::rotate(mat4(1.0f), (float)frameNo, vec3(0.0f,1.0f,0.0f))*vec4(vec3(3,4,3), 1.0f))); 
+        changingLight2.setPosition( vec3(glm::rotate(mat4(1.0f), (float)-frameNo, vec3(0.0f,1.0f,0.0f))*vec4(vec3(3,4,3), 1.0f))); 
+        changingLight2.setIntensities(vec3((float)(frameNo/10 % 256) / 512.0, 0.0f,((float)((frameNo/10 + 128) % 256)) / 512.0));
+        //changingLight.setIntensities(vec3())
 
         //Check for collisions! -- For each object test it with the ones after him
         for (int i=0;i<objects.size();i++){
