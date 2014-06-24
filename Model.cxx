@@ -8,7 +8,6 @@ Model::Model(ModelArrays* info, Texture* text, int primitiveType)
     this->objectInfo = info;
     this->texture = text;
     if ( info == NULL && text == NULL ) {
-        printf("New MODEL: %p\n", this->objectInfo);
         return;
     }  else {
         this->objectInfo = info;
@@ -57,7 +56,7 @@ void Model::draw(Renderer* renderer) {
 Model::~Model()
 {
     if ( this->objectInfo ) {
-        printf("Deleting object info!\n");
+        //printf("Deleting object info!\n");
         delete this->objectInfo;
     }
 

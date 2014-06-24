@@ -41,7 +41,7 @@ private:
     vec2* intersectLineWithSegment(vec2 lineOrigin, vec2 direction, vec2 a, vec2 b);
     int  closestPointToSourcePoint(vec2 sourcePoint, std::vector<vec2> points);
 
-    void processLaserFromPoint(vec2 origin,  vec2 direction, float currentIntensity=1.0f);
+    void processLaserFromPoint(vec2 origin,  vec2 direction, int depth=0);
 
 };
 #endif

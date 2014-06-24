@@ -59,6 +59,7 @@ int main (void) {
     vert.push_back(glm::vec4(-cube_size/2,cube_size,cube_size/2,1));
     vert.push_back(glm::vec4(cube_size/2,cube_size,cube_size/2,1));
     Object* test1 = new Object(new Model(ObjLoader("data/models/obj/dummy.obj").load()), new Texture(), true, cube_size, cube_size, cube_size, vert);
+    Object* test5 = new Object(new Model(ObjLoader("data/models/obj/dummy.obj").load()), new Texture(), true, cube_size, cube_size, cube_size, vert);
     Object* test2 = new Object(new Model(ObjLoader("data/models/obj/dummy.obj").load()), new Texture(), true, cube_size, cube_size, cube_size, vert);
     Object* test3 = new Object(new Line(vec3(0,LASER_Y+100,-25),vec3(0,LASER_Y+100,25)));
     Object* test4 = new Object(new Line(vec3(0,LASER_Y+100,-25),vec3(0,LASER_Y+100,25)));
@@ -76,11 +77,14 @@ int main (void) {
 
     //test1->printStuff();
     test1->translate(vec3(0.0f,3.0f,-5.0f));
+    
+    test5->translate(vec3(0.0f,5.0f,-5.0f));
     //test1->printStuff();
     test1->scale(vec3(0.25f,0.25f,0.25f));
     //test1->printStuff();
 
     test2->translate(vec3(0.0f,1.0f,-5.0f));
+    test2->rotate(35,vec3(0,1,0));
     //test3->translate(vec3(0.0f,1.0f,-5.0f));
 
     int frameNo = 0;

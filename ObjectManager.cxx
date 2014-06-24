@@ -139,11 +139,12 @@ void ObjectManager::processLaser() {
     
 }
 
-void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, float currentIntensity) {
-    if ( currentIntensity <= 0.1f ) return;
+void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, int depth) {
+    if ( depth == 15 ) return;
 
     std::vector<vec2> candidatePoints;
     std::vector<Object*> originatingObjects;
+    std::vector<std::vector<vec2> > originalLines;
 
     for (int i = 0; i < opaqueObjects.size(); i++ ) {
         Object* thisObj = opaqueObjects.at(i);
@@ -153,8 +154,9 @@ void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, float cur
             vec2 lineP = lines.at(j).at(0), lineQ = lines.at(j).at(1);
             vec2* intersection = intersectLineWithSegment(origin, direction, lineP, lineQ);
             if ( intersection ) {
-                candidatePoints.push_back(*intersection);
+                candidatePoints.push_back(vec2(intersection->x,intersection->y));
                 originatingObjects.push_back(thisObj);
+                originalLines.push_back(lines.at(j));
                 delete intersection;
             }
         }        
@@ -162,19 +164,35 @@ void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, float cur
 
     if ( candidatePoints.size() == 0) {
         //Must intersect a wall FIXME
-        printf("Laser not intersecting objects!\n");
-    } else {
-        int index = closestPointToSourcePoint(origin, candidatePoints);
-        vec2 point = candidatePoints.at(index);
-        vec2 unit = glm::normalize(point-origin);
-        vec2 lightXZ = point-0.1f*unit;
-
-        Object* obj = originatingObjects.at(index);
-        obj->setLaserLight(new Light(vec3(lightXZ.x, LASER_Y, lightXZ.y),vec3(1.0f*currentIntensity,0.0f,0.0f)) );
+        //printf("Laser not intersecting objects!\n");
+        
+        vec2 point = 1000.0f*direction;
 
         Object* l = new Object(new Line(vec3(origin.x,LASER_Y,origin.y), vec3(point.x,LASER_Y,point.y)));
         temporaryLaserObjects.push_back(l);
         addObject(l);
+    } else {
+        int index = closestPointToSourcePoint(origin, candidatePoints);
+        vec2 point = candidatePoints.at(index);
+        vec2 unit = glm::normalize(point-origin);
+        vec2 lightXZ = point-0.15f*unit;
+
+        Object* obj = originatingObjects.at(index);
+        obj->setLaserLight(new Light(vec3(lightXZ.x, LASER_Y, lightXZ.y),vec3(1.0f,0.0f,0.0f)) );
+
+        Object* l = new Object(new Line(vec3(origin.x,LASER_Y,origin.y), vec3(point.x,LASER_Y,point.y)));
+        temporaryLaserObjects.push_back(l);
+        addObject(l);
+
+        vec2 originalLineP = originalLines.at(index).at(0), originalLineQ = originalLines.at(index).at(1);
+        vec2 originalVec = originalLineQ - originalLineP;
+        vec2 ortho1 = glm::normalize(vec2(-originalVec.y, originalVec.x));
+        vec2 ortho2 = glm::normalize(vec2(originalVec.y, -originalVec.x));
+        vec2 surfaceNormal = glm::dot(ortho1, unit) < 0.0f ? ortho1 : ortho2;
+
+        vec2 reflected =  glm::reflect(unit, surfaceNormal);
+
+        processLaserFromPoint(point-0.01f*unit, reflected, ++depth);
     }
 
     
@@ -223,13 +241,14 @@ vec2* ObjectManager::intersectLineWithSegment(vec2 lineOrigin, vec2 direction, v
     return intersectLineSegments(lineOrigin, farPoint, a, b);
 }
 int  ObjectManager::closestPointToSourcePoint(vec2 sourcePoint, std::vector<vec2> points) {
+    //printf("HITS %d points!\n", points.size());
     int i = 0;
-    vec2 vec(points.at(0) - sourcePoint);
-    float bestDist = vec.length();
+    ;
+    float bestDist = glm::length(vec2(points.at(0) - sourcePoint));
 
     for ( int j = 1; j < points.size(); j++) {
-        vec = points.at(i) - sourcePoint;
-        float thisDist = vec.length();
+        float thisDist = glm::length(vec2(points.at(j) - sourcePoint));
+        //printf("->(%f,%f) - (%f,%f), thisDist = %f, best = %f\n", points.at(j).x, points.at(j).y, sourcePoint.x, sourcePoint.y, thisDist, bestDist);
         if ( thisDist < bestDist) {
             i = j;
             bestDist = thisDist;
