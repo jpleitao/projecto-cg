@@ -252,14 +252,14 @@ vec2* ObjectManager::intersectLineWithSegment(vec2 lineOrigin, vec2 direction, v
     return intersectLineSegments(lineOrigin, farPoint, a, b);
 }
 int  ObjectManager::closestPointToSourcePoint(vec2 sourcePoint, std::vector<vec2> points) {
-    //printf("HITS %d points!\n", points.size());
+    printf("HITS %d points!\n", points.size());
     int i = 0;
     ;
     float bestDist = glm::length(vec2(points.at(0) - sourcePoint));
 
     for ( int j = 1; j < points.size(); j++) {
         float thisDist = glm::length(vec2(points.at(j) - sourcePoint));
-        //printf("->(%f,%f) - (%f,%f), thisDist = %f, best = %f\n", points.at(j).x, points.at(j).y, sourcePoint.x, sourcePoint.y, thisDist, bestDist);
+        printf("->(%f,%f) - (%f,%f), thisDist = %f, best = %f\n", points.at(j).x, points.at(j).y, sourcePoint.x, sourcePoint.y, thisDist, bestDist);
         if ( thisDist < bestDist) {
             i = j;
             bestDist = thisDist;
