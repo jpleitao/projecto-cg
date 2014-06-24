@@ -39,6 +39,7 @@ void ObjectManager::renderObjects() {
 
 void ObjectManager::collideAndFall() {
     bool colide = true;
+    Object* obj_to_move, obj_colided;
 
     while (colide){
         
@@ -57,12 +58,22 @@ void ObjectManager::collideAndFall() {
                     std::cout << "COLLISION!\n";
                     colide = true;
 
+                    if (!current->getIsBeingPuxed()){
+                        obj_to_move = current;
+                        obj_colided = obj;
+                    }
+
+                    else{
+                        obj_to_move = obj;
+                        obj_colided = current;
+                    }
+
                     //Move current away
-                    obj->moveAwayFrom(current);
+                    obj_to_move->moveAwayFrom(obj_colided);
 
                     //Set obj velocity - FIXME: REFACTOR
-                    obj->move(true, (FACTOR*current->getVelocityX()), (FACTOR*current->getVelocityZ()) );
-                    obj->translate(vec3((FACTOR*current->getVelocityX()),0.0f,(FACTOR*current->getVelocityZ())));
+                    obj_to_move->move(true, (FACTOR * (obj_colided->getVelocityX()) ), (FACTOR * (obj_colided->getVelocityZ()) ) );
+                    obj_to_move->translate(vec3( (FACTOR * (obj_colided->getVelocityX()) ),0.0f,(FACTOR * (obj_colided->getVelocityZ()) ) ));
 
                     //assert(0);
                 }

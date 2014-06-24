@@ -67,6 +67,7 @@ class Object
 
         GLfloat getVelocityX(){return this->velocity_x;}
         GLfloat getVelocityZ(){return this->velocity_z;}
+        bool getIsBeingPuxed(){return this->isBeingPuxed;}
 
         void moveAwayFrom(Object* obj);
 

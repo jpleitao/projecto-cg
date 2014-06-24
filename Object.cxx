@@ -240,7 +240,7 @@ void Object::moveAwayFrom(Object* obj)
     //Move the object away
     while(this->collision(obj)){
         this->translate(del);
-        std::cout << "Moving this away from obj\n";
+        //std::cout << "Moving this away from obj\n";
     }
 }
 
