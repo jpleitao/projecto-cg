@@ -1,7 +1,7 @@
 #include "Object.h"
 #include "Renderer.h"
 
-Object::Object(Model* model, Texture* texture, bool bound, GLfloat len, GLfloat w, GLfloat h, std::vector<glm::vec4> vert) : model(model), texture(texture), modelMatrix(mat4(1.0f))
+Object::Object(Model* model, Texture* texture, bool bound, GLfloat len, GLfloat w, GLfloat h, std::vector<glm::vec4> vert, float transparency) : model(model), texture(texture), modelMatrix(mat4(1.0f)), transparency(transparency)
 {
     this->hasBoundingBox = bound;
 
@@ -284,6 +284,8 @@ void Object::render(Renderer* renderer) {
     //Draw the model with the texture mapped
     texture->beginRender(renderer, model);
     model->beginRender(renderer);
+
+    renderer->getCurrentProgram()->setUniform("objectAlpha", this->transparency);
 
     model->draw(renderer);
     

@@ -12,6 +12,8 @@ uniform mat3 m_3x3_inv_transp;
 uniform mat4 M;
 uniform mat4 MV;
 
+uniform float objectAlpha;
+
 struct Light {
    vec3 position;
    vec3 intensities; //a.k.a the color of the light
@@ -27,7 +29,9 @@ uniform vec3 cameraPos;
 
 uniform vec3 activeMaterialSpecularColor;
 uniform float activeMaterialShininess;
-
+float rand(vec2 co){
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
 void main(){
 
     vec3 normal = normalize(varyingNormalDirection);
@@ -64,6 +68,6 @@ void main(){
         // 1. The angle of incidence: brightness
         // 2. The color/intensities of the light: light.intensities
         // 3. The texture and texture coord: texture(tex, fragTexCoord)
-        gl_FragColor += vec4(attenuation*(diffuse+specular), 1);
+        gl_FragColor += vec4(attenuation*(diffuse+specular), objectAlpha);
     }
 }
