@@ -116,7 +116,7 @@ Object* ModelManager::getObject(const char* filename)
 
             //Read the object's bounding box and height
             ifs.getline(buf,256);
-            if (ifs.good()){
+            if (strlen(buf) > 0){
 
                 printf("Has BB line!\n");
                 sscanf(buf, "%f,%f,%f %f,%f,%f %f,%f,%f %f,%f,%f %f",

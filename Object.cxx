@@ -109,7 +109,7 @@ bool Object::collision(Object* obj)
     //If the current object is under the first one then we have no collision
     //std::cout << (this->center[1] + (this->height/2)) << " < " << (obj->center[1] - (obj->height/2)) << std::endl;
     if ( (this->center[1] + (this->height/2)) < (obj->center[1] - (obj->height/2)) ){
-        std::cout << "AQUI\n";
+        //std::cout << "AQUI\n";
         return false;
     }
 

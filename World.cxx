@@ -27,7 +27,7 @@ World::World(ModelManager* modelManager, ObjectManager* objectManager, const cha
                 sscanf(buffer, "%s %f %f %f %f %f %f %f", modelPath, &position[0], &position[1], &position[2], &rotation[0], &rotation[1], &rotation[2], &angle);
                 printf("[World Object Info] %s %f %f %f %f %f %f %f\n", modelPath, position[0], position[1], position[2], rotation[0], rotation[1], rotation[2], angle);
                 tempObj = modelManager->getObject(modelPath);
-                std::cout << "[Object Loaded]\n";
+                std::cout << "[Object Loaded] has bounding box: " << tempObj->objectHasBoundingBox() << "\n";
                 tempObj->translate(position);
                 tempObj->rotate(angle ,rotation);
 
