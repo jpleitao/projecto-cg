@@ -107,6 +107,8 @@ int main (void) {
         gameWindow.beginFrame();
         /*obj->rotate(1,vec3(0,1,0));*/
 
+        test1->move(false);
+
         //For debug on the collisions only! - Remove this
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_L ) == GLFW_PRESS){
             test1->translate(vec3(0.0f, 0.0f, 0.1f));
