@@ -84,7 +84,7 @@ int main (void) {
     //test1->printStuff();
 
     test2->translate(vec3(0.0f,1.0f,-5.0f));
-    test2->rotate(35,vec3(0,1,0));
+    test2->rotate(41,vec3(0,1,0));
     //test3->translate(vec3(0.0f,1.0f,-5.0f));
 
     int frameNo = 0;
@@ -137,6 +137,19 @@ int main (void) {
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_R ) == GLFW_PRESS){
             test1->rotate(1, vec3(0.0f, 1, 0.0f));
         }
+
+        //printf("Frame %d\n", frameNo);
+        std::vector<std::vector<vec2> > lines = test1->getBoundingBoxLines();
+
+        /*
+        for (int i = 0 ; i < lines.size(); i++) {
+            std::vector<vec2> line = lines.at(i);
+            printf("LINE %d ", i);
+            for (int j = 0; j < line.size(); j++) {
+                printf("(%f,%f)->", line.at(j).x, line.at(j).y);
+            }
+            printf("\n");
+        }*/
 
         objectManager.moveObjects();
         objectManager.checkLimits();
