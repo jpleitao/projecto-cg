@@ -39,7 +39,8 @@ void ObjectManager::renderObjects() {
 
 void ObjectManager::collideAndFall() {
     bool colide = true;
-    Object* obj_to_move, obj_colided;
+    Object* obj_to_move;
+    Object* obj_colided;
 
     while (colide){
         
