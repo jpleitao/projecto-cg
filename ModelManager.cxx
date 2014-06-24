@@ -139,7 +139,11 @@ Object* ModelManager::getObject(const char* filename)
     vert.push_back(glm::vec4(x3,y3,z3,1));
     vert.push_back(glm::vec4(x4,y4,z4,1));
 
-    width = sqrt( (x1-x2) * (x1-x2) + (y1-y2) * (y1-y2) + (z1-z2) * (z1-z2) );
+    vec3 A = vec3(x1,y1,z1);
+    vec3 B = vec3(x2,y2,z2);
+    dist = A - B;
+
+    width = glm::length(dist);
     lenght = width;
 
     //Create the object class and then return it
