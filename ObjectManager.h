@@ -35,6 +35,7 @@ public:
     void setLaserDirection(vec2 d) {laserDirection=d;}
     vec2 getLaserOrigin() { return laserOrigin;}
     vec2 getLaserDirection() { return laserDirection;}
+    void stopObjects();
 
 private:
     vec2* intersectLineSegments(vec2 a, vec2 b,         vec2 c, vec2 d);

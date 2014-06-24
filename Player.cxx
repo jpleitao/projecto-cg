@@ -39,6 +39,5 @@ void Player::updateViewMatrix(double xoff, double yoff) {
     renderer->setCameraPosition(position);
 }
 void Player::updatePosition(double xoff, double yoff) {
-    return updateViewMatrix(speed*xoff, speed*yoff);
-
+    updateViewMatrix(speed*xoff, speed*yoff);
 }

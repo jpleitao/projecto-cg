@@ -22,17 +22,18 @@ using namespace glm;
 #endif
 
 #ifndef VEL_BOX_H
- #define FACTOR 1
+ #define FACTOR 0.2
 #endif
 
 #ifndef OBS_H
  #define OBSERVER_HEIGHT 3.6
- #define MAX_X 17
- #define MIN_X -17
+ #define MAX_X 19.2
+ #define MIN_X -19.2
  #define MIN_Y 0
  #define MAX_Y 5
- #define MAX_Z 17
- #define MIN_Z -17
+ #define MAX_Z 19.2
+ #define MIN_Z -19.2
+ #define PLAYER_OFFSET 1
 
  #define LASER_Y 1.0f
 #endif
