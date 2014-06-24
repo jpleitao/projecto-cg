@@ -147,7 +147,6 @@ bool Object::collision(Object* obj)
         b[2] = b[2] + 0.001;
 
         for (int j=0;j<obj_size;j++){
-            //j and (j+1)%4
             c = obj->vertexes[j];
             d = obj->vertexes[(j+1)%obj_size];
 
@@ -166,30 +165,28 @@ bool Object::collision(Object* obj)
     current_area = this->lenght * this->width;
     obj_area = obj->lenght * obj->width;
 
-    std::cout << "Current_area = " << current_area << " Obj_area = " << obj_area << std::endl;
+    //std::cout << "Current_area = " << current_area << " Obj_area = " << obj_area << std::endl;
 
     //Different Dimensions -- One can be inside the other (The one with smaller area inside the one with higher area)
-
-    //This is not working!!!!!
     if ( current_area < obj_area){
         //current inside obj
-        std::cout << "MENOR\n";
+        //std::cout << "MENOR\n";
 
         for (int i=0;i<obj->vertexes.size();i++){
             //First triangle: 0, 1 and 2
             if(this->pointInTriangle(obj->vertexes[0], obj->vertexes[1], obj->vertexes[2], this->vertexes[i])){
-                std::cout << "AQUI3\n";
+                //std::cout << "AQUI3\n";
                 return true;
             }
             //Second triangle: 0,3 and 2
             if(this->pointInTriangle(obj->vertexes[0], obj->vertexes[3], obj->vertexes[2], this->vertexes[i])){
-                std::cout << "AQUI4\n";
+                //std::cout << "AQUI4\n";
                 return true;
             }
 
             //Test if the point is in the line of the triangles -- Line that has the points 0 and 2
             if (this->pointInLine(obj->vertexes[0], obj->vertexes[2], this->vertexes[i])){
-                std::cout << "AQUI5\n";
+                //std::cout << "AQUI5\n";
                 return true;
             }
         }
@@ -198,22 +195,22 @@ bool Object::collision(Object* obj)
     else if (obj_area < current_area){
         //obj inside current
 
-        std::cout << "MAIOR\n";
+        //std::cout << "MAIOR\n";
 
         for (int i=0;i<this->vertexes.size();i++){
             if (this->pointInTriangle(this->vertexes[0], this->vertexes[1], this->vertexes[2], obj->vertexes[i])){
-                std::cout << "AQUI6\n";
+                //std::cout << "AQUI6\n";
                 return true;
             }
 
             if(pointInTriangle(this->vertexes[0], this->vertexes[3], this->vertexes[2], obj->vertexes[i])){
-                std::cout << "AQUI7\n";
+                //std::cout << "AQUI7\n";
                 return true;
             }
 
             //Test if the point is in the line of the triangles -- Line that has the points 0 and 2
             if (this->pointInLine(this->vertexes[0], this->vertexes[2], obj->vertexes[i])){
-                std::cout << "AQUI8\n";
+                //std::cout << "AQUI8\n";
                 return true;
             }
         }

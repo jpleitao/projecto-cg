@@ -55,6 +55,9 @@ class Object
         GLfloat getCenterY(){return this->center[1];}
         GLfloat getHeight(){return this->height;}
         void setVelocity_y(GLfloat vel){this->velocity_y = vel;}
+        int getVertexesSize(){return this->vertexes.size();}
+        glm::vec4 getVertexAt(int pos){ assert(pos < this->vertexes.size()); return this->vertexes[pos];}
+        bool objectHasBoundingBox(){return this->hasBoundingBox;}
 
         //DEBUG METHOD - REMOVE THIS
         void printStuff()

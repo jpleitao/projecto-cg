@@ -98,33 +98,37 @@ int main (void) {
         /*obj->rotate(1,vec3(0,1,0));*/
 
         //For debug on the collisions only! - Remove this
-        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_L ) == GLFW_PRESS)
+        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_L ) == GLFW_PRESS){
             test1->translate(vec3(0.0f, 0.0f, 0.1f));
-        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_K ) == GLFW_PRESS)
+        }
+        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_K ) == GLFW_PRESS){
             test1->translate(vec3(-0.1f, 0.0f, 0.0f));
-        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_J ) == GLFW_PRESS)
+        }
+        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_J ) == GLFW_PRESS){
             test1->translate(vec3(0.0f, 0.0f, -0.1f));
-        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_I ) == GLFW_PRESS)
+        }
+        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_I ) == GLFW_PRESS){
             test1->translate(vec3(0.1f, 0.0f, 0.0f));
+        }
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_M ) == GLFW_PRESS){
             test1->translate(vec3(0.0f, -0.1f, 0.0f));
-            if (test1->getCenterY() < (test1->getHeight()/2) )
-                test1->translate(vec3(0.0f, 0.1f , 0.0f));
         }
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_N ) == GLFW_PRESS){
             test1->translate(vec3(0.0f, 0.5f, 0.0f));
-            //FIXME: Verify the height, like in the previous one, but in the other direction
         }
-        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_R ) == GLFW_PRESS)
+        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_R ) == GLFW_PRESS){
             test1->rotate(1, vec3(0.0f, 1, 0.0f));
+        }
 
-        blueLight.setPosition(player.getPosition());       
+        objectManager.checkLimits();
+
+        blueLight.setPosition(player.getPosition());
         changingLight.setPosition( vec3(glm::rotate(mat4(1.0f), (float)frameNo, vec3(0.0f,1.0f,0.0f))*vec4(vec3(3,4,3), 1.0f))); 
         changingLight2.setPosition( vec3(glm::rotate(mat4(1.0f), (float)-frameNo, vec3(0.0f,1.0f,0.0f))*vec4(vec3(3,4,3), 1.0f))); 
         changingLight2.setIntensities(vec3((float)(frameNo/10 % 256) / 512.0, 0.0f,((float)((frameNo/10 + 128) % 256)) / 512.0));
         //changingLight.setIntensities(vec3())
 
-        objectManager.collideAndFall();        
+        objectManager.collideAndFall();
 
 
 		if ( frameNo++ > 0 ) {
