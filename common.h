@@ -21,6 +21,10 @@ using namespace glm;
  #define M_PI 3.1415926535897932384626433832795
 #endif
 
+#ifndef OBJ_H
+ #define OBJ_ACELERATION -0.01
+#endif
+
 #ifndef VEL_BOX_H
  #define FACTOR 0.2
 #endif

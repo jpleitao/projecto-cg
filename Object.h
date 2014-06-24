@@ -30,6 +30,7 @@ class Object
     //To handle the object's collisions with each others and with the player
     bool isBeingPuxed;
     GLfloat velocity_x, velocity_z;//FIXME: Put this into a glm::vec2? Merge it with velocity_y in a glm::vec3?
+    glm::vec3 velocity;
 
     //Hit box's stuff
     bool hasBoundingBox;
@@ -37,6 +38,7 @@ class Object
     glm::vec4 origin_center;
     std::vector<glm::vec4> vertexes;
     std::vector<glm::vec4> start_vertexes;
+    vec3 last_position;//Stores the last position of the object
 
     Light* laserLight;
 
@@ -59,14 +61,14 @@ class Object
 
         GLfloat getCenterY(){return this->center[1];}
         GLfloat getHeight(){return this->height;}
-        void setVelocity_y(GLfloat vel){this->velocity_y = vel;}
+        void setVelocity_y(GLfloat vel){this->velocity[1] = vel;}
         int getVertexesSize(){return this->vertexes.size();}
         glm::vec4 getVertexAt(int pos){ assert(pos < this->vertexes.size()); return this->vertexes[pos];}
         bool objectHasBoundingBox(){return this->hasBoundingBox;}
         void move(bool value, GLfloat vx=0, GLfloat vz=0);
 
-        GLfloat getVelocityX(){return this->velocity_x;}
-        GLfloat getVelocityZ(){return this->velocity_z;}
+        GLfloat getVelocityX(){return this->velocity[0];}
+        GLfloat getVelocityZ(){return this->velocity[2];}
         bool getIsBeingPuxed(){return this->isBeingPuxed;}
 
         void moveAwayFrom(Object* obj);

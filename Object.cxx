@@ -6,8 +6,8 @@ Object::Object(Model* model, Texture* texture, bool bound, GLfloat len, GLfloat 
 {
     this->hasBoundingBox = bound;
     this->isBeingPuxed = false;
-    this->velocity_x = 0;
-    this->velocity_z = 0;
+    
+    this->velocity = vec3(0.0f, 0.0f, 0.0f);
 
     this->origin_lenght = len;
     this->origin_width = w;
@@ -17,8 +17,7 @@ Object::Object(Model* model, Texture* texture, bool bound, GLfloat len, GLfloat 
     this->width = w;
     this->height = h;
 
-    this->aceleration_y = -0.01;//FIXME: HARD-CODED VALUE
-    this->velocity_y = 0;
+    this->aceleration_y = OBJ_ACELERATION;//FIXME: HARD-CODED VALUE
 
     this->origin_center = glm::vec4(0,0,0,1);//The cube is centered in the origin
     this->center = this->origin_center;
@@ -37,22 +36,22 @@ Object::~Object() {
 void Object::fall()
 {
     //Update object's velocity, based on its aceleration
-    this->velocity_y += this->aceleration_y;
+    this->velocity[1] += this->aceleration_y;
 
     //Move the object according to its velocity
-    this->translate(vec3(0.0f, this->velocity_y, 0.0f));
+    this->translate(vec3(0.0f, this->velocity[1], 0.0f));
 
     //Check if on the floor
     if (this->center[1] < (this->height/2) ){
-        this->translate(vec3(0.0f, -this->velocity_y , 0.0f));
-        this->velocity_y = 0;
+        this->translate(vec3(0.0f, -this->velocity[1] , 0.0f));
+        this->velocity[1] = 0;
     }
 }
 
 void Object::undoFall()
 {
     //Move the object up, in the opposite direction of the last "fall" (due to gravity)
-    this->translate(vec3(0.0f, -this->velocity_y, 0.0f));
+    this->translate(vec3(0.0f, -this->velocity[1], 0.0f));
 }
 
 //CCW -- Taken from DNP@LPA
@@ -251,8 +250,8 @@ void Object::move(bool value, GLfloat vx, GLfloat vz)
     this->isBeingPuxed = value;
 
     //Update the object's velocity
-    this->velocity_x = vx;
-    this->velocity_z = vz;
+    this->velocity[0] = vx;
+    this->velocity[2] = vz;
 }
 
 void Object::rotate(GLfloat angle, vec3 axis) {
