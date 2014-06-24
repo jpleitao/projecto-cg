@@ -141,7 +141,7 @@ Object* ModelManager::getObject(const char* filename)
 
     vec3 A = vec3(x1,y1,z1);
     vec3 B = vec3(x2,y2,z2);
-    dist = A - B;
+    vec3 dist = A - B;
 
     width = glm::length(dist);
     lenght = width;
