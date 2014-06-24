@@ -39,6 +39,8 @@ void ObjectManager::renderObjects() {
 
 void ObjectManager::collideAndFall() {
     bool colide = true;
+    Object* obj_to_move;
+    Object* obj_colided;
 
     while (colide){
         
@@ -57,12 +59,29 @@ void ObjectManager::collideAndFall() {
                     std::cout << "COLLISION!\n";
                     colide = true;
 
-                    //Move current away
-                    obj->moveAwayFrom(current);
+                    bool do_stuff = false;
 
-                    //Set obj velocity - FIXME: REFACTOR
-                    obj->move(true, (FACTOR*current->getVelocityX()), (FACTOR*current->getVelocityZ()) );
-                    obj->translate(vec3((FACTOR*current->getVelocityX()),0.0f,(FACTOR*current->getVelocityZ())));
+                    if (obj->getIsBeingPuxed()){
+                        obj_to_move = current;
+                        obj_colided = obj;
+                        do_stuff = true;
+                    }
+
+                    else if (current->getIsBeingPuxed()){
+                        obj_to_move = obj;
+                        obj_colided = current;
+                        do_stuff = true;
+                    }
+
+                    if (do_stuff)
+                    {
+                        //Move current away
+                        obj_to_move->moveAwayFrom(obj_colided);
+
+                        //Set obj velocity - FIXME: REFACTOR
+                        obj_to_move->move(true, (FACTOR * (obj_colided->getVelocityX()) ), (FACTOR * (obj_colided->getVelocityZ()) ) );
+                        obj_to_move->translate(vec3( (FACTOR * (obj_colided->getVelocityX()) ),0.0f,(FACTOR * (obj_colided->getVelocityZ()) ) ));
+                    }
 
                     //assert(0);
                 }
