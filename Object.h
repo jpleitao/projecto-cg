@@ -99,7 +99,7 @@ class Object
             bool above = (getCenterY()-height/2.0f <= LASER_Y);
             //printf("Y CENTER: %f, height: %f, laser_y: %f, below: %d, above: %d\n", getCenterY(), height, LASER_Y, below, above);
 
-            return below && above;
+            return /*true || */(below && above);
         }
 
         Light* getLaserLight() { return laserLight; }

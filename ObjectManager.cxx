@@ -204,6 +204,20 @@ void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, int depth
         Object* thisObj = opaqueObjects.at(i);
         if ( !thisObj->objectHasBoundingBox() || !thisObj->atLaserHeight()) continue;
         std::vector<std::vector<vec2> > lines = thisObj->getBoundingBoxLines();
+/*
+        for (int k = 0 ; k < lines.size(); k++) {
+            std::vector<vec2> line = lines.at(k);
+            printf("LINE %d ", k);
+            for (int k2 = 0; k2 < line.size(); k2++) {
+                printf("(%f,%f)->", line.at(k2).x, line.at(k2).y);
+            }
+            std::vector<Object*> objs;
+            objs.push_back(new Object(new Line(vec3(line.at(0).x,LASER_Y/2,line.at(0).y), vec3(line.at(1).x,LASER_Y/2,line.at(1).y), vec3(0,1,0))));
+            renderer->render(objs);
+            delete objs.at(0);
+            printf("\n");
+        }*/
+
         for (int j = 0; j < lines.size(); j++) {
             vec2 lineP = lines.at(j).at(0), lineQ = lines.at(j).at(1);
             vec2* intersection = intersectLineWithSegment(origin, direction, lineP, lineQ);
@@ -264,14 +278,38 @@ void ObjectManager::clearLaser() {
 }
 
 vec2* ObjectManager::intersectLineSegments(vec2 p1, vec2 p2,         vec2 p3, vec2 p4) {
+
+    //printf("Intersecting (%f,%f) --- (%f,%f)\t\t(%f,%f) --- (%f,%f)\n", p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y );
+/*
+    float A2 = p4.y - p3.y;
+    float B2 = p4.x - p3.x;
+    float C2 = A2*p3.x + B2*p3.y;
+
+    float A1 = p2.x - p1.y;
+    float B1 = p2.x - p1.x;
+    float C1 = A1 * p1.x + B1 * p1.y;
+
+   float det = A1*B2 - A2*B1;
+   if (det == 0)
+   {
+        return NULL;
+   }
+   vec2 d = vec2((B2 * C1 - B1 * C2) / det, -(A1 * C2 - A2 * C1) / det);
+   return new vec2(d);*/
     // Store the values for fast access and easy
     // equations-to-code conversion
-    float x1 = p1.x, x2 = p2.x, x3 = p3.x, x4 = p4.x;
-    float y1 = p1.y, y2 = p2.y, y3 = p3.y, y4 = p4.y;
+    // 
+    //if 
+    double x1 = p1.x, x2 = p2.x, x3 = p3.x, x4 = p4.x;
+    double y1 = p1.y, y2 = p2.y, y3 = p3.y, y4 = p4.y;
      
-    float d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+    double d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+    //printf("x1:%f,  y1:%f,   d:%f\n", x1, y1, d);
     // If d is zero, there is no intersection
-    if (d == 0) return NULL;
+    if (d == 0) {
+        //printf("That determinant is zero!\n");
+        return NULL;
+    }
      
     // Get the x and y
     float pre = (x1*y2 - y1*x2), post = (x3*y4 - y3*x4);
@@ -284,13 +322,13 @@ vec2* ObjectManager::intersectLineSegments(vec2 p1, vec2 p2,         vec2 p3, ve
     if ( y < min(y1, y2) || y > max(y1, y2) ||
     y < min(y3, y4) || y > max(y3, y4) ) return NULL;
      
-
+    //printf("Returning a value\n");
     return new vec2(x,y);
 }
 vec2* ObjectManager::intersectLineWithSegment(vec2 lineOrigin, vec2 direction, vec2 a, vec2 b) {
     vec2 unit =  glm::normalize(direction);
 
-    vec2 farPoint = lineOrigin + 1000000.0f*unit;
+    vec2 farPoint = lineOrigin + 100.0f*unit;
 
     return intersectLineSegments(lineOrigin, farPoint, a, b);
 }
