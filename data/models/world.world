@@ -4,7 +4,7 @@ wall 0 0 19.20 0 1 0 180
 wall -19.20 0 0 0 1 0 90
 floor 0 0 0 0 0 0 0
 stoneBox 6 1.1684 6 0 0 0 0
-smokyBox -6 1.6851 -6 0 0 0 0
+smokyBox -6 1.6851 -6 0 1 0 90
 ceiling 0 8 0 0 0 1 180
 robot 0 0 0 0 0 0 0
 mirrorBox 10 0.9201 10 0 0 0 0
