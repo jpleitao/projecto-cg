@@ -12,8 +12,6 @@ uniform mat3 m_3x3_inv_transp;
 uniform mat4 M;
 uniform mat4 MV;
 
-uniform float objectAlpha;
-
 struct Light {
    vec3 position;
    vec3 intensities; //a.k.a the color of the light
@@ -30,6 +28,9 @@ uniform vec3 cameraPos;
 
 uniform vec3 activeMaterialSpecularColor;
 uniform float activeMaterialShininess;
+
+uniform float objectAlpha;
+
 float rand(vec2 co){
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
