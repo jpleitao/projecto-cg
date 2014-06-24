@@ -20,6 +20,7 @@ Object::Object(Model* model, Texture* texture, bool bound, GLfloat len, GLfloat 
     this->center = this->origin_center;
     this->vertexes = vert;
     this->start_vertexes = vert;
+    laserLight = NULL;
 }
 
 void Object::fall()

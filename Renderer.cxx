@@ -47,8 +47,11 @@ void Renderer::render(std::vector<Object*> objects) {
             program.use();    
             program.setUniform("cameraPos", cameraPos);
             renderLights();
-        } else            
+        } else {            
+            if(objects.at(i)->hasLaserLight()) enableLaserLight(objects.at(i)->getLaserLight());
             objects.at(i)->render(this);
+            disableLaserLight();
+        }
     }
     program.stopUsing();
 }
@@ -65,23 +68,31 @@ void Renderer::addLight(Light* light) {
     light->setRenderer(this);
 }
 
+/* TODO: Objects might have the laser hitting on them. enable laser light */
+void Renderer::disableLaserLight() { program.setUniform("laserLightIndex", -1); }
+void Renderer::enableLaserLight(Light* l) { sendLightToShader(31, l); program.setUniform("laserLightIndex", 31); }
+
+void Renderer::sendLightToShader(int i, Light* light) {
+    char buf[128];
+    sprintf(buf, "lights[%d].position", i);
+    program.setUniform(buf, light->getPosition());
+    sprintf(buf, "lights[%d].intensities", i);
+    program.setUniform(buf, light->getIntensities());
+    sprintf(buf, "lights[%d].constantAttenuation", i);
+    program.setUniform(buf, light->getConstantAttenuation());
+    sprintf(buf, "lights[%d].linearAttenuation", i);
+    program.setUniform(buf, light->getLinearAttenuation());
+    sprintf(buf, "lights[%d].quadraticAttenuation", i);
+    program.setUniform(buf, light->getQuadraticAttenuation());
+}
+
 void Renderer::renderLights() {
-    static const int maxLights = 32; //FIXME: hardcoded
+    static const int maxLights = 31; //FIXME: hardcoded we reserve 32 for the "laser light"
 
     int len = maxLights > lights.size() ? lights.size() : maxLights;
     program.setUniform("numUsedLights", len);
     for (int i = 0; i < len; i++) {
-        char buf[128];
-        sprintf(buf, "lights[%d].position", i);
-        program.setUniform(buf, lights.at(i)->getPosition());
-        sprintf(buf, "lights[%d].intensities", i);
-        program.setUniform(buf, lights.at(i)->getIntensities());
-        sprintf(buf, "lights[%d].constantAttenuation", i);
-        program.setUniform(buf, lights.at(i)->getConstantAttenuation());
-        sprintf(buf, "lights[%d].linearAttenuation", i);
-        program.setUniform(buf, lights.at(i)->getLinearAttenuation());
-        sprintf(buf, "lights[%d].quadraticAttenuation", i);
-        program.setUniform(buf, lights.at(i)->getQuadraticAttenuation());
+        sendLightToShader(i, lights.at(i));
     }
 
 }

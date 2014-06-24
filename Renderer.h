@@ -80,6 +80,11 @@ class Renderer
         void enableLaserShader() { laserShaderEnabled = true; }
         void disableLaserShader() { laserShaderEnabled = false; }
 
+        void enableLaserLight(Light* l);
+        void disableLaserLight();
+
+        void sendLightToShader(int index, Light* light);
+
 };
 
 #endif // RENDERER_H

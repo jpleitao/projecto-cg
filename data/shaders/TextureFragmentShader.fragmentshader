@@ -24,6 +24,7 @@ struct Light {
 const int numberOfLights = 32; //FIXME: hardcoded
 
 uniform Light lights[numberOfLights];
+uniform int laserLightIndex;
 uniform int numUsedLights;
 uniform vec3 cameraPos;
 
@@ -32,13 +33,9 @@ uniform float activeMaterialShininess;
 float rand(vec2 co){
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
-void main(){
 
-    vec3 normal = normalize(varyingNormalDirection);
-    vec3 tempColour = vec3(0,0,0);
-    for (int i = 0; i < numUsedLights; i++) {
-        Light light = lights[i];
-         //calculate the location of this fragment (pixel) in world coordinates
+vec3 getLightContribution(vec3 normal, Light light) {
+    //calculate the location of this fragment (pixel) in world coordinates
         
     vec3 surfacePos = vec3(M * vec4(fragVert, 1));
     vec4 surfaceColor = texture2D(myTextureSampler, UV);
@@ -68,8 +65,21 @@ void main(){
         // 1. The angle of incidence: brightness
         // 2. The color/intensities of the light: light.intensities
         // 3. The texture and texture coord: texture(tex, fragTexCoord)
-        tempColour += attenuation*(diffuse+specular);
+        return attenuation*(diffuse+specular);
+}
+
+void main(){
+
+    vec3 normal = normalize(varyingNormalDirection);
+    vec3 tempColour = vec3(0,0,0);
+    for (int i = 0; i < numUsedLights; i++) {
+        Light light = lights[i];
+        tempColour += getLightContribution(normal, light); 
     }
+
+    if ( laserLightIndex != -1)
+        tempColour += getLightContribution(normal, lights[laserLightIndex]); 
+
 
     gl_FragColor=vec4(tempColour, objectAlpha);
 }

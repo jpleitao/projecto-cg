@@ -6,6 +6,7 @@
 #include "shaders/ShaderProgram.h"
 
 class Renderer; //Forward declare Renderer
+class Light;
 
 class Object
 {
@@ -32,6 +33,8 @@ class Object
     glm::vec4 origin_center;
     std::vector<glm::vec4> vertexes;
     std::vector<glm::vec4> start_vertexes;
+
+    Light* laserLight;
 
    float transparency;
 
@@ -66,6 +69,10 @@ class Object
         bool isTransparent() { return transparency < 1.0f; }
 
         bool needLaserShader() { return model ? model->needLaserShader() : false; }
+
+        Light* getLaserLight() { return laserLight; }
+        void setLaserLight(Light* l) { laserLight = l; }
+        bool hasLaserLight() { return laserLight != NULL; }
 
     private:
         void createHitBoxes();

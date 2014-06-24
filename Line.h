@@ -10,7 +10,7 @@ class Line : public Model
         GLuint colorBuffer;
     public:
         //FIXME: Hardcoded values
-        Line(vec3 start=vec3(0,-20,0), vec3 end=vec3(0,20,0), vec3 color=vec3(1,0,0)) : Model(NULL,NULL,GL_LINES) {
+        Line(vec3 start=vec3(0,2,-20), vec3 end=vec3(0,2,20), vec3 color=vec3(1,0,0)) : Model(NULL,NULL,GL_LINES) {
 
             std::vector<vec3> vertex;
             vertex.push_back(start); vertex.push_back(end);
