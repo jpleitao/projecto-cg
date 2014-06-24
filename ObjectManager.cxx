@@ -75,12 +75,21 @@ void ObjectManager::collideAndFall() {
 
                     if (do_stuff)
                     {
+                        assert(obj_colided->getHasLastPosition());//FIXME: CANNOT GET HERE WITHOUT OBJECT IN MOVEMENT RIGHT?
+                        //Determine the direction of the movement
+                        glm::vec4 last_pos = obj_colided->getLastPosition();
+                        glm::vec4 current_pos = obj_colided->getCenter();
+                        glm::vec4 movement = current_pos - last_pos;
+
+                        //Normalize the movement vector
+                        movement = glm::normalize(movement);
+
                         //Move current away
-                        obj_to_move->moveAwayFrom(obj_colided);
+                        obj_to_move->moveAwayFrom(obj_colided,movement);
 
                         //Set obj velocity - FIXME: REFACTOR
-                        obj_to_move->move(true, (FACTOR * (obj_colided->getVelocityX()) ), (FACTOR * (obj_colided->getVelocityZ()) ) );
-                        obj_to_move->translate(vec3( (FACTOR * (obj_colided->getVelocityX()) ),0.0f,(FACTOR * (obj_colided->getVelocityZ()) ) ));
+                        obj_to_move->move(true, (FACTOR * movement[0]), (FACTOR * movement[2]) );
+                        obj_to_move->translate(vec3( (FACTOR * movement[0]),0.0f,(FACTOR * movement[2])));
                     }
 
                     //assert(0);
@@ -89,12 +98,21 @@ void ObjectManager::collideAndFall() {
 
             if (!colide){
                 //Object is not coliding with anything, so we can make it go down
+
+                bool last_position = current->getHasLastPosition();
+
+                //Make the object go down
                 current->fall();
+
                 for (int j=i+1;j<allObjects.size();j++){
                     if (current->collision(allObjects[j])){
                         std::cout << "FALSE!\n";
                         //Move the object in the opposite direction
                         current->undoFall();
+
+                        //If this was the first move of the player, since we are going to cancel it we must reset the "last_position" value
+                        if (!last_position)
+                            current->setHasLastPosition(false);
 
                         //Stop the falling of the object
                         current->setVelocity_y(0);

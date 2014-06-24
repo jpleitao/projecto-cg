@@ -38,7 +38,9 @@ class Object
     glm::vec4 origin_center;
     std::vector<glm::vec4> vertexes;
     std::vector<glm::vec4> start_vertexes;
-    vec3 last_position;//Stores the last position of the object
+
+    bool has_last_position;//Tells us if the current instance has made at least one movement
+    glm::vec4 last_position;//Stores the last position of the center of the object
 
     Light* laserLight;
 
@@ -59,6 +61,7 @@ class Object
         void fall();
         void undoFall();
 
+        glm::vec4 getCenter(){return this->center;}
         GLfloat getCenterY(){return this->center[1];}
         GLfloat getHeight(){return this->height;}
         void setVelocity_y(GLfloat vel){this->velocity[1] = vel;}
@@ -71,7 +74,11 @@ class Object
         GLfloat getVelocityZ(){return this->velocity[2];}
         bool getIsBeingPuxed(){return this->isBeingPuxed;}
 
-        void moveAwayFrom(Object* obj);
+        bool getHasLastPosition(){return this->has_last_position;}
+        void setHasLastPosition(bool value){this->has_last_position = value;}
+        glm::vec4 getLastPosition(){return this->last_position;}
+
+        void moveAwayFrom(Object* obj, glm::vec4 movement);
 
         //DEBUG METHOD - REMOVE THIS
         void printStuff()
@@ -107,6 +114,7 @@ class Object
         int segmentIntersection(glm::vec4 a, glm::vec4 c, glm::vec4 b, glm::vec4 d);
         bool pointInLine(vec4 a, vec4 b, vec4 point);
         int pointInTriangle(glm::vec4 v1, glm::vec4 v2, glm::vec4 v3, glm::vec4 pt);
+        void updatePlayerLastPosition();
 
 };
 #endif // OBJECT_H

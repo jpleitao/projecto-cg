@@ -17,6 +17,8 @@ Object::Object(Model* model, Texture* texture, bool bound, GLfloat len, GLfloat 
     this->width = w;
     this->height = h;
 
+    this->has_last_position = false;
+
     this->aceleration_y = OBJ_ACELERATION;//FIXME: HARD-CODED VALUE
 
     this->origin_center = glm::vec4(0,0,0,1);//The cube is centered in the origin
@@ -33,10 +35,20 @@ Object::~Object() {
     if ( this->laserLight ) delete laserLight;
 }
 
+void Object::updatePlayerLastPosition()
+{
+    //We are going to move the object, so lets update its center's last position
+    this->has_last_position = true;
+    this->last_position = this->center;
+}
+
 void Object::fall()
 {
     //Update object's velocity, based on its aceleration
     this->velocity[1] += this->aceleration_y;
+
+    //Update the player's last position
+    this->updatePlayerLastPosition();
 
     //Move the object according to its velocity
     this->translate(vec3(0.0f, this->velocity[1], 0.0f));
@@ -233,12 +245,16 @@ bool Object::collision(Object* obj)
 }
 
 //Slowly move the "this" object away from "obj" in the direction of "obj's" velocity
-void Object::moveAwayFrom(Object* obj)
+void Object::moveAwayFrom(Object* obj, glm::vec4 movement)
 {
-    vec3 del = vec3(FACTOR*(obj->velocity_x),0.0f,FACTOR*(obj->velocity_z));
+    vec3 del = vec3(FACTOR*movement[0],0.0f,FACTOR*movement[2]);
     //Move the object away
     while(this->collision(obj)){
         this->translate(del);
+        
+        //Update the player's last position
+        this->updatePlayerLastPosition();
+        
         //std::cout << "Moving this away from obj\n";
     }
 }
@@ -263,6 +279,9 @@ void Object::rotate(GLfloat angle, vec3 axis) {
     //Update the object's vertexes' position
     for (int i=0;i<this->vertexes.size();i++)
         this->vertexes[i] = this->modelMatrix * this->start_vertexes[i];
+
+    //Update the player's last position
+    this->updatePlayerLastPosition();
 }
 
 void Object::scale(vec3 scaleVec) {
@@ -281,6 +300,9 @@ void Object::scale(vec3 scaleVec) {
                         (this->vertexes[0][2]-this->vertexes[1][2]) * (this->vertexes[0][2]-this->vertexes[1][2]) );
     this->lenght = this->width;
     this->height *= scaleVec[1];
+
+    //Update the player's last position
+    this->updatePlayerLastPosition();
 }
 
 void Object::translate(vec3 vec) {
@@ -291,6 +313,9 @@ void Object::translate(vec3 vec) {
 
     for (int i=0;i<this->vertexes.size();i++)
         this->vertexes[i] = this->modelMatrix * this->start_vertexes[i];
+
+    //Update the player's last position
+    this->updatePlayerLastPosition();
 }
 
 void Object::resetTransforms() {
@@ -305,6 +330,9 @@ void Object::resetTransforms() {
     this->lenght = this->origin_lenght;
     this->width = this->origin_width;
     this->height = this->origin_height;
+
+    //Update the player's last position
+    this->has_last_position = false;
 }
 
 void Object::render(Renderer* renderer) {
