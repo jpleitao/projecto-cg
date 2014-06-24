@@ -137,6 +137,9 @@ int main (void) {
             test1->move(true);
         }
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_R ) == GLFW_PRESS){
+            test1->rotate(-1, vec3(0.0f, 1, 0.0f));
+        }
+        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_T ) == GLFW_PRESS){
             test1->rotate(1, vec3(0.0f, 1, 0.0f));
         }
 
