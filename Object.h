@@ -63,11 +63,14 @@ class Object
                 std::cout << "Vertex " << i << ": (" << this->vertexes[i][0] << "," << this->vertexes[i][1] << "," << this->vertexes[i][2] << ")\n";
         }
 
+        bool isTransparent() { return transparency < 1.0f; }
+
     private:
         void createHitBoxes();
         GLfloat ccw(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3);
         int segmentIntersection(glm::vec4 a, glm::vec4 c, glm::vec4 b, glm::vec4 d);
         bool pointInLine(vec4 a, vec4 b, vec4 point);
         int pointInTriangle(glm::vec4 v1, glm::vec4 v2, glm::vec4 v3, glm::vec4 pt);
+
 };
 #endif // OBJECT_H

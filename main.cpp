@@ -10,6 +10,7 @@
 #include "ModelManager.h"
 #include "World.h"
 #include "Light.h"
+#include "ObjectManager.h"
 
 int main (void) {	
 	GameWindow gameWindow;
@@ -42,7 +43,9 @@ int main (void) {
     Object* obj4 = new Object(new Model(), new Texture());*/
     //objects.push_back(obj2); objects.push_back(obj); objects.push_back(obj3);  objects.push_back(obj4);
 
-    World* world = new World(&modelManager ,&renderer, "data/models/world");
+    World world(&modelManager ,&renderer, "data/models/world");
+
+    ObjectManager objectManager(&renderer);
 
     std::vector<glm::vec4> vert;
     GLfloat cube_size = 2;
@@ -53,7 +56,8 @@ int main (void) {
     vert.push_back(glm::vec4(cube_size/2,cube_size,cube_size/2,1));
     Object* test1 = new Object(new Model(), new Texture(), true, cube_size, cube_size, cube_size, vert);
     Object* test2 = new Object(new Model(), new Texture(), true, cube_size, cube_size, cube_size, vert);
-    objects.push_back(test1); objects.push_back(test2);
+    objectManager.addObject(test1);
+    objectManager.addObject(test2);
 	
     /*
 	obj->rotate(33,vec3(0,1,0));
@@ -113,34 +117,7 @@ int main (void) {
         changingLight2.setIntensities(vec3((float)(frameNo/10 % 256) / 512.0, 0.0f,((float)((frameNo/10 + 128) % 256)) / 512.0));
         //changingLight.setIntensities(vec3())
 
-        //Check for collisions! -- For each object test it with the ones after him
-        for (int i=0;i<objects.size();i++){
-            Object* current = objects[i];
-            bool colide = false;
-
-            for (int j=i+1;j<objects.size();j++){
-                if (current->collision(objects[j])){
-                    std::cout << "COLLISION!\n";
-                    colide = true;
-                    //assert(0);
-                }
-            }
-
-            if (!colide){
-                //Object is not coliding with anything, so we can make it go down
-                current->fall();
-                for (int j=i+1;j<objects.size();j++){
-                    if (current->collision(objects[j])){
-                        //Move the object in the opposite direction
-                        current->undoFall();
-
-                        //Stop the falling of the object
-                        current->setVelocity_y(0);
-                        break;
-                    }
-                }
-            }
-        }
+        objectManager.collideAndFall();        
 
 
 		if ( frameNo++ > 0 ) {
@@ -169,8 +146,8 @@ int main (void) {
 		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        world->render();
-		renderer.render(objects);
+        world.render();
+        objectManager.renderObjects();
 
 		gameWindow.endFrame();
     }

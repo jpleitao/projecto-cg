@@ -40,7 +40,6 @@ void Renderer::render(std::vector<Object*> objects) {
 }
 
 void Renderer::removeLight(Light* light) {
-
     std::vector<Light*>::iterator position = std::find(lights.begin(), lights.end(), light);
     if (position != lights.end())
         lights.erase(position);
