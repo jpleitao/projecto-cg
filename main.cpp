@@ -28,6 +28,7 @@ int main (void) {
     // Enable depth test / Accept fragment if it closer to the camera than the former one
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
+    glLineWidth(2);
 
     Renderer renderer;
 
