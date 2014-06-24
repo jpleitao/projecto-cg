@@ -167,7 +167,7 @@ void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, float cur
         int index = closestPointToSourcePoint(origin, candidatePoints);
         vec2 point = candidatePoints.at(index);
         vec2 unit = glm::normalize(point-origin);
-        vec2 lightXZ = point-0.2f*unit;
+        vec2 lightXZ = point-0.1f*unit;
 
         Object* obj = originatingObjects.at(index);
         obj->setLaserLight(new Light(vec3(lightXZ.x, LASER_Y, lightXZ.y),vec3(1.0f*currentIntensity,0.0f,0.0f)) );
@@ -182,9 +182,8 @@ void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, float cur
 
 void ObjectManager::clearLaser() {
     for (int i = 0; i < temporaryLaserObjects.size(); i++) {
-        delete temporaryLaserObjects.at(i);        
         removeObject(temporaryLaserObjects.at(i));
-        i--;
+        delete temporaryLaserObjects.at(i);        
     }
     temporaryLaserObjects.clear();
     for (int i = 0; i < allObjects.size(); i++ ) {
