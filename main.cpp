@@ -43,9 +43,11 @@ int main (void) {
     Object* obj4 = new Object(new Model(), new Texture());*/
     //objects.push_back(obj2); objects.push_back(obj); objects.push_back(obj3);  objects.push_back(obj4);
 
-    World world(&modelManager ,&renderer, "data/models/world");
-
     ObjectManager objectManager(&renderer);
+
+    World world(&modelManager ,&objectManager, "data/models/world");
+
+    
 
     std::vector<glm::vec4> vert;
     GLfloat cube_size = 2;
@@ -164,7 +166,6 @@ int main (void) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         objectManager.renderObjects();
-        world.render();
 
         gameWindow.endFrame();
     }

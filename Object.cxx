@@ -1,5 +1,6 @@
 #include "Object.h"
 #include "Renderer.h"
+#include "Light.h"
 
 Object::Object(Model* model, Texture* texture, bool bound, GLfloat len, GLfloat w, GLfloat h, std::vector<glm::vec4> vert, float transparency) : model(model), texture(texture), modelMatrix(mat4(1.0f)), transparency(transparency)
 {
@@ -312,3 +313,5 @@ void Object::render(Renderer* renderer) {
     model->finishRender(renderer);
     if ( texture ) texture->finishRender(renderer, model);
 }
+
+void Object::setLaserLight(Light* l) { if(laserLight) delete laserLight; laserLight = l; }

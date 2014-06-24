@@ -39,6 +39,7 @@ void ObjectManager::collideAndFall() {
     //Check for collisions! -- For each object test it with the ones after him
     for (int i=0;i<allObjects.size();i++){
         Object* current = allObjects[i];
+        if ( !current->objectHasBoundingBox() ) continue; //Skip world objects
         bool colide = false;
 
         for (int j=i+1;j<allObjects.size();j++){
@@ -72,6 +73,8 @@ void ObjectManager::checkLimits()
     for (int i=0;i<allObjects.size();i++){
         Object* current = allObjects[i];
 
+        if (!current->objectHasBoundingBox()) continue;
+        
         //Check height
         if (current->getCenterY() < MIN_Y )
             current->translate(vec3(0.0f, (MIN_Y - current->getCenterY() ), 0.0f));
@@ -79,8 +82,7 @@ void ObjectManager::checkLimits()
         else if (current->getCenterY() > MAX_Y )
             current->translate(vec3(0.0f, (MAX_Y - current->getCenterY() ), 0.0f));
 
-        if (!current->objectHasBoundingBox())
-            continue;
+        
 
         //Check X and Z positions. Get the maximum and minimum of each
         GLfloat max_x, min_x, max_z, min_z, current_x, current_z;

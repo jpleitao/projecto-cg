@@ -1,6 +1,6 @@
 #ifndef WORLD_H
 
-#include "Renderer.h"
+#include "ObjectManager.h"
 #include "ModelManager.h"
 #include <stdio.h>
 #include <iostream>
@@ -11,11 +11,10 @@
 class World
 {
     std::vector<Object*> worldObjects;
-    Renderer* renderer;
+    ObjectManager* objectManager;
 
 public:
-    World(ModelManager* modelManager, Renderer* renderer, const char* filename);
-    void render();
+    World(ModelManager* modelManager, ObjectManager* renderer, const char* filename);
 };
 
 #endif

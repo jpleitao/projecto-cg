@@ -1,7 +1,7 @@
 #include "World.h"
 #include "Light.h" //MAXI
 
-World::World(ModelManager* modelManager, Renderer* renderer, const char* filename)
+World::World(ModelManager* modelManager, ObjectManager* objectManager, const char* filename)
 {
     glm::vec3 position;
     glm::vec3 rotation;
@@ -17,7 +17,7 @@ World::World(ModelManager* modelManager, Renderer* renderer, const char* filenam
     std::ifstream ifs (path.c_str(), std::ifstream::in);
     char modelPath[25];
 
-    this->renderer = renderer;
+    this->objectManager = objectManager;
 
     int c = 0;
     if(ifs) {
@@ -37,13 +37,9 @@ World::World(ModelManager* modelManager, Renderer* renderer, const char* filenam
                     tempObj->setLaserLight(l);
                 }
                 worldObjects.push_back(tempObj);
+                objectManager->addObject(tempObj);
             }
         }
     }
-    this->renderer = renderer;
     std::cout << "[Rendering]\n";
-}
-
-void World::render() {
-    (this->renderer)->render(worldObjects);
 }

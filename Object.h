@@ -82,7 +82,7 @@ class Object
         bool needLaserShader() { return model ? model->needLaserShader() : false; }
 
         Light* getLaserLight() { return laserLight; }
-        void setLaserLight(Light* l) { if(laserLight) delete laserLight; laserLight = l; }
+        void setLaserLight(Light* l);
         bool hasLaserLight() { return laserLight != NULL; }
 
     private:

@@ -109,16 +109,21 @@ Object* ModelManager::getObject(const char* filename)
 
     if (ifs){
         if (ifs.good()){
+            char buf[256];
             //Skip first two lines
             std::getline(ifs, line);
             std::getline(ifs, line);
 
             //Read the object's bounding box and height
-            if (std::getline(ifs,line)){
-                sscanf(line.c_str(), "%f,%f,%f %f,%f,%f %f,%f,%f %f,%f,%f %f",
+            ifs.getline(buf,256);
+            if (ifs.good()){
+
+                printf("Has BB line!\n");
+                sscanf(buf, "%f,%f,%f %f,%f,%f %f,%f,%f %f,%f,%f %f",
                                       &x1, &y1, &z1, &x2, &y2, &z2, &x3, &y3, &z3, &x4, &y4, &z4, &height);
                 bound = true;
-            }
+            } else
+                ifs.clear();
         }
     }
     else{
