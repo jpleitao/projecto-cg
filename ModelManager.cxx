@@ -120,7 +120,7 @@ Object* ModelManager::getObject(const char* filename)
             if (strlen(buf) > 0){
 
                 printf("Has BB line!\n");
-                sscanf(buf, "%f,%f,%f %f,%f,%f %f,%f,%f %f,%f,%f %f",
+                sscanf(buf, "%f %f %f %f %f %f %f %f %f %f %f %f %f",
                                       &x1, &y1, &z1, &x2, &y2, &z2, &x3, &y3, &z3, &x4, &y4, &z4, &height);
                 assert(y1 == y2 && y2 == y3 && y3 == y4);
                 bound = true;
