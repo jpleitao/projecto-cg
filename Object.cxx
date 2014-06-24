@@ -249,18 +249,10 @@ void Object::move(bool value, GLfloat vx, GLfloat vz)
 {
     //Make the object be moving
     this->isBeingPuxed = value;
-    //FIXME: IF NOT NEDDED
-    if (value){
-        //Update the object's velocity
-        this->velocity_x = vx;
-        this->velocity_z = vz;
-    }
 
-    else{
-        //Object is not being puxed, set its velocity to zero -- FIXME: SHOULD HAPPEN ONLY WHEN RESETING THE VELOCITY TO 0?
-        this->velocity_x = 0;
-        this->velocity_z = 0;
-    }
+    //Update the object's velocity
+    this->velocity_x = vx;
+    this->velocity_z = vz;
 }
 
 void Object::rotate(GLfloat angle, vec3 axis) {

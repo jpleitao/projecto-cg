@@ -293,3 +293,14 @@ int  ObjectManager::closestPointToSourcePoint(vec2 sourcePoint, std::vector<vec2
 
     return i;
 }
+
+void ObjectManager::stopObjects()
+{
+    Object* current;
+    for (int i=0;i<this->allObjects.size();i++){
+        current = this->allObjects[i];
+
+        //Stop the object
+        current->move(false);
+    }
+}

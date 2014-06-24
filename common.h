@@ -27,12 +27,12 @@ using namespace glm;
 
 #ifndef OBS_H
  #define OBSERVER_HEIGHT 3.6
- #define MAX_X 17
- #define MIN_X -17
+ #define MAX_X 20
+ #define MIN_X -20
  #define MIN_Y 0
  #define MAX_Y 5
- #define MAX_Z 17
- #define MIN_Z -17
+ #define MAX_Z 20
+ #define MIN_Z -20
 
  #define LASER_Y 1.0f
 #endif

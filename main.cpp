@@ -107,7 +107,7 @@ int main (void) {
         gameWindow.beginFrame();
         /*obj->rotate(1,vec3(0,1,0));*/
 
-        test1->move(false);
+        objectManager.stopObjects();
 
         //FIXME: REFACTOR
         //For debug on the collisions only! - Remove this
