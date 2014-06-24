@@ -21,6 +21,10 @@ using namespace glm;
  #define M_PI 3.1415926535897932384626433832795
 #endif
 
+#ifndef VEL_BOX_H
+ #define FACTOR 0.2
+#endif
+
 #ifndef OBS_H
  #define OBSERVER_HEIGHT 3.6
  #define MAX_X 17

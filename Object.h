@@ -68,6 +68,8 @@ class Object
         GLfloat getVelocityX(){return this->velocity_x;}
         GLfloat getVelocityZ(){return this->velocity_z;}
 
+        void moveAwayFrom(Object* obj);
+
         //DEBUG METHOD - REMOVE THIS
         void printStuff()
         {

@@ -109,7 +109,7 @@ bool Object::collision(Object* obj)
     //If the current object is under the first one then we have no collision
     //std::cout << (this->center[1] + (this->height/2)) << " < " << (obj->center[1] - (obj->height/2)) << std::endl;
     if ( (this->center[1] + (this->height/2)) < (obj->center[1] - (obj->height/2)) ){
-        std::cout << "AQUI\n";
+        //std::cout << "AQUI\n";
         return false;
     }
 
@@ -163,9 +163,10 @@ bool Object::collision(Object* obj)
 
             if (this->segmentIntersection(a,c,b,d)){
                 std::cout << "Found collision! Going to return true" << std::endl;
-                if (this->center[1] > obj->center[1]){
+
+                /*if (this->center[1] > obj->center[1]){
                     //std::cout << "I am the one on top of the other!" << std::endl;
-                }
+                }*/
                 return true;
             }
         }
@@ -230,6 +231,17 @@ bool Object::collision(Object* obj)
     //std::cout << "NOPE\n";
 
     return false;
+}
+
+//Slowly move the "this" object away from "obj" in the direction of "obj's" velocity
+void Object::moveAwayFrom(Object* obj)
+{
+    vec3 del = vec3(FACTOR*(obj->velocity_x),0.0f,FACTOR*(obj->velocity_z));
+    //Move the object away
+    while(this->collision(obj)){
+        obj->translate(del);
+        std::cout << "Moving this away from obj\n";
+    }
 }
 
 //Method to handle the object's collisions. If value = true then the player is hiting the object and it should be moving

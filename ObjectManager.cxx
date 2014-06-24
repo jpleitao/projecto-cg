@@ -38,31 +38,43 @@ void ObjectManager::renderObjects() {
 }
 
 void ObjectManager::collideAndFall() {
-    //Check for collisions! -- For each object test it with the ones after him
-    for (int i=0;i<allObjects.size();i++){
-        Object* current = allObjects[i];
-        if ( !current->objectHasBoundingBox() ) continue; //Skip world objects
-        bool colide = false;
+    bool colide = true;
 
-        for (int j=i+1;j<allObjects.size();j++){
-            if (current->collision(allObjects[j])){
-                std::cout << "COLLISION!\n";
-                colide = true;
-                //assert(0);
-            }
-        }
+    while (colide){
+        
+        colide = false;
+        
+        //Check for collisions! -- For each object test it with the ones after him
+        for (int i=0;i<allObjects.size();i++){
+            Object* current = allObjects[i];
+            if ( !current->objectHasBoundingBox() ) continue; //Skip world objects
+            colide = false;
 
-        if (!colide){
-            //Object is not coliding with anything, so we can make it go down
-            current->fall();
             for (int j=i+1;j<allObjects.size();j++){
-                if (current->collision(allObjects[j])){
-                    //Move the object in the opposite direction
-                    current->undoFall();
+                Object* obj = allObjects[j];
 
-                    //Stop the falling of the object
-                    current->setVelocity_y(0);
-                    break;
+                if (current->collision(obj)){
+                    std::cout << "COLLISION!\n";
+                    colide = true;
+
+                    current->moveAwayFrom(obj);
+                    //assert(0);
+                }
+            }
+
+            if (!colide){
+                //Object is not coliding with anything, so we can make it go down
+                current->fall();
+                for (int j=i+1;j<allObjects.size();j++){
+                    if (current->collision(allObjects[j])){
+                        std::cout << "FALSE!\n";
+                        //Move the object in the opposite direction
+                        current->undoFall();
+
+                        //Stop the falling of the object
+                        current->setVelocity_y(0);
+                        break;
+                    }
                 }
             }
         }
@@ -83,7 +95,6 @@ void ObjectManager::checkLimits()
 
         else if (current->getCenterY() > MAX_Y )
             current->translate(vec3(0.0f, (MAX_Y - current->getCenterY() ), 0.0f));
-
         
 
         //Check X and Z positions. Get the maximum and minimum of each
