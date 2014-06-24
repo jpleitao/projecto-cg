@@ -22,7 +22,11 @@ using namespace glm;
 #endif
 
 #ifndef OBS_H
- #define OBSERVER_HEIGHT 1
+ #define OBSERVER_HEIGHT 3.6
+ #define MAX_X 17
+ #define MIN_X -17
+ #define MAX_Z 17
+ #define MIN_Z -17
 #endif
 
 #endif

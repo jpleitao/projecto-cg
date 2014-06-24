@@ -151,9 +151,21 @@ int main (void) {
             //Check if the player is under the floor
             vec3 player_position = player.getPosition();
 
-            if (player_position[1] < OBSERVER_HEIGHT)//FIXME: We are considering 1 to be our observer's height. We can change it later
-                player.setPosition(vec3(player_position[0], 1, player_position[2]));
+            //Check if the player is inside the field. If not, put him there!
+            if (player_position[0] < MIN_X)
+                player_position[0] = MIN_X;
+            
+            else if (player_position[0] > MAX_X)
+                player_position[0] = MAX_X;
 
+            if (player_position[2] < MIN_Z)
+                player_position[2] = MIN_Z;
+
+            else if (player_position[2] > MAX_Z)
+                player_position[2] = MAX_Z;
+
+            //Reset the player's height
+            player.setPosition(vec3(player_position[0], OBSERVER_HEIGHT, player_position[2]));
 		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
