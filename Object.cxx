@@ -282,13 +282,13 @@ void Object::render(Renderer* renderer) {
     renderer->setCurrentModelMatrix(modelMatrix);    
 
     //Draw the model with the texture mapped
-    texture->beginRender(renderer, model);
+    if ( texture ) texture->beginRender(renderer, model);
     model->beginRender(renderer);
 
-    renderer->getCurrentProgram()->setUniform("objectAlpha", this->transparency);
+    if (!needLaserShader() ) renderer->getCurrentProgram()->setUniform("objectAlpha", this->transparency);
 
     model->draw(renderer);
     
     model->finishRender(renderer);
-    texture->finishRender(renderer, model);
+    if ( texture ) texture->finishRender(renderer, model);
 }

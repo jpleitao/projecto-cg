@@ -2,7 +2,7 @@
 #include "ObjLoader.h"
 #include "Renderer.h"
 
-Model::Model(ModelArrays* info, Texture* text)
+Model::Model(ModelArrays* info, Texture* text, int primitiveType)
 {
     if ( info == NULL && text == NULL ) {
         this->objectInfo = ObjLoader("data/models/obj/dummy.obj").load();
@@ -11,6 +11,7 @@ Model::Model(ModelArrays* info, Texture* text)
         this->objectInfo = info;
         this->texture = text;
     }
+    this->primitiveType = primitiveType;   
 }
 
 void Model::beginRender(Renderer* renderer) {
@@ -25,16 +26,18 @@ void Model::beginRender(Renderer* renderer) {
         (void*)0                      // array buffer offset
     );
 
-    glEnableVertexAttribArray(renderer->getNormalsHandle());
-    glBindBuffer(GL_ARRAY_BUFFER, objectInfo->getNormalsHandle());
-    glVertexAttribPointer(
-        renderer->getNormalsHandle(),  // The attribute we want to configure
-        3,    // size
-        GL_FLOAT,                     // type
-        GL_FALSE,                     // normalized?
-        0,                            // stride
-        (void*)0                      // array buffer offset
-    );
+    if ( objectInfo->hasNormals() ) {
+        glEnableVertexAttribArray(renderer->getNormalsHandle());
+        glBindBuffer(GL_ARRAY_BUFFER, objectInfo->getNormalsHandle());
+        glVertexAttribPointer(
+            renderer->getNormalsHandle(),  // The attribute we want to configure
+            3,    // size
+            GL_FLOAT,                     // type
+            GL_FALSE,                     // normalized?
+            0,                            // stride
+            (void*)0                      // array buffer offset
+        );
+    }
 }
 
 void Model::finishRender(Renderer* renderer) {
@@ -43,7 +46,8 @@ void Model::finishRender(Renderer* renderer) {
 }
 
 void Model::draw(Renderer* renderer) {
-    glDrawArrays(GL_TRIANGLES, 0, objectInfo->objectVertex.size());
+    //printf("Drawing a model!\n");
+    glDrawArrays(this->primitiveType, 0, objectInfo->objectVertex.size());
 }
 
 Model::~Model()

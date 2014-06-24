@@ -6,6 +6,7 @@
 #include "shaders/ShaderProgram.h"
 #include "Object.h"
 
+#define NUM_SHADERS 2
 class Light;
 
 class Renderer
@@ -21,22 +22,26 @@ class Renderer
     // The only shader we currently use
     ShaderProgram program;
 
+    ShaderProgram laserProgram;
+
     // Handle to where we should store the array of vertexes
-    GLint modelVertexHandle;
+    GLint modelVertexHandle[NUM_SHADERS];
 
     // Handle to where we should store the array of vertex colors (FIXME: Might be gone soon)
-    GLint vertexColorHandle;
+    GLint vertexColorHandle[NUM_SHADERS];
     
-    GLint textureSamplerHandle;
+    GLint textureSamplerHandle[NUM_SHADERS];
 
-    GLint vertexUVHandle;
+    GLint vertexUVHandle[NUM_SHADERS];
 
-    GLint normalsHandle;
+    GLint normalsHandle[NUM_SHADERS];
 
     //FIXME: Might add other handles   
     std::vector<Light*> lights; 
 
     vec3 cameraPos;
+
+    bool laserShaderEnabled;
 
     public:
         Renderer(mat4 P = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f),
@@ -52,15 +57,16 @@ class Renderer
 
         void setCameraPosition(vec3 pos) { this->cameraPos = pos; }
         
-        GLint getModelVertexHandle()    { return modelVertexHandle; }
-        GLint getVertexColorHandle()    { return vertexColorHandle; }
-        GLint getTextureSamplerHandle() { return textureSamplerHandle; }
-        GLint getVertexUVHandle()       { return vertexUVHandle; }
-        GLint getNormalsHandle()       { return normalsHandle; }
+        GLint getModelVertexHandle()    { return modelVertexHandle[getActiveShader()]; }
+        GLint getVertexColorHandle()    { return vertexColorHandle[getActiveShader()]; }
+        GLint getTextureSamplerHandle() { return textureSamplerHandle[getActiveShader()]; }
+        GLint getVertexUVHandle()       { return vertexUVHandle[getActiveShader()]; }
+        GLint getNormalsHandle()       { return normalsHandle[getActiveShader()]; }
 
         void render(std::vector<Object*> objects);
 
         ShaderProgram* getCurrentProgram();
+        ShaderProgram* getLaserProgram();
 
         void removeLight(Light* light);
         void addLight(Light* light);
@@ -69,6 +75,10 @@ class Renderer
         void calculatePV() { PV = P * V; }
 
         void renderLights();
+
+        int getActiveShader() { return laserShaderEnabled ? 1 : 0;}
+        void enableLaserShader() { laserShaderEnabled = true; }
+        void disableLaserShader() { laserShaderEnabled = false; }
 
 };
 

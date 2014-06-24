@@ -29,6 +29,9 @@ public:
         GLuint       getTexelsHandle() { return this->texelsBufferHandle; }
         GLuint      getNormalsHandle() { return this->normalsBufferHandle; }
 
+        bool hasNormals() { return objectNormals.size() != 0;}
+        bool hasUVs()     { return objectTexture.size() != 0;}
+
 	private:
 		ModelArrays(const ModelArrays& other);
 		ModelArrays& operator=(ModelArrays other);

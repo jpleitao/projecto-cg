@@ -65,6 +65,8 @@ class Object
 
         bool isTransparent() { return transparency < 1.0f; }
 
+        bool needLaserShader() { return model ? model->needLaserShader() : false; }
+
     private:
         void createHitBoxes();
         GLfloat ccw(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3);

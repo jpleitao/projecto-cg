@@ -11,6 +11,7 @@
 #include "World.h"
 #include "Light.h"
 #include "ObjectManager.h"
+#include "Line.h"
 
 int main (void) {	
 	GameWindow gameWindow;
@@ -22,7 +23,7 @@ int main (void) {
 	}
 
 	// Dark blue background
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 
 	// Enable depth test / Accept fragment if it closer to the camera than the former one
 	glEnable(GL_DEPTH_TEST);
@@ -55,8 +56,10 @@ int main (void) {
     vert.push_back(glm::vec4(cube_size/2,cube_size,cube_size/2,1));
     Object* test1 = new Object(new Model(), new Texture(), true, cube_size, cube_size, cube_size, vert);
     Object* test2 = new Object(new Model(), new Texture(), true, cube_size, cube_size, cube_size, vert);
+    Object* test3 = new Object(new Line());
     objectManager.addObject(test1);
     objectManager.addObject(test2);
+    objectManager.addObject(test3);
 	
     /*
 	obj->rotate(33,vec3(0,1,0));
@@ -72,6 +75,7 @@ int main (void) {
     //test1->printStuff();
 
     test2->translate(vec3(0.0f,1.0f,-5.0f));
+    test3->translate(vec3(0.0f,1.0f,-5.0f));
 
 	int frameNo = 0;
 

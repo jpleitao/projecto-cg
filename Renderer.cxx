@@ -3,13 +3,18 @@
 #include "Light.h"
 
 Renderer::Renderer(mat4 P, mat4 V) :
-    program("data/shaders/TransformVertexShader.vertexshader", "data/shaders/TextureFragmentShader.fragmentshader") {
+    program("data/shaders/TransformVertexShader.vertexshader", "data/shaders/TextureFragmentShader.fragmentshader"),
+    //program("data/shaders/laser/laser.vertexshader","data/shaders/laser/laser.fragmentshader")
+    laserProgram("data/shaders/laser/laser.vertexshader","data/shaders/laser/laser.fragmentshader") {
 
-    modelVertexHandle = program.getAttrib("vertexPosition_modelspace");    
-    vertexColorHandle = program.getAttrib("vertexColor");
-    textureSamplerHandle  = program.getUniform("myTextureSampler");
-    vertexUVHandle = program.getAttrib("vertexUV");
-    normalsHandle = program.getAttrib("vertexNormal");
+    modelVertexHandle[0] = program.getAttrib("vertexPosition_modelspace");    
+    vertexColorHandle[0] = program.getAttrib("vertexColor");
+    textureSamplerHandle[0]  = program.getUniform("myTextureSampler");
+    vertexUVHandle[0] = program.getAttrib("vertexUV");
+    normalsHandle[0] = program.getAttrib("vertexNormal");
+
+    modelVertexHandle[1] = laserProgram.getAttrib("vertexPosition_modelspace");    
+    vertexColorHandle[1] = laserProgram.getAttrib("vertexColor");
     this->P = P; this->V = V; calculatePV();
 }
 
@@ -18,11 +23,11 @@ void Renderer::setCurrentModelMatrix(mat4 M) {
     program.setUniform("MVP", MVP);
     program.setUniform("M", M);
     program.setUniform("m_3x3_inv_transp", glm::transpose(glm::inverse(glm::mat3(M))));
-     
+    laserProgram.setUniform("MVP", MVP);
 }
 
 ShaderProgram* Renderer::getCurrentProgram() {
-    return &program;
+    return getActiveShader() == 1 ? &program : &laserProgram;
 }
 
 void Renderer::render(std::vector<Object*> objects) {
@@ -32,8 +37,18 @@ void Renderer::render(std::vector<Object*> objects) {
     program.setUniform("cameraPos", cameraPos);
     renderLights();
     for (int i = 0; i < objects.size(); i++) {
-            
-        objects.at(i)->render(this);
+        if (objects.at(i)->needLaserShader()) {
+            //printf("NEED LASER SHADER!");
+            program.stopUsing();
+            laserProgram.use();
+            enableLaserShader();
+            objects.at(i)->render(this);
+            disableLaserShader();
+            program.use();    
+            program.setUniform("cameraPos", cameraPos);
+            renderLights();
+        } else            
+            objects.at(i)->render(this);
     }
     program.stopUsing();
 }
