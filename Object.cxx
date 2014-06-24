@@ -24,6 +24,8 @@ Object::Object(Model* model, Texture* texture, bool bound, GLfloat len, GLfloat 
     this->center = this->origin_center;
     this->vertexes = vert;
     this->start_vertexes = vert;
+    this->rotate(1,vec3(0,1,0));
+    this->rotate(-1,vec3(0,1,0));
     laserLight = NULL;
 }
 

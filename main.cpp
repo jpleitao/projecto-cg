@@ -62,11 +62,11 @@ int main (void) {
     Object* test5 = new Object(new Model(ObjLoader("data/models/obj/dummy.obj").load()), new Texture(), true, cube_size, cube_size, cube_size, vert);
     Object* test2 = new Object(new Model(ObjLoader("data/models/obj/dummy.obj").load()), new Texture(), true, cube_size, cube_size, cube_size, vert);
     Object* test3 = new Object(new Line(vec3(0,LASER_Y+100,-25),vec3(0,LASER_Y+100,25)));
-    Object* test4 = new Object(new Line(vec3(0,LASER_Y+100,-25),vec3(0,LASER_Y+100,25)));
+    //Object* test4 = new Object(new Line(vec3(0,LASER_Y+100,-25),vec3(0,LASER_Y+100,25)));
     objectManager.addObject(test1);
     objectManager.addObject(test2);
     objectManager.addObject(test3);
-    objectManager.addObject(test4);
+   // objectManager.addObject(test4);
 
     /*
     obj->rotate(33,vec3(0,1,0));
@@ -162,6 +162,10 @@ int main (void) {
         changingLight2.setIntensities(vec3((float)(frameNo/10 % 256) / 512.0, 0.0f,((float)((frameNo/10 + 128) % 256)) / 512.0));
         //changingLight.setIntensities(vec3())
 
+
+        if ( (frameNo % 5) == 0 ) {
+            test2->rotate(1,vec3(0,1,0));
+        }
 
         if ( frameNo++ > 0 ) {
             //printf("Updating: %f, %f\n", gameWindow.getFrameScreenXOffset(), gameWindow.getFrameScreenYOffset());
