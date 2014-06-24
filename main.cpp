@@ -54,10 +54,10 @@ int main (void) {
     std::vector<glm::vec4> vert;
     GLfloat cube_size = 2;
 
-    vert.push_back(glm::vec4(cube_size/2,cube_size,-cube_size/2,1));
-    vert.push_back(glm::vec4(-cube_size/2,cube_size,-cube_size/2,1));
-    vert.push_back(glm::vec4(-cube_size/2,cube_size,cube_size/2,1));
-    vert.push_back(glm::vec4(cube_size/2,cube_size,cube_size/2,1));
+    vert.push_back(glm::vec4(cube_size/2,-cube_size/2,-cube_size/2,1));
+    vert.push_back(glm::vec4(-cube_size/2,-cube_size/2,-cube_size/2,1));
+    vert.push_back(glm::vec4(-cube_size/2,-cube_size/2,cube_size/2,1));
+    vert.push_back(glm::vec4(cube_size/2,-cube_size/2,cube_size/2,1));
     Object* test1 = new Object(new Model(ObjLoader("data/models/obj/dummy.obj").load()), new Texture(), true, cube_size, cube_size, cube_size, vert);
     Object* test5 = new Object(new Model(ObjLoader("data/models/obj/dummy.obj").load()), new Texture(), true, cube_size, cube_size, cube_size, vert);
     Object* test2 = new Object(new Model(ObjLoader("data/models/obj/dummy.obj").load()), new Texture(), true, cube_size, cube_size, cube_size, vert);
