@@ -53,6 +53,7 @@ class Object
         GLfloat getHeight(){return this->height;}
         void setVelocity_y(GLfloat vel){this->velocity_y = vel;}
 
+        //DEBUG METHOD - REMOVE THIS
         void printStuff()
         {
             std::cout << "Length = " << this->lenght << " Width = " << this->width << " Height = " << this->height << std::endl;
