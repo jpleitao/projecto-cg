@@ -28,9 +28,11 @@ void ObjectManager::removeObject(Object* object) {
 }
 
 void ObjectManager::renderObjects() {
+    glEnable(GL_CULL_FACE);
     renderer->render(opaqueObjects);
-
+    glDisable(GL_CULL_FACE);
     renderer->render(transparentObjects);
+    glEnable(GL_CULL_FACE);
 }
 
 void ObjectManager::collideAndFall() {

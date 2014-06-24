@@ -27,7 +27,6 @@ int main (void) {
 	// Enable depth test / Accept fragment if it closer to the camera than the former one
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS); 
-	glEnable(GL_CULL_FACE);
 
 	Renderer renderer;
 
@@ -146,8 +145,8 @@ int main (void) {
 		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        objectManager.renderObjects();        
         world.render();
-        objectManager.renderObjects();
 
 		gameWindow.endFrame();
     }

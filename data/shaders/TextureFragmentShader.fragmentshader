@@ -35,7 +35,7 @@ float rand(vec2 co){
 void main(){
 
     vec3 normal = normalize(varyingNormalDirection);
-    gl_FragColor = vec4(0,0,0,0);
+    vec3 tempColour = vec3(0,0,0);
     for (int i = 0; i < numUsedLights; i++) {
         Light light = lights[i];
          //calculate the location of this fragment (pixel) in world coordinates
@@ -68,6 +68,8 @@ void main(){
         // 1. The angle of incidence: brightness
         // 2. The color/intensities of the light: light.intensities
         // 3. The texture and texture coord: texture(tex, fragTexCoord)
-        gl_FragColor += vec4(attenuation*(diffuse+specular), objectAlpha);
+        tempColour += attenuation*(diffuse+specular);
     }
+
+    gl_FragColor=vec4(tempColour, objectAlpha);
 }
