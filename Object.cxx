@@ -27,6 +27,13 @@ Object::Object(Model* model, Texture* texture, bool bound, GLfloat len, GLfloat 
     laserLight = NULL;
 }
 
+Object::~Object() {
+    //FIXME: Hacky way to free up line resources
+    if ( this->model && this->model->needLaserShader()) delete model;
+
+    if ( this->laserLight ) delete laserLight;
+}
+
 void Object::fall()
 {
     //Update object's velocity, based on its aceleration
@@ -109,7 +116,7 @@ bool Object::collision(Object* obj)
     //If the current object is above the first one then we have no collision
     //std::cout << (this->center[1] - (this->height/2)) << " > " << (obj->center[1] + (obj->height/2)) << std::endl;
     if ( (this->center[1] - (this->height/2)) > (obj->center[1] + (obj->height/2)) ){
-        std::cout << "AQUI2\n";
+        //std::cout << "AQUI2\n"; FARTO DESTES PRINTS DE MERDA
         return false;
     }
 
@@ -315,3 +322,18 @@ void Object::render(Renderer* renderer) {
 }
 
 void Object::setLaserLight(Light* l) { if(laserLight) delete laserLight; laserLight = l; }
+
+std::vector<std::vector<vec2> > Object::getBoundingBoxLines() {
+    std::vector<std::vector<vec2> > ret;
+    for (int i=0;i<this->vertexes.size();i++){
+        //i and (i+1)%4
+        std::vector<vec2> line;
+        line.push_back ( vec2(this->vertexes[i].x,this->vertexes[i].z ) );
+        vec4 v = this->vertexes[(i+1)%this->vertexes.size()];
+        line.push_back ( vec2(v.x,v.z) );
+
+        ret.push_back(line);
+    }
+
+    return ret;
+}

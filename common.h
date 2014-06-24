@@ -29,6 +29,8 @@ using namespace glm;
  #define MAX_Y 5
  #define MAX_Z 17
  #define MIN_Z -17
+
+ #define LASER_Y 1.0f
 #endif
 
 #endif

@@ -45,6 +45,7 @@ class Object
     public:
         Object(Model* model=NULL, Texture* texture=NULL, bool bound=false, GLfloat len=2, GLfloat w=2, GLfloat h=2, std::vector<glm::vec4> vert = std::vector<glm::vec4>(), float transparency=1.0f);
 
+        virtual ~Object();
         void rotate(GLfloat angle, vec3 axis);
         void scale(vec3 scaleVec);
         void translate(vec3 vec);
@@ -81,9 +82,19 @@ class Object
 
         bool needLaserShader() { return model ? model->needLaserShader() : false; }
 
+        bool atLaserHeight() { 
+            bool below = (getCenterY()+height/2.0f >= LASER_Y);
+            bool above = (getCenterY()-height/2.0f <= LASER_Y);
+            //printf("Y CENTER: %f, height: %f, laser_y: %f, below: %d, above: %d\n", getCenterY(), height, LASER_Y, below, above);
+
+            return below && above;
+        }
+
         Light* getLaserLight() { return laserLight; }
         void setLaserLight(Light* l);
         bool hasLaserLight() { return laserLight != NULL; }
+
+        std::vector<std::vector<vec2> > getBoundingBoxLines();
 
     private:
         void createHitBoxes();

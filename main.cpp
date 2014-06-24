@@ -44,6 +44,8 @@ int main (void) {
     //objects.push_back(obj2); objects.push_back(obj); objects.push_back(obj3);  objects.push_back(obj4);
 
     ObjectManager objectManager(&renderer);
+    objectManager.setLaserOrigin(vec2(0,-25));
+    objectManager.setLaserDirection(vec2(0,1));
 
     World world(&modelManager ,&objectManager, "data/models/world");
 
@@ -56,12 +58,14 @@ int main (void) {
     vert.push_back(glm::vec4(-cube_size/2,cube_size,-cube_size/2,1));
     vert.push_back(glm::vec4(-cube_size/2,cube_size,cube_size/2,1));
     vert.push_back(glm::vec4(cube_size/2,cube_size,cube_size/2,1));
-    Object* test1 = new Object(new Model(), new Texture(), true, cube_size, cube_size, cube_size, vert);
-    Object* test2 = new Object(new Model(), new Texture(), true, cube_size, cube_size, cube_size, vert);
-    Object* test3 = new Object(new Line());
+    Object* test1 = new Object(new Model(ObjLoader("data/models/obj/dummy.obj").load()), new Texture(), true, cube_size, cube_size, cube_size, vert);
+    Object* test2 = new Object(new Model(ObjLoader("data/models/obj/dummy.obj").load()), new Texture(), true, cube_size, cube_size, cube_size, vert);
+    Object* test3 = new Object(new Line(vec3(0,LASER_Y+100,-25),vec3(0,LASER_Y+100,25)));
+    Object* test4 = new Object(new Line(vec3(0,LASER_Y+100,-25),vec3(0,LASER_Y+100,25)));
     objectManager.addObject(test1);
     objectManager.addObject(test2);
     objectManager.addObject(test3);
+    objectManager.addObject(test4);
 
     /*
     obj->rotate(33,vec3(0,1,0));
@@ -165,7 +169,10 @@ int main (void) {
         }
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        objectManager.processLaser();
         objectManager.renderObjects();
+        objectManager.clearLaser();
 
         gameWindow.endFrame();
     }

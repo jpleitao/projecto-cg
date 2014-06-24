@@ -14,26 +14,15 @@ ModelArrays::ModelArrays(std::vector<glm::vec3> vertex, std::vector<glm::vec2> t
 
 
 ModelArrays::~ModelArrays() {
-    /*if(this->objectVertex != NULL) {
+    if(this->objectVertex.size() > 0) {
         glDeleteBuffers(1, &this->vertexBufferHandle);
-        delete[] this->objectVertex;
 	} 
-	if(this->objectTexture != NULL) {
+	if(this->objectTexture.size() > 0) {
         glDeleteBuffers(1, &this->texelsBufferHandle);
-        delete[] this->objectTexture;
 	} 
-    if(this->objectNormals != NULL) {
-        delete[] this->objectNormals;
+    if(this->objectNormals.size() > 0) {
+        glDeleteBuffers(1, &this->normalsBufferHandle);
     }
-    if(this->vertexIndex != NULL) {
-        delete[] this->vertexIndex;
-    }
-    if(this->normalIndex != NULL) {
-        delete[] this->normalIndex;
-    }
-    if(this->textureIndex != NULL) {
-        delete[] this->textureIndex;
-    }  */
 }
 
 void ModelArrays::createHandles() {

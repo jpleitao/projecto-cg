@@ -2,6 +2,7 @@
 #define LINE_H
 #include "Model.h"
 #include <vector>
+#include "Light.h"
 
 class Line : public Model
 {
@@ -23,6 +24,10 @@ class Line : public Model
             glBindBuffer(GL_ARRAY_BUFFER, this->colorBuffer);
             glBufferData(GL_ARRAY_BUFFER, this->colors.size() * sizeof(glm::vec3), &colors[0], GL_STATIC_DRAW);
         } 
+
+        ~Line() {
+            if (this->colorBuffer) glDeleteBuffers(1, &this->colorBuffer);
+        }
 
         virtual void beginRender(Renderer* renderer) {
             Model::beginRender(renderer);

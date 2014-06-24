@@ -4,14 +4,18 @@
 
 Model::Model(ModelArrays* info, Texture* text, int primitiveType)
 {
+    this->primitiveType = primitiveType;   
+    this->objectInfo = info;
+    this->texture = text;
     if ( info == NULL && text == NULL ) {
-        this->objectInfo = ObjLoader("data/models/obj/dummy.obj").load();
         printf("New MODEL: %p\n", this->objectInfo);
+        return;
     }  else {
         this->objectInfo = info;
         this->texture = text;
     }
-    this->primitiveType = primitiveType;   
+    
+
 }
 
 void Model::beginRender(Renderer* renderer) {
@@ -52,7 +56,10 @@ void Model::draw(Renderer* renderer) {
 
 Model::~Model()
 {
-    if ( this->objectInfo ) delete this->objectInfo;
+    if ( this->objectInfo ) {
+        printf("Deleting object info!\n");
+        delete this->objectInfo;
+    }
 
     if ( this->texture) delete this->texture;
 }

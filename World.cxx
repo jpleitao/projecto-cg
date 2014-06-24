@@ -32,10 +32,10 @@ World::World(ModelManager* modelManager, ObjectManager* objectManager, const cha
                 tempObj->rotate(angle ,rotation);
 
                 //FIXME: HACKED IN FOR MAXI'S TESTING
-                if ( c == 1) {
+                /*if ( c == 1) {
                     Light* l = new Light(vec3(0,2,-19.19), vec3(1,0,0));
                     tempObj->setLaserLight(l);
-                }
+                }*/
                 worldObjects.push_back(tempObj);
                 objectManager->addObject(tempObj);
             }

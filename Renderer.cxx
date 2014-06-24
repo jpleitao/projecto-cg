@@ -44,6 +44,7 @@ void Renderer::render(std::vector<Object*> objects) {
             enableLaserShader();
             objects.at(i)->render(this);
             disableLaserShader();
+            laserProgram.stopUsing();
             program.use();    
             program.setUniform("cameraPos", cameraPos);
             renderLights();
