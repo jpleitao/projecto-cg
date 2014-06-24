@@ -163,9 +163,8 @@ int main (void) {
         //changingLight.setIntensities(vec3())
 
 
-        if ( (frameNo % 5) == 0 ) {
-            test2->rotate(1,vec3(0,1,0));
-        }
+    test2->rotate(0.5,vec3(0,1,0));
+        
 
         if ( frameNo++ > 0 ) {
             //printf("Updating: %f, %f\n", gameWindow.getFrameScreenXOffset(), gameWindow.getFrameScreenYOffset());
