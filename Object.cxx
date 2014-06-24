@@ -237,7 +237,7 @@ void Object::move(bool value, GLfloat vx, GLfloat vz)
 {
     //Make the object be moving
     this->isBeingPuxed = value;
-
+    //FIXME: IF NOT NEDDED
     if (value){
         //Update the object's velocity
         this->velocity_x = vx;

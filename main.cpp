@@ -89,7 +89,7 @@ int main (void) {
 
     int frameNo = 0;
 
-    Light blueLight(vec3(0,0,0), vec3(0,0,0));
+    Light blueLight(vec3(0,0,0), vec3(1,1,1));
     renderer.addLight(&blueLight);
     Light redLightFromAbove(vec3(0,2,0), vec3(1,0,0));
     renderer.addLight(&redLightFromAbove);
@@ -106,6 +106,8 @@ int main (void) {
     while( gameWindow.shouldStayOpen() ) {
         gameWindow.beginFrame();
         /*obj->rotate(1,vec3(0,1,0));*/
+
+        test1->move(false);
 
         //For debug on the collisions only! - Remove this
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_L ) == GLFW_PRESS){
