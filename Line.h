@@ -41,7 +41,7 @@ class Line : public Model
         }
 
         virtual void draw(Renderer* renderer) {
-            printf("Line drawing!\n");
+            //printf("Line drawing!\n");
 
             Model::draw(renderer);
 

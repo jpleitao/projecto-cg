@@ -21,5 +21,7 @@ public:
 
     void renderObjects();
     void collideAndFall();
+    void checkLimits();
+    void moveObjects();
 };
 #endif

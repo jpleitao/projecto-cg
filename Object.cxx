@@ -4,6 +4,9 @@
 Object::Object(Model* model, Texture* texture, bool bound, GLfloat len, GLfloat w, GLfloat h, std::vector<glm::vec4> vert, float transparency) : model(model), texture(texture), modelMatrix(mat4(1.0f)), transparency(transparency)
 {
     this->hasBoundingBox = bound;
+    this->isBeingPuxed = false;
+    this->velocity_x = 0;
+    this->velocity_z = 0;
 
     this->origin_lenght = len;
     this->origin_width = w;
@@ -15,7 +18,7 @@ Object::Object(Model* model, Texture* texture, bool bound, GLfloat len, GLfloat 
 
     this->aceleration_y = -0.01;//FIXME: HARD-CODED VALUE
     this->velocity_y = 0;
-    
+
     this->origin_center = glm::vec4(0,0,0,1);//The cube is centered in the origin
     this->center = this->origin_center;
     this->vertexes = vert;
@@ -72,7 +75,7 @@ int Object::pointInTriangle(glm::vec4 v1, glm::vec4 v2, glm::vec4 v3, glm::vec4 
 
 //Returns true if "point" is in the line segment formed by "a" and "b"
 //This function appear to be working well
-bool Object::pointInLine(vec4 a, vec4 b, vec4 point) 
+bool Object::pointInLine(vec4 a, vec4 b, vec4 point)
 {
     GLfloat m = (b[2] - a[2]) / (b[0] - a[0]);
 
@@ -87,7 +90,7 @@ bool Object::pointInLine(vec4 a, vec4 b, vec4 point)
     if (y_final == point[2])
         return true;
 
-    return false; 
+    return false;
 }
 
 bool Object::collision(Object* obj)
@@ -147,7 +150,6 @@ bool Object::collision(Object* obj)
         b[2] = b[2] + 0.001;
 
         for (int j=0;j<obj_size;j++){
-            //j and (j+1)%4
             c = obj->vertexes[j];
             d = obj->vertexes[(j+1)%obj_size];
 
@@ -166,30 +168,28 @@ bool Object::collision(Object* obj)
     current_area = this->lenght * this->width;
     obj_area = obj->lenght * obj->width;
 
-    std::cout << "Current_area = " << current_area << " Obj_area = " << obj_area << std::endl;
+    //std::cout << "Current_area = " << current_area << " Obj_area = " << obj_area << std::endl;
 
     //Different Dimensions -- One can be inside the other (The one with smaller area inside the one with higher area)
-
-    //This is not working!!!!!
     if ( current_area < obj_area){
         //current inside obj
-        std::cout << "MENOR\n";
+        //std::cout << "MENOR\n";
 
         for (int i=0;i<obj->vertexes.size();i++){
             //First triangle: 0, 1 and 2
             if(this->pointInTriangle(obj->vertexes[0], obj->vertexes[1], obj->vertexes[2], this->vertexes[i])){
-                std::cout << "AQUI3\n";
+                //std::cout << "AQUI3\n";
                 return true;
             }
             //Second triangle: 0,3 and 2
             if(this->pointInTriangle(obj->vertexes[0], obj->vertexes[3], obj->vertexes[2], this->vertexes[i])){
-                std::cout << "AQUI4\n";
+                //std::cout << "AQUI4\n";
                 return true;
             }
 
             //Test if the point is in the line of the triangles -- Line that has the points 0 and 2
             if (this->pointInLine(obj->vertexes[0], obj->vertexes[2], this->vertexes[i])){
-                std::cout << "AQUI5\n";
+                //std::cout << "AQUI5\n";
                 return true;
             }
         }
@@ -198,22 +198,22 @@ bool Object::collision(Object* obj)
     else if (obj_area < current_area){
         //obj inside current
 
-        std::cout << "MAIOR\n";
+        //std::cout << "MAIOR\n";
 
         for (int i=0;i<this->vertexes.size();i++){
             if (this->pointInTriangle(this->vertexes[0], this->vertexes[1], this->vertexes[2], obj->vertexes[i])){
-                std::cout << "AQUI6\n";
+                //std::cout << "AQUI6\n";
                 return true;
             }
 
             if(pointInTriangle(this->vertexes[0], this->vertexes[3], this->vertexes[2], obj->vertexes[i])){
-                std::cout << "AQUI7\n";
+                //std::cout << "AQUI7\n";
                 return true;
             }
 
             //Test if the point is in the line of the triangles -- Line that has the points 0 and 2
             if (this->pointInLine(this->vertexes[0], this->vertexes[2], obj->vertexes[i])){
-                std::cout << "AQUI8\n";
+                //std::cout << "AQUI8\n";
                 return true;
             }
         }
@@ -222,6 +222,25 @@ bool Object::collision(Object* obj)
     //std::cout << "NOPE\n";
 
     return false;
+}
+
+//Method to handle the object's collisions. If value = true then the player is hiting the object and it should be moving
+void Object::move(bool value, GLfloat vx, GLfloat vz)
+{
+    //Make the object be moving
+    this->isBeingPuxed = value;
+
+    if (value){
+        //Update the object's velocity
+        this->velocity_x = vx;
+        this->velocity_z = vz;
+    }
+
+    else{
+        //Object is not being puxed, set its velocity to zero -- FIXME: SHOULD HAPPEN ONLY WHEN RESETING THE VELOCITY TO 0?
+        this->velocity_x = 0;
+        this->velocity_z = 0;
+    }
 }
 
 void Object::rotate(GLfloat angle, vec3 axis) {
@@ -263,8 +282,8 @@ void Object::translate(vec3 vec) {
         this->vertexes[i] = this->modelMatrix * this->start_vertexes[i];
 }
 
-void Object::resetTransforms() {   
-    //Turn modelMatrix into the identity matrix 
+void Object::resetTransforms() {
+    //Turn modelMatrix into the identity matrix
     this->modelMatrix = mat4(1.0f);
 
     //Reset center and vertexes' positions
@@ -280,7 +299,7 @@ void Object::resetTransforms() {
 void Object::render(Renderer* renderer) {
 
     //Update MVP
-    renderer->setCurrentModelMatrix(modelMatrix);    
+    renderer->setCurrentModelMatrix(modelMatrix);
 
     //Draw the model with the texture mapped
     if ( texture ) texture->beginRender(renderer, model);
@@ -289,7 +308,7 @@ void Object::render(Renderer* renderer) {
     if (!needLaserShader() ) renderer->getCurrentProgram()->setUniform("objectAlpha", this->transparency);
 
     model->draw(renderer);
-    
+
     model->finishRender(renderer);
     if ( texture ) texture->finishRender(renderer, model);
 }
