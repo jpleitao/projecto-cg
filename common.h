@@ -22,7 +22,7 @@ using namespace glm;
 #endif
 
 #ifndef VEL_BOX_H
- #define FACTOR 1
+ #define FACTOR 0.2
 #endif
 
 #ifndef OBS_H
