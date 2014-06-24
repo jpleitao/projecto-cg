@@ -172,17 +172,17 @@ int main (void) {
             vec3 player_position = player.getPosition();
 
             //Check if the player is inside the field. If not, put him there!
-            if (player_position[0] < MIN_X)
-                player_position[0] = MIN_X;
+            if (player_position[0] < MIN_X + PLAYER_OFFSET)
+                player_position[0] = MIN_X + PLAYER_OFFSET;
 
-            else if (player_position[0] > MAX_X)
-                player_position[0] = MAX_X;
+            else if (player_position[0] > MAX_X - PLAYER_OFFSET)
+                player_position[0] = MAX_X - PLAYER_OFFSET;
 
-            if (player_position[2] < MIN_Z)
-                player_position[2] = MIN_Z;
+            if (player_position[2] < MIN_Z + PLAYER_OFFSET)
+                player_position[2] = MIN_Z + PLAYER_OFFSET;
 
-            else if (player_position[2] > MAX_Z)
-                player_position[2] = MAX_Z;
+            else if (player_position[2] > MAX_Z - PLAYER_OFFSET)
+                player_position[2] = MAX_Z - PLAYER_OFFSET;
 
             //Reset the player's height
             player.setPosition(vec3(player_position[0], OBSERVER_HEIGHT, player_position[2]));
