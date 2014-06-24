@@ -120,3 +120,12 @@ void ObjectManager::checkLimits()
             current->translate(vec3(0.0f,0.0f, (MAX_Z - max_z)));
     }
 }
+
+void ObjectManager::moveObjects()
+{
+    for (int i=0;i<allObjects.size();i++){
+        Object* current = allObjects[i];
+
+        current->translate(vec3(current->getVelocityX(), 0.0f, current->getVelocityZ()));
+    }
+}

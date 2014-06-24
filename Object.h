@@ -23,12 +23,16 @@ class Object
     GLfloat origin_width;
     GLfloat origin_height;
 
+    //To handle the object's fall
     GLfloat aceleration_y;
     GLfloat velocity_y;
 
-    bool hasBoundingBox;
+    //To handle the object's collisions with each others and with the player
+    bool isBeingPuxed;
+    GLfloat velocity_x, velocity_z;//FIXME: Put this into a glm::vec2? Merge it with velocity_y in a glm::vec3?
 
     //Hit box's stuff
+    bool hasBoundingBox;
     glm::vec4 center;
     glm::vec4 origin_center;
     std::vector<glm::vec4> vertexes;
@@ -45,7 +49,7 @@ class Object
         void scale(vec3 scaleVec);
         void translate(vec3 vec);
         void resetTransforms();
-                
+
         virtual void render(Renderer* renderer);
 
         bool collision(Object* obj);
@@ -58,6 +62,10 @@ class Object
         int getVertexesSize(){return this->vertexes.size();}
         glm::vec4 getVertexAt(int pos){ assert(pos < this->vertexes.size()); return this->vertexes[pos];}
         bool objectHasBoundingBox(){return this->hasBoundingBox;}
+        void move(bool value, GLfloat vx=0, GLfloat vz=0);
+
+        GLfloat getVelocityX(){return this->velocity_x;}
+        GLfloat getVelocityZ(){return this->velocity_z;}
 
         //DEBUG METHOD - REMOVE THIS
         void printStuff()
