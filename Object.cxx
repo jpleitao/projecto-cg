@@ -239,7 +239,7 @@ void Object::moveAwayFrom(Object* obj)
     vec3 del = vec3(FACTOR*(obj->velocity_x),0.0f,FACTOR*(obj->velocity_z));
     //Move the object away
     while(this->collision(obj)){
-        obj->translate(del);
+        this->translate(del);
         std::cout << "Moving this away from obj\n";
     }
 }

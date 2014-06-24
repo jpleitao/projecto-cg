@@ -109,6 +109,7 @@ int main (void) {
 
         test1->move(false);
 
+        //FIXME: REFACTOR
         //For debug on the collisions only! - Remove this
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_L ) == GLFW_PRESS){
             test1->translate(vec3(0.0f, 0.0f, 0.1f));

@@ -57,7 +57,13 @@ void ObjectManager::collideAndFall() {
                     std::cout << "COLLISION!\n";
                     colide = true;
 
-                    current->moveAwayFrom(obj);
+                    //Move current away
+                    obj->moveAwayFrom(current);
+
+                    //Set obj velocity - FIXME: REFACTOR
+                    obj->move(true, (FACTOR*current->getVelocityX()), (FACTOR*current->getVelocityZ()) );
+                    obj->translate(vec3((FACTOR*current->getVelocityX()),0.0f,(FACTOR*current->getVelocityZ())));
+
                     //assert(0);
                 }
             }
