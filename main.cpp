@@ -109,19 +109,19 @@ int main (void) {
 
         //For debug on the collisions only! - Remove this
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_L ) == GLFW_PRESS){
-            //test1->translate(vec3(0.0f, 0.0f, 0.1f));
+            test1->translate(vec3(0.0f, 0.0f, 0.1f));
             test1->move(true,0.0f,0.1f);
         }
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_K ) == GLFW_PRESS){
-            //test1->translate(vec3(-0.1f, 0.0f, 0.0f));
+            test1->translate(vec3(-0.1f, 0.0f, 0.0f));
             test1->move(true,-0.1f,0.0f);
         }
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_J ) == GLFW_PRESS){
-            //test1->translate(vec3(0.0f, 0.0f, -0.1f));
+            test1->translate(vec3(0.0f, 0.0f, -0.1f));
             test1->move(true,0.0f,-0.1f);
         }
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_I ) == GLFW_PRESS){
-            //test1->translate(vec3(0.1f, 0.0f, 0.0f));
+            test1->translate(vec3(0.1f, 0.0f, 0.0f));
             test1->move(true,0.1f,0.0f);
         }
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_M ) == GLFW_PRESS){
