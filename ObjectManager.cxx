@@ -264,6 +264,7 @@ void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, int depth
         }        
     }
 
+/*
     //Add walls
     std::vector<std::vector<vec2> > tmpLines;
     std::vector<Object* > tmpObjects;
@@ -278,6 +279,7 @@ void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, int depth
                 delete intersection;
             }
         } 
+        */
 
     if ( candidatePoints.size() == 0) {
         //Must intersect a wall FIXME
