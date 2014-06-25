@@ -370,47 +370,28 @@ void ObjectManager::newTargetPosition() {
 vec2* ObjectManager::intersectLineSegments(vec2 p1, vec2 p2,         vec2 p3, vec2 p4) {
 
     //printf("Intersecting (%f,%f) --- (%f,%f)\t\t(%f,%f) --- (%f,%f)\n", p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y );
-/*
-    float A2 = p4.y - p3.y;
-    float B2 = p4.x - p3.x;
-    float C2 = A2*p3.x + B2*p3.y;
 
-    float A1 = p2.x - p1.y;
-    float B1 = p2.x - p1.x;
-    float C1 = A1 * p1.x + B1 * p1.y;
 
-   float det = A1*B2 - A2*B1;
-   if (det == 0)
-   {
-        return NULL;
-   }
-   vec2 d = vec2((B2 * C1 - B1 * C2) / det, -(A1 * C2 - A2 * C1) / det);
-   return new vec2(d);*/
-    // Store the values for fast access and easy
-    // equations-to-code conversion
-    // 
-    //if 
-    double x1 = p1.x, x2 = p2.x, x3 = p3.x, x4 = p4.x;
+    double x1 = p1.x,
+    x2 = p2.x, x3 = p3.x, x4 = p4.x;
     double y1 = p1.y, y2 = p2.y, y3 = p3.y, y4 = p4.y;
      
     double d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
     //printf("x1:%f,  y1:%f,   d:%f\n", x1, y1, d);
-    // If d is zero, there is no intersection
+    
     if (d == 0) {
       //  printf("That determinant is zero!\n");
         return NULL;
     }
      
-    // Get the x and y
+    
     float pre = (x1*y2 - y1*x2), post = (x3*y4 - y3*x4);
     float x = ( pre * (x3 - x4) - (x1 - x2) * post ) / d;
     float y = ( pre * (y3 - y4) - (y1 - y2) * post ) / d;
      
-    // Check if the x and y coordinates are within both lines
-    if ( x < min(x1, x2) || x > max(x1, x2) ||
-    x < min(x3, x4) || x > max(x3, x4) ) return NULL;
-    if ( y < min(y1, y2) || y > max(y1, y2) ||
-    y < min(y3, y4) || y > max(y3, y4) ) return NULL;
+    // Make sure they belong to the segments. Without this it'd be line intersection
+    if ( x < min(x1, x2) || x > max(x1, x2) || x < min(x3, x4) ||x > max(x3, x4) ) return NULL;
+    if ( y < min(y1, y2) || y > max(y1, y2) || y < min(y3, y4) || y > max(y3, y4) ) return NULL;
      
     //printf("Returning a value\n");
     return new vec2(x,y);
