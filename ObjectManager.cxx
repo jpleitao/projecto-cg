@@ -90,7 +90,7 @@ void ObjectManager::collideAndFall() {
 
                         //Set obj velocity - FIXME: REFACTOR
                         obj_to_move->move(true, (FACTOR * movement[0]), (FACTOR * movement[2]) );
-                        obj_to_move->translate(vec3( (FACTOR * movement[0]),0.0f,(FACTOR * movement[2])));
+                        //obj_to_move->translate(vec3( obj_colided->getVelocityX(),0.0f,obj_colided->getVelocityZ()));
                     }
 
                     //assert(0);
