@@ -27,7 +27,7 @@ void Renderer::setCurrentModelMatrix(mat4 M) {
 }
 
 ShaderProgram* Renderer::getCurrentProgram() {
-    return getActiveShader() == 1 ? &program : &laserProgram;
+    return &program;
 }
 
 void Renderer::render(std::vector<Object*> objects) {
