@@ -56,7 +56,7 @@ void ObjectManager::collideAndFall() {
                 Object* obj = allObjects[j];
 
                 if (current->collision(obj)){
-                    std::cout << "COLLISION!\n";
+                    std::cout << "COLLISION! ";
                     colide = true;
 
                     bool do_stuff = false;
@@ -81,6 +81,7 @@ void ObjectManager::collideAndFall() {
                         glm::vec4 current_pos = obj_colided->getCenter();
                         glm::vec4 movement = current_pos - last_pos;
 
+                        printf("(%f,%f)\n", movement.x, movement.z);
                         //Normalize the movement vector
                         movement = glm::normalize(movement);
 
