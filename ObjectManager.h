@@ -22,6 +22,8 @@ private:
 
     Object* target;
 
+    std::vector<Object*> walls;
+
 public:
     ObjectManager(Renderer* renderer);
 
@@ -49,6 +51,8 @@ public:
     Object* getObjInFrontOfPlayer() { return objInFrontOfPlayer; }
     void updateObjInFrontOfPlayer(Player* player);
 
+    void appendWall(Object* val){this->walls.push_back(val);}
+
 private:
     vec2* intersectLineSegments(vec2 a, vec2 b,         vec2 c, vec2 d);
     vec2* intersectLineWithSegment(vec2 lineOrigin, vec2 direction, vec2 a, vec2 b);
@@ -57,6 +61,8 @@ private:
     void processLaserFromPoint(vec2 origin,  vec2 direction, int depth=0, bool goingThroughRefractiveSurface = false, float currN2=1.0f);
 
     void targetHit();
+
+    void getWallLines(std::vector<Object*>* originatingObjects, std::vector<std::vector<vec2> >* originalLines);
 
     
 

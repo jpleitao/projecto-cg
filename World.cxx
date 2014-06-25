@@ -44,6 +44,7 @@ World::World(ModelManager* modelManager, ObjectManager* objectManager, const cha
                 }*/
                 worldObjects.push_back(tempObj);
                 objectManager->addObject(tempObj);
+                objectManager->appendWall(tempObj);
             }
         }
     }

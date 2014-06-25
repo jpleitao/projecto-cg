@@ -136,6 +136,25 @@ void ObjectManager::collideAndFall() {
     }
 }
 
+void ObjectManager::getWallLines(std::vector<Object*>* originatingObjects, std::vector<std::vector<vec2> >* originalLines)
+{
+    for (int i=0;i<this->walls.size();i++)
+    {
+        Object* current;
+        std::vector<vec2> current_temp;
+
+        current = originatingObjects->at(i);
+
+        glm::vec4 min = current->getVertexAt(0);
+        glm::vec4 max = current->getVertexAt(1);
+
+        current_temp.push_back(vec2(min[0], min[2]));
+        current_temp.push_back(vec2(max[0], max[2]));
+
+        originalLines->push_back(current_temp);
+    }
+}
+
 /*Checks if the current object is within the limits of the cenario*/
 void ObjectManager::checkLimits()
 {
