@@ -496,6 +496,22 @@ void ObjectManager::updateObjInFrontOfPlayer(Player* player) {
         }        
     }
 
+    //Add walls
+    std::vector<std::vector<vec2> > tmpLines;
+    std::vector<Object* > tmpObjects;
+    getWallLines(&tmpObjects, &tmpLines); 
+    for (int j = 0; j < tmpLines.size(); j++) {
+            vec2 lineP = tmpLines.at(j).at(0), lineQ = tmpLines.at(j).at(1);
+            vec2* intersection = intersectLineWithSegment(pos, dir, lineP, lineQ);
+            if ( intersection ) {
+                candidatePoints.push_back(vec2(intersection->x,intersection->y));
+                originatingObjects.push_back(tmpObjects.at(j));
+                originalLines.push_back(tmpLines.at(j));
+                delete intersection;
+            }
+        } 
+       
+
     if ( candidatePoints.size() > 0 ) {
        int index = closestPointToSourcePoint(pos, candidatePoints);
         objInFrontOfPlayer = originatingObjects.at(index);
