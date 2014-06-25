@@ -76,10 +76,11 @@ void ObjectManager::collideAndFall() {
                     if (do_stuff)
                     {
                         assert(obj_colided->getHasLastPosition());//FIXME: CANNOT GET HERE WITHOUT OBJECT IN MOVEMENT RIGHT?
+
                         //Determine the direction of the movement
-                        glm::vec4 last_pos = obj_colided->getLastPosition();
-                        glm::vec4 current_pos = obj_colided->getCenter();
-                        glm::vec4 movement = current_pos - last_pos;
+                        glm::vec4 obj_colided_pos = obj_colided->getCenter();
+                        glm::vec4 obj_to_move_pos = obj_to_move->getCenter();
+                        glm::vec4 movement = obj_to_move_pos - obj_colided_pos;
 
                         printf("(%f,%f)\n", movement.x, movement.z);
                         //Normalize the movement vector
