@@ -195,12 +195,13 @@ int main (void) {
             player.setPosition(vec3(player_position[0], OBSERVER_HEIGHT, player_position[2]));
         }
 
+        objectManager.processPlayer(&player);
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         objectManager.processLaser();
         objectManager.renderObjects();
         objectManager.clearLaser();
-        objectManager.processPlayer(&player);
 
         gameWindow.endFrame();
     }

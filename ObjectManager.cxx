@@ -379,6 +379,7 @@ void ObjectManager::processPlayer(Player* player)
         current = this->allObjects[i];
         
         if (player->colideWithObject(current)){
+            std::cout << "COLIDIU\n";
             //Apply velocity to the object in the direction of the observer
 
             //Get the movement vector
@@ -393,5 +394,8 @@ void ObjectManager::processPlayer(Player* player)
             //Set current velocity - FIXME: REFACTOR
             current->move(true, (FACTOR * movement[0]), (FACTOR * movement[1]) );
         }
+
+        else
+            std::cout << "NAO COLIDIU\n";
     }
 }
