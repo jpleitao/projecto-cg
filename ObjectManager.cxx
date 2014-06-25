@@ -195,7 +195,7 @@ void ObjectManager::processLaser() {
     
 }
 
-void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, int depth) {
+void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, int depth, bool goingThroughRefractiveSurface, float currN2) {
     if ( depth == 15 ) return;
 
     std::vector<vec2> candidatePoints;
@@ -248,17 +248,43 @@ void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, int depth
         vec2 lightXZ = point-0.15f*unit;
 
         Object* obj = originatingObjects.at(index);
+        vec2 originalLineP = originalLines.at(index).at(0), originalLineQ = originalLines.at(index).at(1);
+        vec2 originalVec = originalLineQ - originalLineP;
+        vec2 ortho1 = glm::normalize(vec2(-originalVec.y, originalVec.x));
+        vec2 ortho2 = glm::normalize(vec2(originalVec.y, -originalVec.x));
+        vec2 surfaceNormal = glm::dot(ortho1, unit) < 0.0f ? ortho1 : ortho2;
+        if ( obj->isTransparent() ) {
+            if ( !goingThroughRefractiveSurface ) {
+                printf("Refract!\n");
+                //float n1 = 1.0f;
+                vec2 refracted = glm::refract(normalize(direction),surfaceNormal,1.0f/obj->getRefractiveIndex());
+                Object* l = new Object(new Line(vec3(origin.x,LASER_Y,origin.y), vec3(point.x,LASER_Y,point.y)));
+                temporaryLaserObjects.push_back(l);
+                addObject(l);
+                if ( fabs(glm::dot(refracted,surfaceNormal)) < 10E-5 ) return;
+
+                processLaserFromPoint(point+0.01f*unit, refracted, ++depth, true, 1.0f/1.396f);
+                return;
+            } else {
+                printf("Out of Refract!\n");
+                float n1 = 1.0f;
+                vec2 refracted = glm::refract(normalize(direction),surfaceNormal,1.0f/currN2);
+                Object* l = new Object(new Line(vec3(origin.x,LASER_Y,origin.y), vec3(point.x,LASER_Y,point.y)));
+                temporaryLaserObjects.push_back(l);
+                addObject(l);
+                //if ( fabs(glm::dot(refracted,surfaceNormal)) < 10E-5 ) return;
+                processLaserFromPoint(point+0.01f*unit, refracted, ++depth, false);
+                return;
+            }
+        }
+
         obj->setLaserLight(new Light(vec3(lightXZ.x, LASER_Y, lightXZ.y),vec3(1.0f,0.0f,0.0f)) );
 
         Object* l = new Object(new Line(vec3(origin.x,LASER_Y,origin.y), vec3(point.x,LASER_Y,point.y)));
         temporaryLaserObjects.push_back(l);
         addObject(l);
 
-        vec2 originalLineP = originalLines.at(index).at(0), originalLineQ = originalLines.at(index).at(1);
-        vec2 originalVec = originalLineQ - originalLineP;
-        vec2 ortho1 = glm::normalize(vec2(-originalVec.y, originalVec.x));
-        vec2 ortho2 = glm::normalize(vec2(originalVec.y, -originalVec.x));
-        vec2 surfaceNormal = glm::dot(ortho1, unit) < 0.0f ? ortho1 : ortho2;
+        
 
         vec2 reflected =  glm::reflect(unit, surfaceNormal);
 

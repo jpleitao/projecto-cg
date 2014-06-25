@@ -120,6 +120,8 @@ class Object
 
         std::vector<std::vector<vec2> > getBoundingBoxLines();
 
+        float getRefractiveIndex() { return n2; }
+
     private:
         void createHitBoxes();
         GLfloat ccw(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3);

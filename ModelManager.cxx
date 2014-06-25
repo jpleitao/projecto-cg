@@ -157,7 +157,9 @@ Object* ModelManager::getObject(const char* filename)
 
             //Read refraction coef
             if(strlen(buf) > 0) {
+
                 sscanf(buf, "%f", &refraction);
+                printf("Refraction coeff: %f!\n", refraction);
             }
             else {
                 ifs.clear();
