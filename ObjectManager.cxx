@@ -143,7 +143,9 @@ void ObjectManager::getWallLines(std::vector<Object*>* originatingObjects, std::
         Object* current;
         std::vector<vec2> current_temp;
 
-        current = originatingObjects->at(i);
+        current = this->walls[i];
+
+        originatingObjects->push_back(current);
 
         glm::vec4 min = current->getVertexAt(0);
         glm::vec4 max = current->getVertexAt(1);
