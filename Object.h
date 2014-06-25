@@ -47,7 +47,7 @@ class Object
    float transparency;
 
     public:
-        Object(Model* model=NULL, Texture* texture=NULL, bool bound=false, GLfloat len=2, GLfloat w=2, GLfloat h=2, std::vector<glm::vec4> vert = std::vector<glm::vec4>(), float transparency=1.0f);
+        Object(Model* model=NULL, Texture* texture=NULL, bool bound=false, GLfloat len=2, GLfloat w=2, GLfloat h=2, std::vector<glm::vec4> vert = std::vector<glm::vec4>(), float transparency = 1.0f);
 
         virtual ~Object();
         void rotate(GLfloat angle, vec3 axis);

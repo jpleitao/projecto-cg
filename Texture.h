@@ -22,7 +22,7 @@ class Texture{
        void genAndBindBuffers();
        void loadTexture(const char* filename);
       public:
-       Texture(const char* filename = NULL);
+       Texture(const char* filename = NULL, float shininess = 80.0f, glm::vec3 specularColor = vec3(1,1,1));
        void beginRender(Renderer* renderer, Model* destModel);
        void finishRender(Renderer* renderer, Model* destModel);
        GLuint getTextureId() { return textureId; }
