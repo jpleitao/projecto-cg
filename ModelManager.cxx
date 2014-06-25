@@ -199,7 +199,7 @@ Object* ModelManager::getObject(const char* filename)
     width = glm::length(dist);
 
     //Create the object class and then return it
-    object = new Object(model,model->getTexture(),bound,lenght,width,height,vert,alpha);
+    object = new Object(model,model->getTexture(),bound,lenght,width,height,vert,alpha, refraction);
 
     return object;
 }
