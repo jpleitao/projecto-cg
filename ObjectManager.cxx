@@ -264,6 +264,21 @@ void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, int depth
         }        
     }
 
+    //Add walls
+    std::vector<std::vector<vec2> > tmpLines;
+    std::vector<Object* > tmpObjects;
+    getWallLines(&tmpObjects, &tmpLines); 
+    for (int j = 0; j < tmpLines.size(); j++) {
+            vec2 lineP = tmpLines.at(j).at(0), lineQ = tmpLines.at(j).at(1);
+            vec2* intersection = intersectLineWithSegment(origin, direction, lineP, lineQ);
+            if ( intersection ) {
+                candidatePoints.push_back(vec2(intersection->x,intersection->y));
+                originatingObjects.push_back(tmpObjects.at(j));
+                originalLines.push_back(tmpLines.at(j));
+                delete intersection;
+            }
+        } 
+
     if ( candidatePoints.size() == 0) {
         //Must intersect a wall FIXME
         //printf("Laser not intersecting objects!\n");
@@ -496,22 +511,7 @@ void ObjectManager::updateObjInFrontOfPlayer(Player* player) {
                 delete intersection;
             }
         }        
-    }
-
-    //Add walls
-    std::vector<std::vector<vec2> > tmpLines;
-    std::vector<Object* > tmpObjects;
-    getWallLines(&tmpObjects, &tmpLines); 
-    for (int j = 0; j < tmpLines.size(); j++) {
-            vec2 lineP = tmpLines.at(j).at(0), lineQ = tmpLines.at(j).at(1);
-            vec2* intersection = intersectLineWithSegment(pos, dir, lineP, lineQ);
-            if ( intersection ) {
-                candidatePoints.push_back(vec2(intersection->x,intersection->y));
-                originatingObjects.push_back(tmpObjects.at(j));
-                originalLines.push_back(tmpLines.at(j));
-                delete intersection;
-            }
-        } 
+    }    
        
 
     if ( candidatePoints.size() > 0 ) {
