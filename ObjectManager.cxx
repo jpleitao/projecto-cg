@@ -49,7 +49,7 @@ void ObjectManager::collideAndFall() {
         
         colide = false;
         
-        //Check for collisions! -- For each object test it with the ones after him
+        //Check for collisions! -- For each object test it with the ones after him and do this while we find a collision
         for (int i=0;i<allObjects.size();i++){
             Object* current = allObjects[i];
             if ( !current->objectHasBoundingBox() ||  current == target ) continue; //Skip world objects and target
@@ -76,7 +76,7 @@ void ObjectManager::collideAndFall() {
                         do_stuff = true;
                     }
 
-                    //Hack
+                    //Hack (if neither of them is being pushed but we detect a collision then we select one of them to move)
                     else{
                         obj_to_move = obj;
                         obj_colided = current;
@@ -85,26 +85,23 @@ void ObjectManager::collideAndFall() {
 
                     if (do_stuff)
                     {
-                        assert(obj_colided->getHasLastPosition());//FIXME: CANNOT GET HERE WITHOUT OBJECT IN MOVEMENT RIGHT?
+                        assert(obj_colided->getHasLastPosition());//NOTE: CANNOT GET HERE WITHOUT OBJECT IN MOVEMENT RIGHT?
 
                         //Determine the direction of the movement
                         glm::vec4 obj_colided_pos = obj_colided->getCenter();
                         glm::vec4 obj_to_move_pos = obj_to_move->getCenter();
                         glm::vec4 movement = obj_to_move_pos - obj_colided_pos;
 
-                        //printf("(%f,%f)\n", movement.x, movement.z);
                         //Normalize the movement vector
                         movement = glm::normalize(movement);
 
                         //Move current away
                         obj_to_move->moveAwayFrom(obj_colided,movement);
 
-                        //Set obj velocity - FIXME: REFACTOR
+                        //Set obj velocity
                         obj_to_move->move(true, (FACTOR * movement[0]), (FACTOR * movement[2]) );
                         //obj_to_move->translate(vec3( obj_colided->getVelocityX(),0.0f,obj_colided->getVelocityZ()));
                     }
-
-                    //assert(0);
                 }
             }
 
@@ -118,7 +115,6 @@ void ObjectManager::collideAndFall() {
 
                 for (int j=i+1;j<allObjects.size();j++){
                     if (current->collision(allObjects[j])){
-                        //std::cout << "FALSE!\n";
                         //Move the object in the opposite direction
                         current->undoFall();
 
@@ -365,8 +361,6 @@ void ObjectManager::newTargetPosition() {
     float newX, centerX;
 
     newX = -17.00 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(17.00-(-17.00))));
-
-    //printf("New X : %f\n", newX);
 
     centerX = target->getCenterX();
 

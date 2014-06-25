@@ -38,19 +38,11 @@ int main (void) {
 
     Player player(&renderer);
 
-    /*Object* obj = new Object(new Model(), new Texture());
-    Object* obj2 = new Object(new Model(), new Texture());
-    Object* obj3 = new Object(new Model(), new Texture());
-    Object* obj4 = new Object(new Model(), new Texture());*/
-    //objects.push_back(obj2); objects.push_back(obj); objects.push_back(obj3);  objects.push_back(obj4);
-
     ObjectManager objectManager(&renderer);
     objectManager.setLaserOrigin(vec2(0,-17.8));
     objectManager.setLaserDirection(vec2(0,1));
 
     World world(&modelManager ,&objectManager, "data/models/world");
-
-    
 
     std::vector<glm::vec4> vert;
     GLfloat cube_size = 2;
@@ -69,24 +61,15 @@ int main (void) {
     objectManager.addObject(test3);
    // objectManager.addObject(test4);
 
-    /*
-    obj->rotate(33,vec3(0,1,0));
-    obj->translate(vec3(0,2,0));
-    obj2->translate(vec3(3.0f,0.0f,0.0f));
-    obj4->translate(vec3(6.0f,0.0f,0.0f));
-    */
-
-    //test1->printStuff();
     test1->translate(vec3(0.0f,3.0f,-5.0f));
     
     test5->translate(vec3(0.0f,5.0f,-5.0f));
-    //test1->printStuff();
+
     test1->scale(vec3(0.25f,0.25f,0.25f));
-    //test1->printStuff();
 
     test2->translate(vec3(0.0f,1.0f,-5.0f));
     test2->rotate(41,vec3(0,1,0));
-    //test3->translate(vec3(0.0f,1.0f,-5.0f));
+
 
     int frameNo = 0;
 
@@ -106,12 +89,10 @@ int main (void) {
     //renderer.addLight(&topRedLight);
     while( gameWindow.shouldStayOpen() ) {
         gameWindow.beginFrame();
-        /*obj->rotate(1,vec3(0,1,0));*/
 
         objectManager.stopObjects();
 
-        //FIXME: REFACTOR
-        //For debug on the collisions only! - Remove this
+        //For debug on the collisions11
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_L ) == GLFW_PRESS){
             test1->translate(vec3(0.0f, 0.0f, 0.1f));
             test1->move(true,0.0f,0.1f);
@@ -172,9 +153,6 @@ int main (void) {
         changingLight2.setPosition( vec3(glm::rotate(mat4(1.0f), (float)-frameNo, vec3(0.0f,1.0f,0.0f))*vec4(vec3(3,4,3), 1.0f)));
         changingLight2.setIntensities(vec3((float)(frameNo/10 % 256) / 512.0, 0.0f,((float)((frameNo/10 + 128) % 256)) / 512.0));
         //changingLight.setIntensities(vec3())
-
-
-    //test2->rotate(0.5,vec3(0,1,0));
         
 
         if ( frameNo++ > 0 ) {

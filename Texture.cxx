@@ -5,7 +5,7 @@
 Texture::Texture(const char* filename, float shininess, glm::vec3 specularColor) {
     if ( filename == NULL ) {
         filename = "data/models/textures/dummy.bmp";
-        printf("Loading new texture!\n");
+        //printf("Loading new texture!\n");
     }
     this->textureId= -1;
     this->depthRenderBuffer = -1;

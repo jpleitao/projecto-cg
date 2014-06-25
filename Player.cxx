@@ -75,14 +75,6 @@ bool Player::colideWithObject(Object* obj)
     if(!obj->objectHasBoundingBox())
         return false;
 
-    //If the current object is under the first one then we have no collision
-    //if ( (this->position[1] + (OBSERVER_HEIGHT/2)) < (obj->getCenterY() - (obj->getHeight()/2)) )
-    //    return false;
-
-    //If the current object is above the first one then we have no collision
-    //if ( (this->position[1] - (OBSERVER_HEIGHT/2)) > (obj->getCenterY() + (obj->getHeight()/2)) )
-    //    return false;
-
     //"Obj" is higher than our player
     if ((obj->getCenterY() - obj->getHeight()/2) > this->position[1])
         return false;
@@ -94,7 +86,7 @@ bool Player::colideWithObject(Object* obj)
     obj_size = obj->getVertexesSize();
 
     if ( (current_size != 4) || (obj_size != 4) )
-        assert(0);//FIXME?? We can only have squares/rectangles!
+        assert(0);//We can only have squares/rectangles!
 
     //Same dimensions
     for (int i=0;i<current_size;i++){
@@ -110,11 +102,8 @@ bool Player::colideWithObject(Object* obj)
             c = obj->getVertexAt(j);
             d = obj->getVertexAt((j+1)%obj_size);
 
-            if (obj->segmentIntersection(a,c,b,d)){
-                //std::cout << "[PLAYER]Found collision! Going to return true" << std::endl;
-
+            if (obj->segmentIntersection(a,c,b,d))
                 return true;
-            }
         }
     }
 
@@ -123,58 +112,40 @@ bool Player::colideWithObject(Object* obj)
     current_area = PLAYER_BOX_WIDTH * PLAYER_BOX_WIDTH;
     obj_area = obj->getArea();
 
-    //std::cout << "Current_area = " << current_area << " Obj_area = " << obj_area << std::endl;
-
     //Different Dimensions -- One can be inside the other (The one with smaller area inside the one with higher area)
     if ( current_area < obj_area){
         //player inside obj
-        //std::cout << "MENOR\n";
 
         for (int i=0;i<current_size;i++){
             //First triangle: 0, 1 and 2
-            if(obj->pointInTriangle(obj->getVertexAt(0), obj->getVertexAt(1), obj->getVertexAt(2), this->hit_box[i])){
-                //std::cout << "AQUI3\n";
+            if(obj->pointInTriangle(obj->getVertexAt(0), obj->getVertexAt(1), obj->getVertexAt(2), this->hit_box[i]))
                 return true;
-            }
+            
             //Second triangle: 0,3 and 2
-            if(obj->pointInTriangle(obj->getVertexAt(0), obj->getVertexAt(3), obj->getVertexAt(2), this->hit_box[i])){
-                //std::cout << "AQUI4\n";
+            if(obj->pointInTriangle(obj->getVertexAt(0), obj->getVertexAt(3), obj->getVertexAt(2), this->hit_box[i]))
                 return true;
-            }
 
             //Test if the point is in the line of the triangles -- Line that has the points 0 and 2
-            if (obj->pointInLine(obj->getVertexAt(0), obj->getVertexAt(2), this->hit_box[i])){
-                //std::cout << "AQUI5\n";
+            if (obj->pointInLine(obj->getVertexAt(0), obj->getVertexAt(2), this->hit_box[i]))
                 return true;
-            }
         }
     }
 
     else if (obj_area < current_area){
         //obj inside player
 
-        //std::cout << "MAIOR\n";
-
         for (int i=0;i<obj_size;i++){
-            if (obj->pointInTriangle(this->hit_box[0], this->hit_box[1], this->hit_box[2], obj->getVertexAt(i))){
-                //std::cout << "AQUI6\n";
+            if (obj->pointInTriangle(this->hit_box[0], this->hit_box[1], this->hit_box[2], obj->getVertexAt(i)))
                 return true;
-            }
 
-            if(obj->pointInTriangle(this->hit_box[0], this->hit_box[3], this->hit_box[2], obj->getVertexAt(i))){
-                //std::cout << "AQUI7\n";
+            if(obj->pointInTriangle(this->hit_box[0], this->hit_box[3], this->hit_box[2], obj->getVertexAt(i)))
                 return true;
-            }
 
             //Test if the point is in the line of the triangles -- Line that has the points 0 and 2
-            if (obj->pointInLine(this->hit_box[0], this->hit_box[2], obj->getVertexAt(i))){
-                //std::cout << "AQUI8\n";
+            if (obj->pointInLine(this->hit_box[0], this->hit_box[2], obj->getVertexAt(i)))
                 return true;
-            }
         }
     }
-
-    //std::cout << "NOPE\n";
 
     return false;
 }

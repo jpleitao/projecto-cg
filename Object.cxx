@@ -131,18 +131,12 @@ bool Object::collision(Object* obj)
         return false;
 
     //If the current object is under the first one then we have no collision
-    //std::cout << (this->center[1] + (this->height/2)) << " < " << (obj->center[1] - (obj->height/2)) << std::endl;
-    if ( (this->center[1] + (this->height/2)) < (obj->center[1] - (obj->height/2)) ){
-        //std::cout << "AQUI\n";
+    if ( (this->center[1] + (this->height/2)) < (obj->center[1] - (obj->height/2)) )
         return false;
-    }
 
     //If the current object is above the first one then we have no collision
-    //std::cout << (this->center[1] - (this->height/2)) << " > " << (obj->center[1] + (obj->height/2)) << std::endl;
-    if ( (this->center[1] - (this->height/2)) > (obj->center[1] + (obj->height/2)) ){
-        //std::cout << "AQUI2\n"; FARTO DESTES PRINTS DE MERDA
+    if ( (this->center[1] - (this->height/2)) > (obj->center[1] + (obj->height/2)) )
         return false;
-    }
 
     /*If their heights "interset each other" then we have to solve the collision in 2D
      *This is how I am planning on doing this:
@@ -158,7 +152,7 @@ bool Object::collision(Object* obj)
     obj_size = obj->vertexes.size();
 
     if ( (current_size != 4) || (obj_size != 4) )
-        assert(0);//FIXME?? We can only have squares/rectangles!
+        assert(0);//We can only have squares/rectangles!
 
     //Same dimensions
     for (int i=0;i<current_size;i++){
@@ -167,14 +161,14 @@ bool Object::collision(Object* obj)
 
         /*This is my hack. Now, why did I did this here? Suppose that we have one box on top of the other (The down face of one box
          *is perfectly on top of the upper face of the other). In this situation, if we consider only our 2D approach here (X and
-         *Z coordinates) we have two overlaping squares. This shouldn't be a problem, since we are obtaining the intersections and
-         *all. However, I am 90% sure this is a problem caused because of our limited precision with floats. So, we add a small
-         *value to one of our squares edges, forcing the intersection in this situation. I see one problem with this "solution":
-         *We are adding a positive increment to the X and Z coordinates of the two edges of the "this" instance of the Object
-         *class (my english here was terrible, sorry about that but it's 0am on a June Sunday xD), and as a consequence of that
-         *we may be making some situations where we should have a collision no longer be a collision. I think that the problem of
-         *not detecting the collision of 2 boxes, one on top of the other, is more important than not detecting two boxes colliding
-         *only on 1 milimeter or centimiter, but I am open to a discussion on this matter ;)*/
+         *Z coordinates) we have two overlaping squares/rectangles. This shouldn't be a problem, since we are obtaining the
+         *intersections and all of that. We add a small value to one of our squares edges, forcing the intersection (due to limited
+         *precision there are situations where we do not detect an intersection when we should: say that we have two boxes with the same
+         *dimensions, if they are one on top of the other then the collision would not be detected. To solve it, we add a small value
+         *to one of the edges, which will force the detection of the collision). This is a bit "hacky" and I don't like much however we
+         *do not have much time to implement the hole thing, and in my opinion this solves quite a big and important problem, creating
+         *smaller and less important one. I think that not detecting the collision of 2 boxes is more critical than not detecting two
+         *boxes colliding only on 1 milimeter or centimiter, but I am open to a discussion on this matter ;)*/
         a[0] = a[0] + 0.001;
         a[2] = a[2] + 0.001;
         b[0] = b[0] + 0.001;
@@ -184,14 +178,8 @@ bool Object::collision(Object* obj)
             c = obj->vertexes[j];
             d = obj->vertexes[(j+1)%obj_size];
 
-            if (this->segmentIntersection(a,c,b,d)){
-                //std::cout << "Found collision! Going to return true" << std::endl;
-
-                /*if (this->center[1] > obj->center[1]){
-                    //std::cout << "I am the one on top of the other!" << std::endl;
-                }*/
+            if (this->segmentIntersection(a,c,b,d))//Found collision
                 return true;
-            }
         }
     }
 
@@ -200,58 +188,40 @@ bool Object::collision(Object* obj)
     current_area = this->lenght * this->width;
     obj_area = obj->lenght * obj->width;
 
-    //std::cout << "Current_area = " << current_area << " Obj_area = " << obj_area << std::endl;
-
     //Different Dimensions -- One can be inside the other (The one with smaller area inside the one with higher area)
     if ( current_area < obj_area){
         //current inside obj
-        //std::cout << "MENOR\n";
 
         for (int i=0;i<current_size;i++){
             //First triangle: 0, 1 and 2
-            if(this->pointInTriangle(obj->vertexes[0], obj->vertexes[1], obj->vertexes[2], this->vertexes[i])){
-                //std::cout << "AQUI3\n";
+            if(this->pointInTriangle(obj->vertexes[0], obj->vertexes[1], obj->vertexes[2], this->vertexes[i]))
                 return true;
-            }
+
             //Second triangle: 0,3 and 2
-            if(this->pointInTriangle(obj->vertexes[0], obj->vertexes[3], obj->vertexes[2], this->vertexes[i])){
-                //std::cout << "AQUI4\n";
+            if(this->pointInTriangle(obj->vertexes[0], obj->vertexes[3], obj->vertexes[2], this->vertexes[i]))
                 return true;
-            }
 
             //Test if the point is in the line of the triangles -- Line that has the points 0 and 2
-            if (this->pointInLine(obj->vertexes[0], obj->vertexes[2], this->vertexes[i])){
-                //std::cout << "AQUI5\n";
+            if (this->pointInLine(obj->vertexes[0], obj->vertexes[2], this->vertexes[i]))
                 return true;
-            }
         }
     }
 
     else if (obj_area < current_area){
         //obj inside current
 
-        //std::cout << "MAIOR\n";
-
         for (int i=0;i<obj_size;i++){
-            if (this->pointInTriangle(this->vertexes[0], this->vertexes[1], this->vertexes[2], obj->vertexes[i])){
-                //std::cout << "AQUI6\n";
+            if (this->pointInTriangle(this->vertexes[0], this->vertexes[1], this->vertexes[2], obj->vertexes[i]))
                 return true;
-            }
 
-            if(this->pointInTriangle(this->vertexes[0], this->vertexes[3], this->vertexes[2], obj->vertexes[i])){
-                //std::cout << "AQUI7\n";
+            if(this->pointInTriangle(this->vertexes[0], this->vertexes[3], this->vertexes[2], obj->vertexes[i]))
                 return true;
-            }
 
             //Test if the point is in the line of the triangles -- Line that has the points 0 and 2
-            if (this->pointInLine(this->vertexes[0], this->vertexes[2], obj->vertexes[i])){
-                //std::cout << "AQUI8\n";
+            if (this->pointInLine(this->vertexes[0], this->vertexes[2], obj->vertexes[i]))
                 return true;
-            }
         }
     }
-
-    //std::cout << "NOPE\n";
 
     return false;
 }
@@ -260,14 +230,13 @@ bool Object::collision(Object* obj)
 void Object::moveAwayFrom(Object* obj, glm::vec4 movement)
 {
     vec3 del = vec3(FACTOR*movement[0],0.0f,FACTOR*movement[2]);
+    
     //Move the object away
     while(this->collision(obj)){
         this->translate(del);
         
         //Update the player's last position
         this->updatePlayerLastPosition();
-        
-        //std::cout << "Moving this away from obj\n";
     }
 }
 
@@ -275,14 +244,13 @@ void Object::moveAwayFrom(Object* obj, glm::vec4 movement)
 void Object::moveAwayFrom(Player* player, glm::vec4 movement)
 {
     vec3 del = vec3(FACTOR*movement[0],0.0f,FACTOR*movement[2]);
+    
     //Move the object away
     while(player->colideWithObject(this)){
         this->translate(del);
         
         //Update the player's last position
         this->updatePlayerLastPosition();
-        
-        //std::cout << "Moving this away from obj\n";
     }
 }
 
@@ -364,7 +332,6 @@ void Object::resetTransforms() {
 }
 
 void Object::render(Renderer* renderer) {
-    //printf("DRawing object. Alpha: %f\n", transparency);
     //Update MVP
     renderer->setCurrentModelMatrix(modelMatrix);
 

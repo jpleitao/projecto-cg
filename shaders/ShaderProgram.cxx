@@ -46,7 +46,7 @@ ShaderProgram::ShaderProgram(const char* vertexFilePath, const char* fragmentFil
 
 
     // Link the program
-    printf("Linking program\n");
+    //printf("Linking program\n");
     this->programID = glCreateProgram();    
     glAttachShader(this->programID, VertexShaderID);
     glAttachShader(this->programID, FragmentShaderID);
@@ -83,7 +83,7 @@ bool ShaderProgram::compileShader(GLuint id, const char* code) {
     GLint Result = GL_FALSE;
     int InfoLogLength;
 
-    printf("Compiling shader %u\n", id);
+    //printf("Compiling shader %u\n", id);
     glShaderSource(id, 1, &code , NULL);
     glCompileShader(id);
 
