@@ -365,9 +365,26 @@ void ObjectManager::stopObjects()
 
 void ObjectManager::processPlayer(Player* player)
 {
+    Object* current;
+
     for (int i=0;i<this->allObjects.size();i++){
-        if (player->colideWithObject(this->allObjects[i])){
+        
+        current = this->allObjects[i];
+        
+        if (player->colideWithObject(current)){
             //Apply velocity to the object in the direction of the observer
+
+            //Get the movement vector
+            vec2 movement = player->getDirectionProjectionXoZ();
+
+            //Normalize the movement vector
+            movement = glm::normalize(movement);
+
+            //Move current away
+            current->moveAwayFrom(player,glm::vec4(movement[0],0.0f,movement[1],1.0f));
+
+            //Set current velocity - FIXME: REFACTOR
+            current->move(true, (FACTOR * movement[0]), (FACTOR * movement[1]) );
         }
     }
 }

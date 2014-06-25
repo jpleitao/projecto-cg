@@ -8,6 +8,8 @@
 class Renderer; //Forward declare Renderer
 class Light;
 
+class Player;
+
 class Object
 {
     Model* model;
@@ -82,6 +84,7 @@ class Object
         glm::vec4 getLastPosition(){return this->last_position;}
 
         void moveAwayFrom(Object* obj, glm::vec4 movement);
+        void moveAwayFrom(Player* player, glm::vec4 movement);
 
         int segmentIntersection(glm::vec4 a, glm::vec4 c, glm::vec4 b, glm::vec4 d);
         bool pointInLine(vec4 a, vec4 b, vec4 point);

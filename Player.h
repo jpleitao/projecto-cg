@@ -32,6 +32,8 @@ class Player
         void setPosition(vec3 pos){ this->position = pos;}
         std::vector<glm::vec4> getHitBox(){return this->hit_box;}
 
+        vec2 getDirectionProjectionXoZ(){return this->directionProjectionXoZ;}
+
         bool colideWithObject(Object* obj);
 };
 
