@@ -30,6 +30,13 @@ Object::Object(Model* model, Texture* texture, bool bound, GLfloat len, GLfloat 
     this->rotate(-1,vec3(0,1,0));
     laserLight = NULL;
     currAngle = 0;
+
+    mat4 matrix = glm::rotate(modelMatrix, 90.0f, vec3(0,1,0));
+
+    //Update the object's vertexes' position
+    for (int i=0;i<this->vertexes.size();i++)
+        this->vertexes[i] = this->start_vertexes[i] = matrix * this->start_vertexes[i];
+
 }
 
 Object::~Object() {
@@ -178,7 +185,7 @@ bool Object::collision(Object* obj)
             d = obj->vertexes[(j+1)%obj_size];
 
             if (this->segmentIntersection(a,c,b,d)){
-                std::cout << "Found collision! Going to return true" << std::endl;
+                //std::cout << "Found collision! Going to return true" << std::endl;
 
                 /*if (this->center[1] > obj->center[1]){
                     //std::cout << "I am the one on top of the other!" << std::endl;

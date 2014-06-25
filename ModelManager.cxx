@@ -18,7 +18,7 @@ Model* ModelManager::getModel(const char* filename){
     path += filename;
     path += ".model";
 
-    std::cout << "[Model.getModel]Reading File: " + path << std::endl;
+    //std::cout << "[Model.getModel]Reading File: " + path << std::endl;
 
     //Read the .model file and extract the name of the .obj and .bmp files
     std::ifstream ifs (path.c_str(), std::ifstream::in);
@@ -28,7 +28,7 @@ Model* ModelManager::getModel(const char* filename){
         //Read first line, which contains the name of the .obj file
         if (std::getline(ifs, model_path)){
             model_path = "data/models/" + model_path;
-            std::cout << "Model in file: " << model_path << std::endl;
+            //std::cout << "Model in file: " << model_path << std::endl;
         }
         else{
             std::cout << "Could not read the model file_path!" << std::endl;
@@ -38,7 +38,7 @@ Model* ModelManager::getModel(const char* filename){
         //Read second line, which contains the name of the texture (.bmp) file
         if (std::getline(ifs, texture_path)){
             texture_path = "data/models/" + texture_path;
-            std::cout << "Texture in file: " << texture_path << std::endl;
+            //std::cout << "Texture in file: " << texture_path << std::endl;
         }
         else{
             std::cout << "Could not read the texture file_path!" << std::endl;
@@ -46,7 +46,7 @@ Model* ModelManager::getModel(const char* filename){
         }
     }
     else{
-        std::cout<< "Unable to open file" << std::endl;
+        //std::cout<< "Unable to open file" << std::endl;
         assert(0);
     }
 
@@ -108,7 +108,7 @@ Object* ModelManager::getObject(const char* filename)
     float refraction;
     glm::vec3 specularColour;
 
-    std::cout << "[Model.getObject]Reading File: " + path << std::endl;
+    //std::cout << "[Model.getObject]Reading File: " + path << std::endl;
 
     bool bound = false;
 
@@ -123,7 +123,7 @@ Object* ModelManager::getObject(const char* filename)
 
             //Read shininess
             if(strlen(buf) > 0) {
-                printf("Has Shininess line!\n");
+                //printf("Has Shininess line!\n");
                 sscanf(buf, "%f", &shininess);
             }
             else {
@@ -134,7 +134,7 @@ Object* ModelManager::getObject(const char* filename)
 
             //Read RGB specular
             if(strlen(buf) > 0) {
-                printf("Has RGB specular line!\n");
+                //printf("Has RGB specular line!\n");
                 sscanf(buf, "%f %f %f", &specularColour[0], &specularColour[1], &specularColour[2]);
             }
             else {
@@ -145,9 +145,9 @@ Object* ModelManager::getObject(const char* filename)
 
             //Read alpha
             if(strlen(buf) > 0) {
-                printf("Has alpha line!\n");
+                //printf("Has alpha line!\n");
                 sscanf(buf, "%f", &alpha);
-                printf("Alpha = %f\n", alpha);
+                //printf("Alpha = %f\n", alpha);
             }
             else {
                 ifs.clear();
@@ -159,7 +159,7 @@ Object* ModelManager::getObject(const char* filename)
             if(strlen(buf) > 0) {
 
                 sscanf(buf, "%f", &refraction);
-                printf("Refraction coeff: %f!\n", refraction);
+                //printf("Refraction coeff: %f!\n", refraction);
             }
             else {
                 ifs.clear();
@@ -169,7 +169,7 @@ Object* ModelManager::getObject(const char* filename)
             ifs.getline(buf,256);
             if (strlen(buf) > 0){
 
-                printf("Has BB line!\n");
+                //printf("Has BB line!\n");
                 sscanf(buf, "%f %f %f %f %f %f %f %f %f %f %f %f %f",
                                       &x1, &y1, &z1, &x2, &y2, &z2, &x3, &y3, &z3, &x4, &y4, &z4, &height);
                 assert(y1 == y2 && y2 == y3 && y3 == y4);

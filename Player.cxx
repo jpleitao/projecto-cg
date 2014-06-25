@@ -111,7 +111,7 @@ bool Player::colideWithObject(Object* obj)
             d = obj->getVertexAt((j+1)%obj_size);
 
             if (obj->segmentIntersection(a,c,b,d)){
-                std::cout << "[PLAYER]Found collision! Going to return true" << std::endl;
+                //std::cout << "[PLAYER]Found collision! Going to return true" << std::endl;
 
                 return true;
             }
