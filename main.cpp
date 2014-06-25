@@ -64,8 +64,8 @@ int main (void) {
     Object* test2 = new Object(new Model(ObjLoader("data/models/obj/dummy.obj").load()), new Texture(), true, cube_size, cube_size, cube_size, vert);
     Object* test3 = new Object(new Line(vec3(0,LASER_Y+100,-25),vec3(0,LASER_Y+100,25)));
     //Object* test4 = new Object(new Line(vec3(0,LASER_Y+100,-25),vec3(0,LASER_Y+100,25)));
-    objectManager.addObject(test1);
-    objectManager.addObject(test2);
+    //objectManager.addObject(test1);
+    //objectManager.addObject(test2);
     objectManager.addObject(test3);
    // objectManager.addObject(test4);
 
@@ -191,16 +191,19 @@ int main (void) {
             else if (player_position[2] > MAX_Z - PLAYER_OFFSET)
                 player_position[2] = MAX_Z - PLAYER_OFFSET;
 
+            player_position[1] = OBSERVER_HEIGHT;//Has to be done
+
             //Reset the player's position
-            player.setPosition(vec3(player_position[0], OBSERVER_HEIGHT, player_position[2]));
+            player.setPosition(player_position);
         }
+
+        objectManager.processPlayer(&player);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         objectManager.processLaser();
         objectManager.renderObjects();
         objectManager.clearLaser();
-        objectManager.processPlayer(&player);
 
         gameWindow.endFrame();
     }

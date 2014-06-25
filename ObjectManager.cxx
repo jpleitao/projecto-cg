@@ -73,6 +73,13 @@ void ObjectManager::collideAndFall() {
                         do_stuff = true;
                     }
 
+                    //Hack
+                    else{
+                        obj_to_move = obj;
+                        obj_colided = current;
+                        do_stuff = true; 
+                    }
+
                     if (do_stuff)
                     {
                         assert(obj_colided->getHasLastPosition());//FIXME: CANNOT GET HERE WITHOUT OBJECT IN MOVEMENT RIGHT?
@@ -398,6 +405,7 @@ void ObjectManager::processPlayer(Player* player)
         current = this->allObjects[i];
         
         if (player->colideWithObject(current)){
+            std::cout << "COLIDIU\n";
             //Apply velocity to the object in the direction of the observer
 
             //Get the movement vector
@@ -412,5 +420,8 @@ void ObjectManager::processPlayer(Player* player)
             //Set current velocity - FIXME: REFACTOR
             current->move(true, (FACTOR * movement[0]), (FACTOR * movement[1]) );
         }
+
+        else
+            std::cout << "NAO COLIDIU\n";
     }
 }
