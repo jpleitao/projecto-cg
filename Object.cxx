@@ -1,6 +1,7 @@
 #include "Object.h"
 #include "Renderer.h"
 #include "Light.h"
+#include "Player.h"
 
 Object::Object(Model* model, Texture* texture, bool bound, GLfloat len, GLfloat w, GLfloat h, std::vector<glm::vec4> vert, float transparency) : model(model), texture(texture), modelMatrix(mat4(1.0f)), transparency(transparency)
 {
@@ -251,6 +252,21 @@ void Object::moveAwayFrom(Object* obj, glm::vec4 movement)
     vec3 del = vec3(FACTOR*movement[0],0.0f,FACTOR*movement[2]);
     //Move the object away
     while(this->collision(obj)){
+        this->translate(del);
+        
+        //Update the player's last position
+        this->updatePlayerLastPosition();
+        
+        //std::cout << "Moving this away from obj\n";
+    }
+}
+
+//Same as the previous one ("moveAwayFrom") but this time it receives a Player instance
+void Object::moveAwayFrom(Player* player, glm::vec4 movement)
+{
+    vec3 del = vec3(FACTOR*movement[0],0.0f,FACTOR*movement[2]);
+    //Move the object away
+    while(player->colideWithObject(this)){
         this->translate(del);
         
         //Update the player's last position
