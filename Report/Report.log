@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.1.31)  25 JUN 2014 16:49
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.1.31)  25 JUN 2014 16:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -666,6 +666,12 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 No file Report.ind.
+
+Overfull \hbox (1.78935pt too wide) in paragraph at lines 55--56
+[]\OT1/cmr/m/n/10.95 Os prin-ci-pais re-qui-si-tos e com-po-nen-tes do pro-jeto
+ resumem-se ^^Ra cria^^Xc~ao
+ []
+
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 57.
 [2]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 57.
@@ -677,10 +683,10 @@ Package rerunfilecheck Info: File `Report.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 57.
  ) 
 Here is how much of TeX's memory you used:
- 9315 strings out of 495007
- 128072 string characters out of 6180696
+ 9317 strings out of 495007
+ 128088 string characters out of 6180696
  225510 words of memory out of 5000000
- 12378 multiletter control sequences out of 15000+600000
+ 12380 multiletter control sequences out of 15000+600000
  10450 words of font info for 39 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
  29i,10n,35p,257b,336s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -690,7 +696,7 @@ e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texli
 ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/f
 onts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on Report.pdf (2 pages, 70134 bytes).
+Output written on Report.pdf (2 pages, 71126 bytes).
 PDF statistics:
  46 PDF objects out of 1000 (max. 8388607)
  35 compressed objects within 1 object stream
