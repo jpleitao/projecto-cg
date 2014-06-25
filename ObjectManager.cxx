@@ -73,6 +73,12 @@ void ObjectManager::collideAndFall() {
                         do_stuff = true;
                     }
 
+                    else{
+                        obj_to_move = obj;
+                        obj_colided = current;
+                        do_stuff = true; 
+                    }
+
                     if (do_stuff)
                     {
                         assert(obj_colided->getHasLastPosition());//FIXME: CANNOT GET HERE WITHOUT OBJECT IN MOVEMENT RIGHT?
