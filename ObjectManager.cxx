@@ -445,6 +445,7 @@ void ObjectManager::processPlayer(Player* player)
     for (int i=0;i<this->allObjects.size();i++){
         
         current = this->allObjects[i];
+        if (  current == target ) continue;
         
         if (player->colideWithObject(current)){
             //std::cout << "COLIDIU\n";
