@@ -51,12 +51,16 @@ void Player::updatePosition(double xoff, double yoff) {
     glm::vec3 new_pos = this->position;
     glm::vec3 vec = new_pos - old;
 
-    glm::mat4 mv = mat4(1.0);
+    for (int i=0;i<this->hit_box.size();i++)
+        this->hit_box[i] += glm::vec4(vec, 0.0f);
+}
 
-    mv = glm::translate(mv, vec);
+void Player::updatePosition(vec3 position)
+{
+    this->setPosition(position);
 
     for (int i=0;i<this->hit_box.size();i++)
-        this->hit_box[i] = mv * this->hit_box[i];
+        this->hit_box[i] += glm::vec4(position, 0.0f);
 }
 
 //Same code as Object::collisions, but adapted. Don't have the time or patience to port it to ObjectManager. Deal with it

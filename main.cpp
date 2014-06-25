@@ -191,8 +191,10 @@ int main (void) {
             else if (player_position[2] > MAX_Z - PLAYER_OFFSET)
                 player_position[2] = MAX_Z - PLAYER_OFFSET;
 
+            player_position[1] = OBSERVER_HEIGHT;//Has to be done
+
             //Reset the player's position
-            player.setPosition(vec3(player_position[0], OBSERVER_HEIGHT, player_position[2]));
+            player.setPosition(player_position);
         }
 
         objectManager.processPlayer(&player);

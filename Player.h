@@ -27,6 +27,7 @@ class Player
         Player(Renderer* renderer, vec3 position = vec3(-9,3.6,0), float horizAngle = 7.806590, float vertAngle = -0.298797, float fov = 45.0f, float speed = 12.0f, float mouseSpeed = 0.0015f);
         void updateAngles(float screendx, float screendy);
         void updatePosition(double xoff, double yoff);
+        void updatePosition(vec3 position);
 
         vec3 getPosition(){return this->position;}
         void setPosition(vec3 pos){ this->position = pos;}
