@@ -167,7 +167,7 @@ int main (void) {
         //changingLight.setIntensities(vec3())
 
 
-    test2->rotate(0.5,vec3(0,1,0));
+    //test2->rotate(0.5,vec3(0,1,0));
         
 
         if ( frameNo++ > 0 ) {
