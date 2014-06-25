@@ -52,7 +52,7 @@ void ObjectManager::collideAndFall() {
         //Check for collisions! -- For each object test it with the ones after him
         for (int i=0;i<allObjects.size();i++){
             Object* current = allObjects[i];
-            if ( !current->objectHasBoundingBox() ) continue; //Skip world objects
+            if ( !current->objectHasBoundingBox() ||  current == target ) continue; //Skip world objects and target
             colide = false;
 
             for (int j=i+1;j<allObjects.size();j++){
@@ -214,7 +214,7 @@ void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, int depth
 
     for (int i = 0; i < allObjects.size(); i++ ) {
         Object* thisObj = allObjects.at(i);
-        if ( thisObj == target) printf("target BB: %d, laserHeight: %d!\n", thisObj->objectHasBoundingBox(), thisObj->atLaserHeight());
+        //if ( thisObj == target) printf("target BB: %d, laserHeight: %d!\n", thisObj->objectHasBoundingBox(), thisObj->atLaserHeight());
         if ( !thisObj->objectHasBoundingBox() || !thisObj->atLaserHeight()) continue;
         std::vector<std::vector<vec2> > lines = thisObj->getBoundingBoxLines();
         /* FIXME: UNCOMMENT THIS TO DRAW BOUNDING BOXES
