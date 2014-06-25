@@ -4,7 +4,7 @@ wall 0 0 19.20 0 1 0 180
 wall -19.20 0 0 0 1 0 90
 floor 0 0 0 0 0 0 0
 ceiling 0 8 0 0 0 1 180
-target 0 1.8 19.27 1 0 0 90
+target 10 1.8 19.27 1 0 0 90
 mirrorBox -6 0.8429 -6 0 0 0 0
 stoneBox 6 1.0753 6 0 0 0 0
 glassBox -6 0.83171 6 0 0 0 0
