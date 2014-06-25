@@ -44,16 +44,6 @@ int main (void) {
 
     World world(&modelManager ,&objectManager, "data/models/world");
 
-    std::vector<glm::vec4> vert;
-    GLfloat cube_size = 2;
-
-    vert.push_back(glm::vec4(cube_size/2,-cube_size/2,-cube_size/2,1));
-    vert.push_back(glm::vec4(-cube_size/2,-cube_size/2,-cube_size/2,1));
-    vert.push_back(glm::vec4(-cube_size/2,-cube_size/2,cube_size/2,1));
-    vert.push_back(glm::vec4(cube_size/2,-cube_size/2,cube_size/2,1));
-    Object* test1 = new Object(new Model(ObjLoader("data/models/obj/dummy.obj").load()), new Texture(), true, cube_size, cube_size, cube_size, vert);
-    Object* test5 = new Object(new Model(ObjLoader("data/models/obj/dummy.obj").load()), new Texture(), true, cube_size, cube_size, cube_size, vert);
-    Object* test2 = new Object(new Model(ObjLoader("data/models/obj/dummy.obj").load()), new Texture(), true, cube_size, cube_size, cube_size, vert);
     Object* test3 = new Object(new Line(vec3(0,LASER_Y+100,-25),vec3(0,LASER_Y+100,25)));
     //Object* test4 = new Object(new Line(vec3(0,LASER_Y+100,-25),vec3(0,LASER_Y+100,25)));
     //objectManager.addObject(test1);
@@ -61,61 +51,42 @@ int main (void) {
     objectManager.addObject(test3);
    // objectManager.addObject(test4);
 
-    test1->translate(vec3(0.0f,3.0f,-5.0f));
-    
-    test5->translate(vec3(0.0f,5.0f,-5.0f));
-
-    test1->scale(vec3(0.25f,0.25f,0.25f));
-
-    test2->translate(vec3(0.0f,1.0f,-5.0f));
-    test2->rotate(41,vec3(0,1,0));
 
 
     int frameNo = 0;
 
-    Light blueLight(vec3(0,0,0), vec3(1,1,1));
+    Light blueLight(vec3(0,0,0), vec3(0,0,0));
     renderer.addLight(&blueLight);
-    Light redLightFromAbove(vec3(0,2,0), vec3(1,0,0));
+    #define RED_LIGHT vec3(0.5,0,0)
+    Light redLightFromAbove(vec3(0,2,0), RED_LIGHT);
     renderer.addLight(&redLightFromAbove);
 
-    Light changingLight(vec3(0,0,0), vec3(0,1,0));
+    Light changingLight(vec3(0,0,0), vec3(0,0.6,0));
     renderer.addLight(&changingLight);
 
-    Light changingLight2(vec3(0,0,0), vec3(0,1,0));
+    Light changingLight2(vec3(0,0,0), vec3(0.2,0,0.5));
     renderer.addLight(&changingLight2);
 
     //Light topRedLight(vec3(0,2,19.19), vec3(1,0,0));
     //test2->setLaserLight(&topRedLight);
     //renderer.addLight(&topRedLight);
+    
+    float fact = 0.01;
+    int frameCountDown = 0;
     while( gameWindow.shouldStayOpen() ) {
         gameWindow.beginFrame();
 
         objectManager.stopObjects();
-
+        if ( frameCountDown ) frameCountDown--;
         //For debug on the collisions11
-        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_L ) == GLFW_PRESS){
-            test1->translate(vec3(0.0f, 0.0f, 0.1f));
-            test1->move(true,0.0f,0.1f);
-        }
-        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_K ) == GLFW_PRESS){
-            test1->translate(vec3(-0.1f, 0.0f, 0.0f));
-            test1->move(true,-0.1f,0.0f);
-        }
-        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_J ) == GLFW_PRESS){
-            test1->translate(vec3(0.0f, 0.0f, -0.1f));
-            test1->move(true,0.0f,-0.1f);
-        }
-        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_I ) == GLFW_PRESS){
-            test1->translate(vec3(0.1f, 0.0f, 0.0f));
-            test1->move(true,0.1f,0.0f);
-        }
-        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_M ) == GLFW_PRESS){
-            test1->translate(vec3(0.0f, -0.1f, 0.0f));
-            test1->move(true);
-        }
-        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_N ) == GLFW_PRESS){
-            test1->translate(vec3(0.0f, 0.5f, 0.0f));
-            test1->move(true);
+        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_F ) == GLFW_PRESS){
+            if ( frameCountDown == 0) {
+                frameCountDown = 30;
+                if ( blueLight.getIntensities().x == 0.0 )
+                    blueLight.setIntensities(vec3(0.5,0.5,0.5));
+                else
+                    blueLight.setIntensities(vec3(0.0,0.0,0.0));
+            }
         }
         if(glfwGetKey( gameWindow.getWindow(), GLFW_KEY_P ) == GLFW_PRESS) {
             objectManager.newTargetPosition();
@@ -132,7 +103,7 @@ int main (void) {
         }
 
         //printf("Frame %d\n", frameNo);
-        std::vector<std::vector<vec2> > lines = test1->getBoundingBoxLines();
+        
 
         /*
         for (int i = 0 ; i < lines.size(); i++) {
@@ -151,9 +122,31 @@ int main (void) {
         blueLight.setPosition(player.getPosition());
         changingLight.setPosition( vec3(glm::rotate(mat4(1.0f), (float)frameNo, vec3(0.0f,1.0f,0.0f))*vec4(vec3(3,4,3), 1.0f)));
         changingLight2.setPosition( vec3(glm::rotate(mat4(1.0f), (float)-frameNo, vec3(0.0f,1.0f,0.0f))*vec4(vec3(3,4,3), 1.0f)));
-        changingLight2.setIntensities(vec3((float)(frameNo/10 % 256) / 512.0, 0.0f,((float)((frameNo/10 + 128) % 256)) / 512.0));
+
+        vec3 intensity = changingLight2.getIntensities();
+
+        if ( intensity[2] <= 0.2 && fact < 0) fact*=-1;
+        else if ( intensity[2] >= 0.7  && fact > 0) fact*=-1;
+        
+        changingLight2.setIntensities(intensity+fact*vec3(0,1,1));
         //changingLight.setIntensities(vec3())
         
+        if ( (frameNo % 1000) == 0)
+            redLightFromAbove.setIntensities(0.0f*RED_LIGHT);
+        else if ( (frameNo % 1005) == 0 )
+            redLightFromAbove.setIntensities(RED_LIGHT);
+        else if ((frameNo % 1010) == 0 )
+            redLightFromAbove.setIntensities(0.0f*RED_LIGHT);
+        else if ((frameNo % 1015) == 0 )
+            redLightFromAbove.setIntensities(RED_LIGHT);
+        else if ((frameNo % 1020) == 0 )
+            redLightFromAbove.setIntensities(0.25f*RED_LIGHT);
+        else if ((frameNo % 1025) == 0 )
+            redLightFromAbove.setIntensities(0.5f*RED_LIGHT);
+        else if ((frameNo % 1030) == 0 )
+            redLightFromAbove.setIntensities(0.75f*RED_LIGHT);
+        else if ((frameNo % 1035) == 0 )
+            redLightFromAbove.setIntensities(RED_LIGHT);
 
         if ( frameNo++ > 0 ) {
             //printf("Updating: %f, %f\n", gameWindow.getFrameScreenXOffset(), gameWindow.getFrameScreenYOffset());
