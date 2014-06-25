@@ -2,10 +2,10 @@
 
 // Interpolated values from the vertex shaders
 varying vec2 UV;
-varying vec3 varyingNormalDirection;  // surface normal vector in world space
+varying vec3 varyingNormalDirection;
 varying vec3 fragVert;
 
-// Values that stay constant for the whole mesh.
+
 uniform sampler2D myTextureSampler;
 
 uniform mat3 m_3x3_inv_transp;
