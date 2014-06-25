@@ -202,8 +202,8 @@ void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, int depth
     std::vector<Object*> originatingObjects;
     std::vector<std::vector<vec2> > originalLines;
 
-    for (int i = 0; i < opaqueObjects.size(); i++ ) {
-        Object* thisObj = opaqueObjects.at(i);
+    for (int i = 0; i < allObjects.size(); i++ ) {
+        Object* thisObj = allObjects.at(i);
         if ( !thisObj->objectHasBoundingBox() || !thisObj->atLaserHeight()) continue;
         std::vector<std::vector<vec2> > lines = thisObj->getBoundingBoxLines();
 /*
@@ -309,7 +309,7 @@ vec2* ObjectManager::intersectLineSegments(vec2 p1, vec2 p2,         vec2 p3, ve
     //printf("x1:%f,  y1:%f,   d:%f\n", x1, y1, d);
     // If d is zero, there is no intersection
     if (d == 0) {
-        //printf("That determinant is zero!\n");
+      //  printf("That determinant is zero!\n");
         return NULL;
     }
      

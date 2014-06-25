@@ -337,7 +337,7 @@ void Object::resetTransforms() {
 }
 
 void Object::render(Renderer* renderer) {
-    printf("DRawing object. Alpha: %f\n", transparency);
+    //printf("DRawing object. Alpha: %f\n", transparency);
     //Update MVP
     renderer->setCurrentModelMatrix(modelMatrix);
 
