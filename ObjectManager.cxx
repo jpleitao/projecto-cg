@@ -206,7 +206,7 @@ void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, int depth
         Object* thisObj = allObjects.at(i);
         if ( !thisObj->objectHasBoundingBox() || !thisObj->atLaserHeight()) continue;
         std::vector<std::vector<vec2> > lines = thisObj->getBoundingBoxLines();
-/*
+
         for (int k = 0 ; k < lines.size(); k++) {
             std::vector<vec2> line = lines.at(k);
             printf("LINE %d ", k);
@@ -218,7 +218,7 @@ void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, int depth
             renderer->render(objs);
             delete objs.at(0);
             printf("\n");
-        }*/
+        }
 
         for (int j = 0; j < lines.size(); j++) {
             vec2 lineP = lines.at(j).at(0), lineQ = lines.at(j).at(1);
