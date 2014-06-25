@@ -529,5 +529,5 @@ void ObjectManager::setTarget(Object* target) {
 }
 
 void ObjectManager::targetHit() {
-    printf("From the back, bráz!\n");
+    this->newTargetPosition();
 }
