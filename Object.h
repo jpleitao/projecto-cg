@@ -69,7 +69,7 @@ class Object
         glm::vec4 getVertexAt(int pos){ assert(pos < this->vertexes.size()); return this->vertexes[pos];}
         bool objectHasBoundingBox(){return this->hasBoundingBox;}
         void move(bool value, GLfloat vx=0, GLfloat vz=0);
-        GLfloat getArea(){return this->width * this->lenght;
+        GLfloat getArea(){return this->width * this->lenght;}
 
         GLfloat getVelocityX(){return this->velocity[0];}
         GLfloat getVelocityZ(){return this->velocity[2];}

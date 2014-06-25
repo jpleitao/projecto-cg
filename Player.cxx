@@ -55,21 +55,21 @@ void Player::updatePosition(double xoff, double yoff) {
     mv = glm::translate(mv, vec);
 
     for (int i=0;i<this->hit_box.size();i++)
-        this->hit_box[i] *= mv;
+        this->hit_box[i] = mv * this->hit_box[i];
 }
 
 //Same code as Object::collisions, but adapted. Don't have the time or patience to port it to ObjectManager. Deal with it
 bool Player::colideWithObject(Object* obj)
 {
-    if(!obj->hasBoundingBox)
+    if(!obj->objectHasBoundingBox())
         return false;
 
     //If the current object is under the first one then we have no collision
-    if ( (this->position[1] + (this->OBSERVER_HEIGHT/2)) < (obj->getCenterY() - (obj->getHeight()/2)) )
+    if ( (this->position[1] + (OBSERVER_HEIGHT/2)) < (obj->getCenterY() - (obj->getHeight()/2)) )
         return false;
 
     //If the current object is above the first one then we have no collision
-    if ( (this->position[1] - (this->OBSERVER_HEIGHT/2)) > (obj->getCenterY() + (obj->getHeight()/2)) )
+    if ( (this->position[1] - (OBSERVER_HEIGHT/2)) > (obj->getCenterY() + (obj->getHeight()/2)) )
         return false;
 
     glm::vec4 a, b, c, d;

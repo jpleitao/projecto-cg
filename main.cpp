@@ -200,7 +200,7 @@ int main (void) {
         objectManager.processLaser();
         objectManager.renderObjects();
         objectManager.clearLaser();
-        objectManager.processPlayer(player);
+        objectManager.processPlayer(&player);
 
         gameWindow.endFrame();
     }

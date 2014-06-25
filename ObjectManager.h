@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include "Object.h"
+#include "Player.h"
 #include <vector>
 
 class ObjectManager {
@@ -29,6 +30,7 @@ public:
     void checkLimits();
     void moveObjects();
     void processLaser();
+    void processPlayer(Player* player);
     void clearLaser();
 
     void setLaserOrigin(vec2 o) {laserOrigin=o;}
