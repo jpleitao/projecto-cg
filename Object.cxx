@@ -151,7 +151,6 @@ bool Object::collision(Object* obj)
 
     //Same dimensions
     for (int i=0;i<current_size;i++){
-        //i and (i+1)%4
         a = this->vertexes[i];
         b = this->vertexes[(i+1)%current_size];
 
@@ -197,7 +196,7 @@ bool Object::collision(Object* obj)
         //current inside obj
         //std::cout << "MENOR\n";
 
-        for (int i=0;i<obj->vertexes.size();i++){
+        for (int i=0;i<current_size;i++){
             //First triangle: 0, 1 and 2
             if(this->pointInTriangle(obj->vertexes[0], obj->vertexes[1], obj->vertexes[2], this->vertexes[i])){
                 //std::cout << "AQUI3\n";
@@ -222,13 +221,13 @@ bool Object::collision(Object* obj)
 
         //std::cout << "MAIOR\n";
 
-        for (int i=0;i<this->vertexes.size();i++){
+        for (int i=0;i<obj_size;i++){
             if (this->pointInTriangle(this->vertexes[0], this->vertexes[1], this->vertexes[2], obj->vertexes[i])){
                 //std::cout << "AQUI6\n";
                 return true;
             }
 
-            if(pointInTriangle(this->vertexes[0], this->vertexes[3], this->vertexes[2], obj->vertexes[i])){
+            if(this->pointInTriangle(this->vertexes[0], this->vertexes[3], this->vertexes[2], obj->vertexes[i])){
                 //std::cout << "AQUI7\n";
                 return true;
             }

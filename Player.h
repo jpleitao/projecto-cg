@@ -30,6 +30,9 @@ class Player
 
         vec3 getPosition(){return this->position;}
         void setPosition(vec3 pos){ this->position = pos;}
+        std::vector<glm::vec4> getHitBox(){return this->hit_box;}
+
+        bool colideWithObject(Object* obj);
 };
 
 #endif // PLAYER_H
