@@ -26,7 +26,7 @@ using namespace glm;
 #endif
 
 #ifndef VEL_BOX_H
- #define FACTOR 0.4
+ #define FACTOR 0.1
 #endif
 
 #ifndef OBS_H
@@ -38,6 +38,8 @@ using namespace glm;
  #define MAX_Z 19.2
  #define MIN_Z -19.2
  #define PLAYER_OFFSET 1
+
+  #define PLAYER_BOX_WIDTH 2.5
 
  #define LASER_Y 1.0f
 #endif

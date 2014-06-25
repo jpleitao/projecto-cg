@@ -215,15 +215,15 @@ void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, int depth
 
         for (int k = 0 ; k < lines.size(); k++) {
             std::vector<vec2> line = lines.at(k);
-            printf("LINE %d ", k);
+            //printf("LINE %d ", k);
             for (int k2 = 0; k2 < line.size(); k2++) {
-                printf("(%f,%f)->", line.at(k2).x, line.at(k2).y);
+                //printf("(%f,%f)->", line.at(k2).x, line.at(k2).y);
             }
             std::vector<Object*> objs;
             objs.push_back(new Object(new Line(vec3(line.at(0).x,LASER_Y/2,line.at(0).y), vec3(line.at(1).x,LASER_Y/2,line.at(1).y), vec3(0,1,0))));
             renderer->render(objs);
             delete objs.at(0);
-            printf("\n");
+            //printf("\n");
         }
 
         for (int j = 0; j < lines.size(); j++) {

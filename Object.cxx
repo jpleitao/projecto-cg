@@ -29,6 +29,7 @@ Object::Object(Model* model, Texture* texture, bool bound, GLfloat len, GLfloat 
     this->rotate(1,vec3(0,1,0));
     this->rotate(-1,vec3(0,1,0));
     laserLight = NULL;
+    currAngle = 0;
 }
 
 Object::~Object() {
@@ -47,6 +48,8 @@ void Object::updatePlayerLastPosition()
 
 void Object::fall()
 {
+    
+    //mat4 temp = glm::rotate(modelMatrix, angle, axis);
     //Update object's velocity, based on its aceleration
     this->velocity[1] += this->aceleration_y;
 
@@ -291,6 +294,7 @@ void Object::rotate(GLfloat angle, vec3 axis) {
     if (angle == 0)
         return ;
 
+    currAngle += angle;
     this->modelMatrix = glm::rotate(modelMatrix, angle, axis);
 
     //Update the object's vertexes' position
@@ -323,7 +327,7 @@ void Object::scale(vec3 scaleVec) {
 }
 
 void Object::translate(vec3 vec) {
-    this->modelMatrix = glm::translate(modelMatrix, vec);
+    this->modelMatrix = glm::translate(mat4(), vec)*modelMatrix;
 
     //Update the object's center position and vertexes' coordinates
     this->center = this->modelMatrix * this->origin_center;
