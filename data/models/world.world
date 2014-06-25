@@ -7,3 +7,6 @@ ceiling 0 8 0 0 0 1 180
 target 0 1.8 19.27 1 0 0 90
 waterBox 0 1.2380 0 0 1 0 45
 mirrorBox -6 0.8429 -6 0 0 0 0
+stonebox 6 1.0753 6 0 0 0 0
+glassBox -6 0.83171 6 0 0 0 0
+smokyBox 6 1.5720 -6 0 0 0 0

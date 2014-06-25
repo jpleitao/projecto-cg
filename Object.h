@@ -85,6 +85,7 @@ class Object
         bool getHasLastPosition(){return this->has_last_position;}
         void setHasLastPosition(bool value){this->has_last_position = value;}
         glm::vec4 getLastPosition(){return this->last_position;}
+        void setHasBoundingBox(bool has) { this->hasBoundingBox = has;}
 
         void moveAwayFrom(Object* obj, glm::vec4 movement);
         void moveAwayFrom(Player* player, glm::vec4 movement);
