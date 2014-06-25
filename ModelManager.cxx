@@ -105,6 +105,7 @@ Object* ModelManager::getObject(const char* filename)
     GLfloat x1, x2, x3, x4, y1, y2, y3, y4, z1, z2, z3, z4;
     float shininess;
     float alpha;
+    float refraction;
     glm::vec3 specularColour;
 
     std::cout << "[Model.getObject]Reading File: " + path << std::endl;
@@ -147,6 +148,16 @@ Object* ModelManager::getObject(const char* filename)
                 printf("Has alpha line!\n");
                 sscanf(buf, "%f", &alpha);
                 printf("Alpha = %f\n", alpha);
+            }
+            else {
+                ifs.clear();
+            }
+
+            ifs.getline(buf, 256);
+
+            //Read refraction coef
+            if(strlen(buf) > 0) {
+                sscanf(buf, "%f", &refraction);
             }
             else {
                 ifs.clear();
