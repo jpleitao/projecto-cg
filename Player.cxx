@@ -39,6 +39,7 @@ void Player::updateViewMatrix(double xoff, double yoff) {
                            ));
     
     renderer->setCameraPosition(position);
+    directionProjectionXoZ=vec2(direction.x,direction.z);
 }
 void Player::updatePosition(double xoff, double yoff) {
     updateViewMatrix(speed*xoff, speed*yoff);

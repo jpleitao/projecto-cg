@@ -17,6 +17,8 @@ class Player
     const float speed;
     const float mouseSpeed;
 
+    vec2 directionProjectionXoZ;
+
     private:
         void updateViewMatrix(double xoff=0, double yoff=0);
         void updateProjectionMatrix(void);
