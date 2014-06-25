@@ -1,5 +1,7 @@
 #version 120
 
+// DEI SUGA ALMAS.
+
 // Input vertex data, different for all executions of this shader.
 attribute vec3 vertexPosition_modelspace;
 attribute vec3 vertexColor;
