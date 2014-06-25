@@ -17,7 +17,6 @@ private:
     std::vector<Object*> temporaryLaserObjects;
 
     Object* objInFrontOfPlayer;
-    Player* player;
 
 
 public:
