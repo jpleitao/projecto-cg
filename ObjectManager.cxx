@@ -214,6 +214,7 @@ void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, int depth
 
     for (int i = 0; i < allObjects.size(); i++ ) {
         Object* thisObj = allObjects.at(i);
+        if ( thisObj == target) printf("target BB: %d, laserHeight: %d!\n", thisObj->objectHasBoundingBox(), thisObj->atLaserHeight());
         if ( !thisObj->objectHasBoundingBox() || !thisObj->atLaserHeight()) continue;
         std::vector<std::vector<vec2> > lines = thisObj->getBoundingBoxLines();
         /* FIXME: UNCOMMENT THIS TO DRAW BOUNDING BOXES
@@ -297,11 +298,14 @@ void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, int depth
         temporaryLaserObjects.push_back(l);
         addObject(l);
 
-        
+        if ( obj == target ) {
+            targetHit();
+        } else {        
 
-        vec2 reflected =  glm::reflect(unit, surfaceNormal);
+            vec2 reflected =  glm::reflect(unit, surfaceNormal);
 
-        processLaserFromPoint(point-0.01f*unit, reflected, ++depth);
+            processLaserFromPoint(point-0.01f*unit, reflected, ++depth);
+        }
     }
 
     
@@ -482,4 +486,8 @@ void ObjectManager::updateObjInFrontOfPlayer(Player* player) {
 
 void ObjectManager::setTarget(Object* target) {
     this->target = target;
+}
+
+void ObjectManager::targetHit() {
+    printf("From the back, bráz!\n");
 }

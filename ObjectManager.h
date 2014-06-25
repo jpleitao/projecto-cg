@@ -56,6 +56,8 @@ private:
 
     void processLaserFromPoint(vec2 origin,  vec2 direction, int depth=0, bool goingThroughRefractiveSurface = false, float currN2=1.0f);
 
+    void targetHit();
+
     
 
 };
