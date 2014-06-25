@@ -66,11 +66,15 @@ bool Player::colideWithObject(Object* obj)
         return false;
 
     //If the current object is under the first one then we have no collision
-    if ( (this->position[1] + (OBSERVER_HEIGHT/2)) < (obj->getCenterY() - (obj->getHeight()/2)) )
-        return false;
+    //if ( (this->position[1] + (OBSERVER_HEIGHT/2)) < (obj->getCenterY() - (obj->getHeight()/2)) )
+    //    return false;
 
     //If the current object is above the first one then we have no collision
-    if ( (this->position[1] - (OBSERVER_HEIGHT/2)) > (obj->getCenterY() + (obj->getHeight()/2)) )
+    //if ( (this->position[1] - (OBSERVER_HEIGHT/2)) > (obj->getCenterY() + (obj->getHeight()/2)) )
+    //    return false;
+
+    //"Obj" is higher than our player
+    if ((obj->getCenterY() - obj->getHeight()/2) > this->position[1])
         return false;
 
     glm::vec4 a, b, c, d;
