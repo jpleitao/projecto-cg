@@ -45,6 +45,7 @@ World::World(ModelManager* modelManager, ObjectManager* objectManager, const cha
                 worldObjects.push_back(tempObj);
                 objectManager->addObject(tempObj);
                 if (strcmp(modelPath, "wall") == 0)
+                    tempObj->setHasBoundingBox(false);
                     objectManager->appendWall(tempObj);
             }
         }
