@@ -5,3 +5,4 @@ wall -19.20 0 0 0 1 0 90
 floor 0 0 0 0 0 0 0
 ceiling 0 8 0 0 0 1 180
 target 0 1.8 19.27 1 0 0 90
+waterBox 0 1.2380 0 0 0 0 0

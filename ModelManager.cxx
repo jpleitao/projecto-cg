@@ -103,6 +103,9 @@ Object* ModelManager::getObject(const char* filename)
     std::vector<glm::vec4> vert;
     GLfloat lenght, width, height;
     GLfloat x1, x2, x3, x4, y1, y2, y3, y4, z1, z2, z3, z4;
+    float shininess;
+    float alpha;
+    glm::vec3 specularColour;
 
     std::cout << "[Model.getObject]Reading File: " + path << std::endl;
 
@@ -114,6 +117,40 @@ Object* ModelManager::getObject(const char* filename)
             //Skip first two lines
             std::getline(ifs, line);
             std::getline(ifs, line);
+
+            ifs.getline(buf, 256);
+
+            //Read shininess
+            if(strlen(buf) > 0) {
+                printf("Has Shininess line!\n");
+                sscanf(buf, "%f", &shininess);
+            }
+            else {
+                ifs.clear();
+            }
+
+            ifs.getline(buf, 256);
+
+            //Read RGB specular
+            if(strlen(buf) > 0) {
+                printf("Has RGB specular line!\n");
+                sscanf(buf, "%f %f %f", &specularColour[0], &specularColour[1], &specularColour[2]);
+            }
+            else {
+                ifs.clear();
+            }
+
+            ifs.getline(buf, 256);
+
+            //Read alpha
+            if(strlen(buf) > 0) {
+                printf("Has alpha line!\n");
+                sscanf(buf, "%f", &alpha);
+                printf("Alpha = %f\n", alpha);
+            }
+            else {
+                ifs.clear();
+            }
 
             //Read the object's bounding box and height
             ifs.getline(buf,256);
@@ -144,12 +181,14 @@ Object* ModelManager::getObject(const char* filename)
     vec3 A = vec3(x1,y1,z1);
     vec3 B = vec3(x2,y2,z2);
     vec3 dist = A - B;
-
+    lenght = glm::length(dist);
+    
+    A = vec3(x3,y3,z3);
+    dist = A - B;
     width = glm::length(dist);
-    lenght = width;
 
     //Create the object class and then return it
-    object = new Object(model,model->getTexture(),bound,lenght,width,height,vert);
+    object = new Object(model,model->getTexture(),bound,lenght,width,height,vert,alpha);
 
     return object;
 }

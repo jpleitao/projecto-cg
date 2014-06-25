@@ -2,7 +2,7 @@
 #include "Renderer.h"
 #include "Model.h"
 
-Texture::Texture(const char* filename) {
+Texture::Texture(const char* filename, float shininess, glm::vec3 specularColor) {
     if ( filename == NULL ) {
         filename = "data/models/textures/dummy.bmp";
         printf("Loading new texture!\n");
@@ -10,8 +10,8 @@ Texture::Texture(const char* filename) {
     this->textureId= -1;
     this->depthRenderBuffer = -1;
     this->frameBuffer = -1;
-    this->shininess = 80;
-    this->specularColour = vec3(1,1,1);
+    this->shininess = shininess;
+    this->specularColour = specularColor;
     loadTexture(filename);
 }
 
