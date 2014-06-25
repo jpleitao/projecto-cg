@@ -11,6 +11,7 @@ class Player
     float horizAngle;
     float vertAngle;
     float fov;
+    std::vector<glm::vec4> hit_box;
 
     // FIXME: Maybe only temporarily constant
     const float speed;

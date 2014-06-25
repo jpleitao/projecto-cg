@@ -4,6 +4,8 @@
 Player::Player(Renderer* renderer, vec3 position, float horizAngle, float vertAngle, float fov, float speed, float mouseSpeed) :
     renderer(renderer), position(position), horizAngle(horizAngle), vertAngle(vertAngle), fov(fov), speed(speed), mouseSpeed(mouseSpeed) {
         updateViewMatrix();
+
+        //Initialize hit box based on current player's positions
 }
 
 void Player::updateAngles(float screendx, float screendy) {
