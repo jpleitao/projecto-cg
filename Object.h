@@ -69,6 +69,7 @@ class Object
         glm::vec4 getVertexAt(int pos){ assert(pos < this->vertexes.size()); return this->vertexes[pos];}
         bool objectHasBoundingBox(){return this->hasBoundingBox;}
         void move(bool value, GLfloat vx=0, GLfloat vz=0);
+        GLfloat getArea(){return this->width * this->lenght;
 
         GLfloat getVelocityX(){return this->velocity[0];}
         GLfloat getVelocityZ(){return this->velocity[2];}
@@ -79,6 +80,10 @@ class Object
         glm::vec4 getLastPosition(){return this->last_position;}
 
         void moveAwayFrom(Object* obj, glm::vec4 movement);
+
+        int segmentIntersection(glm::vec4 a, glm::vec4 c, glm::vec4 b, glm::vec4 d);
+        bool pointInLine(vec4 a, vec4 b, vec4 point);
+        int pointInTriangle(glm::vec4 v1, glm::vec4 v2, glm::vec4 v3, glm::vec4 pt);
 
         //DEBUG METHOD - REMOVE THIS
         void printStuff()
@@ -111,9 +116,6 @@ class Object
     private:
         void createHitBoxes();
         GLfloat ccw(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3);
-        int segmentIntersection(glm::vec4 a, glm::vec4 c, glm::vec4 b, glm::vec4 d);
-        bool pointInLine(vec4 a, vec4 b, vec4 point);
-        int pointInTriangle(glm::vec4 v1, glm::vec4 v2, glm::vec4 v3, glm::vec4 pt);
         void updatePlayerLastPosition();
 
 };

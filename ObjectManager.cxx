@@ -361,3 +361,12 @@ void ObjectManager::stopObjects()
         current->move(false);
     }
 }
+
+void ObjectManager::processPlayer(Player* player)
+{
+    for (int i=0;i<this->allObjects.size();i++){
+        if (player->colideWithObject(this->allObjects[i])){
+            //Apply velocity to the object in the direction of the observer
+        }
+    }
+}
