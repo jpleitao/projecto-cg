@@ -73,6 +73,7 @@ void ObjectManager::collideAndFall() {
                         do_stuff = true;
                     }
 
+                    //Hack
                     else{
                         obj_to_move = obj;
                         obj_colided = current;
