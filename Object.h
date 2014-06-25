@@ -48,6 +48,8 @@ class Object
 
     float n2;
 
+    float currAngle;
+
    float transparency;
 
     public:

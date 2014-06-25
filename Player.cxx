@@ -6,10 +6,10 @@ Player::Player(Renderer* renderer, vec3 position, float horizAngle, float vertAn
         updateViewMatrix();
 
         //Initialize hit box based on current player's positions
-        this->hit_box.push_back(glm::vec4(this->position[0], 0.0f, this->position[2] + OBSERVER_HEIGHT/2, 1.0f));
-        this->hit_box.push_back(glm::vec4(this->position[0], this->position[1], this->position[2] + OBSERVER_HEIGHT/2, 1.0f));
-        this->hit_box.push_back(glm::vec4(this->position[0], this->position[1], this->position[2] - OBSERVER_HEIGHT/2, 1.0f));
-        this->hit_box.push_back(glm::vec4(this->position[0], 0.0f, this->position[2] - OBSERVER_HEIGHT/2, 1.0f));
+        this->hit_box.push_back(glm::vec4(this->position[0], 0.0f, this->position[2] + PLAYER_BOX_WIDTH/2, 1.0f));
+        this->hit_box.push_back(glm::vec4(this->position[0], this->position[1], this->position[2] + PLAYER_BOX_WIDTH/2, 1.0f));
+        this->hit_box.push_back(glm::vec4(this->position[0], this->position[1], this->position[2] - PLAYER_BOX_WIDTH/2, 1.0f));
+        this->hit_box.push_back(glm::vec4(this->position[0], 0.0f, this->position[2] - PLAYER_BOX_WIDTH/2, 1.0f));
 }
 
 void Player::updateAngles(float screendx, float screendy) {
@@ -106,7 +106,7 @@ bool Player::colideWithObject(Object* obj)
 
     GLfloat current_area, obj_area;
 
-    current_area = OBSERVER_HEIGHT * OBSERVER_HEIGHT;
+    current_area = PLAYER_BOX_WIDTH * PLAYER_BOX_WIDTH;
     obj_area = obj->getArea();
 
     //std::cout << "Current_area = " << current_area << " Obj_area = " << obj_area << std::endl;
