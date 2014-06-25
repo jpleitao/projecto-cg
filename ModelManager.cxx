@@ -144,9 +144,11 @@ Object* ModelManager::getObject(const char* filename)
     vec3 A = vec3(x1,y1,z1);
     vec3 B = vec3(x2,y2,z2);
     vec3 dist = A - B;
-
+    lenght = glm::length(dist);
+    
+    A = vec3(x3,y3,z3);
+    dist = A - B;
     width = glm::length(dist);
-    lenght = width;
 
     //Create the object class and then return it
     object = new Object(model,model->getTexture(),bound,lenght,width,height,vert);
