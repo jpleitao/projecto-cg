@@ -118,7 +118,7 @@ void ObjectManager::collideAndFall() {
 
                 for (int j=i+1;j<allObjects.size();j++){
                     if (current->collision(allObjects[j])){
-                        std::cout << "FALSE!\n";
+                        //std::cout << "FALSE!\n";
                         //Move the object in the opposite direction
                         current->undoFall();
 
