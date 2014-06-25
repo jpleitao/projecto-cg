@@ -37,6 +37,15 @@ World::World(ModelManager* modelManager, ObjectManager* objectManager, const cha
                     objectManager->setTarget(tempObj);
                 }
 
+                if(strcmp(modelPath, "robot") == 0) {
+                    tempObj->scale(vec3(0.66, 0.66, 0.66));
+                }
+
+                if (strcmp(modelPath, "wall") == 0){
+                    tempObj->setHasBoundingBox(false);
+                    objectManager->appendWall(tempObj);
+                }
+
                 //FIXME: HACKED IN FOR MAXI'S TESTING
                 /*if ( c == 1) {
                     Light* l = new Light(vec3(0,2,-19.19), vec3(1,0,0));
@@ -44,10 +53,7 @@ World::World(ModelManager* modelManager, ObjectManager* objectManager, const cha
                 }*/
                 worldObjects.push_back(tempObj);
                 objectManager->addObject(tempObj);
-                if (strcmp(modelPath, "wall") == 0){
-                    tempObj->setHasBoundingBox(false);
-                    objectManager->appendWall(tempObj);
-                }
+
             }
         }
     }
