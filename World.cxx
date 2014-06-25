@@ -1,5 +1,6 @@
 #include "World.h"
 #include "Light.h" //MAXI
+#include <cstring>
 
 World::World(ModelManager* modelManager, ObjectManager* objectManager, const char* filename)
 {
@@ -30,6 +31,11 @@ World::World(ModelManager* modelManager, ObjectManager* objectManager, const cha
                 std::cout << "[Object Loaded] has bounding box: " << tempObj->objectHasBoundingBox() << "\n";
                 tempObj->translate(position);
                 tempObj->rotate(angle ,rotation);
+
+                if(strcmp(modelPath, "target") == 0) {
+                    printf("\nIs target\n");
+                    objectManager->setTarget(tempObj);
+                }
 
                 //FIXME: HACKED IN FOR MAXI'S TESTING
                 /*if ( c == 1) {

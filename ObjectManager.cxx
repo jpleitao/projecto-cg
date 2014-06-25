@@ -6,8 +6,8 @@
 
 ObjectManager::ObjectManager(Renderer* renderer) : renderer(renderer)
 {
-
     objInFrontOfPlayer = NULL;
+    srand(static_cast <unsigned> (time(0)));
 }
 
 void ObjectManager::addObject(Object* object) {
@@ -318,6 +318,19 @@ void ObjectManager::clearLaser() {
     }
 }
 
+void ObjectManager::newTargetPosition() {
+
+    float newX, centerX;
+
+    newX = -17.00 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(17.00-(-17.00))));
+
+    printf("New X : %f\n", newX);
+
+    centerX = target->getCenterX();
+
+    target->translate(vec3(newX - centerX, 0, 0));
+}
+
 vec2* ObjectManager::intersectLineSegments(vec2 p1, vec2 p2,         vec2 p3, vec2 p4) {
 
     //printf("Intersecting (%f,%f) --- (%f,%f)\t\t(%f,%f) --- (%f,%f)\n", p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y );
@@ -465,4 +478,8 @@ void ObjectManager::updateObjInFrontOfPlayer(Player* player) {
     } else
         objInFrontOfPlayer = NULL;
 
+}
+
+void ObjectManager::setTarget(Object* target) {
+    this->target = target;
 }

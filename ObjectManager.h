@@ -4,6 +4,8 @@
 #include "common.h"
 #include "Object.h"
 #include "Player.h"
+#include <cstdlib>
+#include <ctime>
 #include <vector>
 class ObjectManager {
 private:
@@ -18,6 +20,7 @@ private:
 
     Object* objInFrontOfPlayer;
 
+    Object* target;
 
 public:
     ObjectManager(Renderer* renderer);
@@ -33,6 +36,9 @@ public:
     void processLaser();
     void processPlayer(Player* player);
     void clearLaser();
+    void setTarget(Object* target);
+
+    void newTargetPosition();
 
     void setLaserOrigin(vec2 o) {laserOrigin=o;}
     void setLaserDirection(vec2 d) {laserDirection=d;}

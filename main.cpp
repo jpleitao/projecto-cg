@@ -136,6 +136,9 @@ int main (void) {
             test1->translate(vec3(0.0f, 0.5f, 0.0f));
             test1->move(true);
         }
+        if(glfwGetKey( gameWindow.getWindow(), GLFW_KEY_P ) == GLFW_PRESS) {
+            objectManager.newTargetPosition();
+        }
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_R ) == GLFW_PRESS){
             objectManager.updateObjInFrontOfPlayer(&player);
             if ( objectManager.getObjInFrontOfPlayer() )

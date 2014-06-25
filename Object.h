@@ -69,6 +69,7 @@ class Object
 
         glm::vec4 getCenter(){return this->center;}
         GLfloat getCenterY(){return this->center[1];}
+        GLfloat getCenterX(){return this->center[0];}
         GLfloat getHeight(){return this->height;}
         void setVelocity_y(GLfloat vel){this->velocity[1] = vel;}
         int getVertexesSize(){return this->vertexes.size();}
