@@ -178,7 +178,7 @@ bool Object::collision(Object* obj)
             d = obj->vertexes[(j+1)%obj_size];
 
             if (this->segmentIntersection(a,c,b,d)){
-                std::cout << "Found collision! Going to return true" << std::endl;
+                //std::cout << "Found collision! Going to return true" << std::endl;
 
                 /*if (this->center[1] > obj->center[1]){
                     //std::cout << "I am the one on top of the other!" << std::endl;
