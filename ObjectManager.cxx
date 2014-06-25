@@ -5,7 +5,10 @@
 #include "Light.h"
 
 ObjectManager::ObjectManager(Renderer* renderer) : renderer(renderer)
-{}
+{
+
+    objInFrontOfPlayer = NULL;
+}
 
 void ObjectManager::addObject(Object* object) {
     if (object->isTransparent())
@@ -203,7 +206,7 @@ void ObjectManager::processLaser() {
 }
 
 void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, int depth, bool goingThroughRefractiveSurface, float currN2) {
-    if ( depth == 15 ) return;
+    if ( depth == 6 ) return;
 
     std::vector<vec2> candidatePoints;
     std::vector<Object*> originatingObjects;
@@ -213,7 +216,7 @@ void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, int depth
         Object* thisObj = allObjects.at(i);
         if ( !thisObj->objectHasBoundingBox() || !thisObj->atLaserHeight()) continue;
         std::vector<std::vector<vec2> > lines = thisObj->getBoundingBoxLines();
-
+        /* FIXME: UNCOMMENT THIS TO DRAW BOUNDING BOXES
         for (int k = 0 ; k < lines.size(); k++) {
             std::vector<vec2> line = lines.at(k);
             //printf("LINE %d ", k);
@@ -225,7 +228,7 @@ void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, int depth
             renderer->render(objs);
             delete objs.at(0);
             //printf("\n");
-        }
+        }*/
 
         for (int j = 0; j < lines.size(); j++) {
             vec2 lineP = lines.at(j).at(0), lineQ = lines.at(j).at(1);
@@ -268,16 +271,19 @@ void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, int depth
                 Object* l = new Object(new Line(vec3(origin.x,LASER_Y,origin.y), vec3(point.x,LASER_Y,point.y)));
                 temporaryLaserObjects.push_back(l);
                 addObject(l);
-                if ( fabs(glm::dot(refracted,surfaceNormal)) < 10E-5 ) return;
+                //if ( fabs(glm::dot(refracted,surfaceNormal)) < 10E-5 ) return;
 
                 processLaserFromPoint(point+0.01f*unit, refracted, ++depth, true, 1.0f/1.396f);
                 return;
             } else {
                 printf("Out of Refract!\n");
                 float n1 = 1.0f;
-                vec2 refracted = glm::refract(normalize(direction),surfaceNormal,1.0f/currN2);
+                //vec2 refracted = glm::refract(normalize(direction),surfaceNormal,1.0f/currN2);
+                vec2 refracted = glm::refract(normalize(direction),surfaceNormal,currN2);
                 Object* l = new Object(new Line(vec3(origin.x,LASER_Y,origin.y), vec3(point.x,LASER_Y,point.y)));
                 temporaryLaserObjects.push_back(l);
+                printf("glm::dot(normalize(refracted),normalize(direction)): %f\n", glm::dot(normalize(refracted),normalize(direction)));
+                //if (isnan(glm::dot(normalize(refracted),normalize(direction)))) refracted = glm::refract(normalize(direction),surfaceNormal,currN2);
                 addObject(l);
                 //if ( fabs(glm::dot(refracted,surfaceNormal)) < 10E-5 ) return;
                 processLaserFromPoint(point+0.01f*unit, refracted, ++depth, false);
@@ -405,7 +411,7 @@ void ObjectManager::processPlayer(Player* player)
         current = this->allObjects[i];
         
         if (player->colideWithObject(current)){
-            std::cout << "COLIDIU\n";
+            //std::cout << "COLIDIU\n";
             //Apply velocity to the object in the direction of the observer
 
             //Get the movement vector
@@ -421,7 +427,42 @@ void ObjectManager::processPlayer(Player* player)
             current->move(true, (FACTOR * movement[0]), (FACTOR * movement[1]) );
         }
 
-        else
-            std::cout << "NAO COLIDIU\n";
+        else {
+            //std::cout << "NAO COLIDIU\n";
+        }
+    }    
+}
+
+void ObjectManager::updateObjInFrontOfPlayer(Player* player) {
+    vec2 dir = player->getDirectionProjectionXoZ();
+    vec3 playerPos = player->getPosition();
+    vec2 pos = vec2(playerPos.x, playerPos.z);
+
+    std::vector<vec2> candidatePoints;
+    std::vector<Object*> originatingObjects;
+    std::vector<std::vector<vec2> > originalLines;
+
+    for (int i = 0; i < allObjects.size(); i++ ) {
+        Object* thisObj = allObjects.at(i);
+        if ( !thisObj->objectHasBoundingBox() || !thisObj->atLaserHeight()) continue;
+        std::vector<std::vector<vec2> > lines = thisObj->getBoundingBoxLines();
+
+        for (int j = 0; j < lines.size(); j++) {
+            vec2 lineP = lines.at(j).at(0), lineQ = lines.at(j).at(1);
+            vec2* intersection = intersectLineWithSegment(pos, dir, lineP, lineQ);
+            if ( intersection ) {
+                candidatePoints.push_back(vec2(intersection->x,intersection->y));
+                originatingObjects.push_back(thisObj);
+                originalLines.push_back(lines.at(j));
+                delete intersection;
+            }
+        }        
     }
+
+    if ( candidatePoints.size() > 0 ) {
+       int index = closestPointToSourcePoint(pos, candidatePoints);
+        objInFrontOfPlayer = originatingObjects.at(index);
+    } else
+        objInFrontOfPlayer = NULL;
+
 }

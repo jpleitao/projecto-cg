@@ -5,7 +5,6 @@
 #include "Object.h"
 #include "Player.h"
 #include <vector>
-
 class ObjectManager {
 private:
     std::vector<Object*> opaqueObjects;
@@ -16,6 +15,9 @@ private:
     vec2 laserOrigin;
     vec2 laserDirection;
     std::vector<Object*> temporaryLaserObjects;
+
+    Object* objInFrontOfPlayer;
+    Player* player;
 
 
 public:
@@ -39,12 +41,17 @@ public:
     vec2 getLaserDirection() { return laserDirection;}
     void stopObjects();
 
+    Object* getObjInFrontOfPlayer() { return objInFrontOfPlayer; }
+    void updateObjInFrontOfPlayer(Player* player);
+
 private:
     vec2* intersectLineSegments(vec2 a, vec2 b,         vec2 c, vec2 d);
     vec2* intersectLineWithSegment(vec2 lineOrigin, vec2 direction, vec2 a, vec2 b);
     int  closestPointToSourcePoint(vec2 sourcePoint, std::vector<vec2> points);
 
     void processLaserFromPoint(vec2 origin,  vec2 direction, int depth=0, bool goingThroughRefractiveSurface = false, float currN2=1.0f);
+
+    
 
 };
 #endif

@@ -137,10 +137,14 @@ int main (void) {
             test1->move(true);
         }
         if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_R ) == GLFW_PRESS){
-            test1->rotate(-1, vec3(0.0f, 1, 0.0f));
+            objectManager.updateObjInFrontOfPlayer(&player);
+            if ( objectManager.getObjInFrontOfPlayer() )
+               objectManager.getObjInFrontOfPlayer() ->rotate(-1, vec3(0.0f, 1, 0.0f));
         }
-        if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_T ) == GLFW_PRESS){
-            test1->rotate(1, vec3(0.0f, 1, 0.0f));
+        else if (glfwGetKey( gameWindow.getWindow(), GLFW_KEY_T ) == GLFW_PRESS){
+            objectManager.updateObjInFrontOfPlayer(&player);
+         if ( objectManager.getObjInFrontOfPlayer() )
+               objectManager.getObjInFrontOfPlayer() ->rotate(1, vec3(0.0f, 1, 0.0f));
         }
 
         //printf("Frame %d\n", frameNo);

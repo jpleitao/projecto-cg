@@ -41,7 +41,7 @@ using namespace glm;
 
   #define PLAYER_BOX_WIDTH 2.5
 
- #define LASER_Y 1.0f
+ #define LASER_Y 1.8f
 #endif
 
 #endif
