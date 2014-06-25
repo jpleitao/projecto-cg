@@ -206,7 +206,7 @@ void ObjectManager::processLaser() {
 }
 
 void ObjectManager::processLaserFromPoint(vec2 origin, vec2 direction, int depth, bool goingThroughRefractiveSurface, float currN2) {
-    if ( depth == 6 ) return;
+    if ( depth == 15 ) return;
 
     std::vector<vec2> candidatePoints;
     std::vector<Object*> originatingObjects;
