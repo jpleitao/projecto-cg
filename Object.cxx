@@ -2,7 +2,7 @@
 #include "Renderer.h"
 #include "Light.h"
 
-Object::Object(Model* model, Texture* texture, bool bound, GLfloat len, GLfloat w, GLfloat h, std::vector<glm::vec4> vert, float transparency) : model(model), texture(texture), modelMatrix(mat4(1.0f)), transparency(transparency)
+Object::Object(Model* model, Texture* texture, bool bound, GLfloat len, GLfloat w, GLfloat h, std::vector<glm::vec4> vert, float transparency, float n2) : model(model), texture(texture), modelMatrix(mat4(1.0f)), transparency(transparency), n2(n2)
 {
     this->hasBoundingBox = bound;
     this->isBeingPuxed = false;
