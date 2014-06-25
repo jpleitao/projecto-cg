@@ -45,7 +45,7 @@ int main (void) {
     //objects.push_back(obj2); objects.push_back(obj); objects.push_back(obj3);  objects.push_back(obj4);
 
     ObjectManager objectManager(&renderer);
-    objectManager.setLaserOrigin(vec2(12.37,-17.8));
+    objectManager.setLaserOrigin(vec2(0,-25.0));
     objectManager.setLaserDirection(vec2(0,1));
 
     World world(&modelManager ,&objectManager, "data/models/world");
