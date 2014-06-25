@@ -198,7 +198,7 @@ int main (void) {
             player_position[1] = OBSERVER_HEIGHT;//Has to be done
 
             //Reset the player's position
-            player.setPosition(player_position);
+            player.updatePosition(player_position);
         }
 
         objectManager.processPlayer(&player);

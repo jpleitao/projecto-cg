@@ -6,10 +6,17 @@ Player::Player(Renderer* renderer, vec3 position, float horizAngle, float vertAn
         updateViewMatrix();
 
         //Initialize hit box based on current player's positions
-        this->hit_box.push_back(glm::vec4(this->position[0], 0.0f, this->position[2] + PLAYER_BOX_WIDTH/2, 1.0f));
-        this->hit_box.push_back(glm::vec4(this->position[0], this->position[1], this->position[2] + PLAYER_BOX_WIDTH/2, 1.0f));
-        this->hit_box.push_back(glm::vec4(this->position[0], this->position[1], this->position[2] - PLAYER_BOX_WIDTH/2, 1.0f));
-        this->hit_box.push_back(glm::vec4(this->position[0], 0.0f, this->position[2] - PLAYER_BOX_WIDTH/2, 1.0f));
+        this->createHitBox();
+}
+
+void Player::createHitBox()
+{
+    this->hit_box = std::vector<glm::vec4>();
+
+    this->hit_box.push_back(glm::vec4(this->position[0], 0.0f, this->position[2] + PLAYER_BOX_WIDTH/2, 1.0f));
+    this->hit_box.push_back(glm::vec4(this->position[0], this->position[1], this->position[2] + PLAYER_BOX_WIDTH/2, 1.0f));
+    this->hit_box.push_back(glm::vec4(this->position[0], this->position[1], this->position[2] - PLAYER_BOX_WIDTH/2, 1.0f));
+    this->hit_box.push_back(glm::vec4(this->position[0], 0.0f, this->position[2] - PLAYER_BOX_WIDTH/2, 1.0f));
 }
 
 void Player::updateAngles(float screendx, float screendy) {
@@ -51,16 +58,15 @@ void Player::updatePosition(double xoff, double yoff) {
     glm::vec3 new_pos = this->position;
     glm::vec3 vec = new_pos - old;
 
-    for (int i=0;i<this->hit_box.size();i++)
-        this->hit_box[i] += glm::vec4(vec, 0.0f);
+    this->createHitBox();
 }
 
 void Player::updatePosition(vec3 position)
 {
     this->setPosition(position);
 
-    for (int i=0;i<this->hit_box.size();i++)
-        this->hit_box[i] += glm::vec4(position, 0.0f);
+
+    this->createHitBox();
 }
 
 //Same code as Object::collisions, but adapted. Don't have the time or patience to port it to ObjectManager. Deal with it

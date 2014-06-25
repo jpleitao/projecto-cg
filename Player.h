@@ -32,6 +32,7 @@ class Player
         vec3 getPosition(){return this->position;}
         void setPosition(vec3 pos){ this->position = pos;}
         std::vector<glm::vec4> getHitBox(){return this->hit_box;}
+        void createHitBox();
 
         vec2 getDirectionProjectionXoZ(){return this->directionProjectionXoZ;}
 
