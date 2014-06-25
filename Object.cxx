@@ -353,7 +353,7 @@ void Object::resetTransforms() {
 }
 
 void Object::render(Renderer* renderer) {
-    printf("DRawing object. Alpha: %f\n", transparency);
+    //printf("DRawing object. Alpha: %f\n", transparency);
     //Update MVP
     renderer->setCurrentModelMatrix(modelMatrix);
 
@@ -361,7 +361,7 @@ void Object::render(Renderer* renderer) {
     if ( texture ) texture->beginRender(renderer, model);
     model->beginRender(renderer);
 
-    renderer->getCurrentProgram()->setUniform("objectAlpha", this->transparency);
+    renderer->getCurrentProgram()->setUniform("objectAlpha", (float)this->transparency);
 
     model->draw(renderer);
 
